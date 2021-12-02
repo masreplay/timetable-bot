@@ -1,12 +1,8 @@
-import os
-from extract_emails import EmailExtractor
-from extract_emails.browsers import ChromeBrowser
-
 import requests
 from bs4 import BeautifulSoup as BSHTML
 import urllib3
 
-from schemas import Teacher
+from app.schemas import Teacher
 
 api_key = '04537657ECB14221BD97253277998A0C'
 key_header = {'access_token_key': api_key}
