@@ -1,0 +1,6 @@
+bs4~=0.0.1
+beautifulsoup4~=4.10.0
+requests~=2.26.0
+urllib3~=1.26.7
+pydantic~=1.8.2
+extract_emails~=5.1.1
