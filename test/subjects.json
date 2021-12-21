@@ -1,0 +1,1168 @@
+{
+  "id": "subjects",
+  "data_rows": [
+    {
+      "id": "*1",
+      "name": "أمنية شبكات 1",
+      "short": "أمنية شبكات 1",
+      "color": "#808000",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*2",
+      "name": "هندسة برامجيات2",
+      "short": "هندسة برامجيات2",
+      "color": "#336699",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "-6",
+      "name": "أنظمة ذكية",
+      "short": "أنظمة ذكية",
+      "color": "#FF8000",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*4",
+      "name": "مبادئ الامنية ",
+      "short": "مبادئ الامنية ",
+      "color": "#00FF00",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*5",
+      "name": "هياكل متقطعة1",
+      "short": "هياكل متقطعة1",
+      "color": "#FF8080",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "-17",
+      "name": "هياكل بيانات",
+      "short": "هياكل بيانات",
+      "color": "#FF00FF",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*7",
+      "name": "نظم تشغيل 1",
+      "short": "نظم تشغيل 1",
+      "color": "#006666",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*8",
+      "name": "معالجة صور 1",
+      "short": "معالجة صور 1",
+      "color": "#FF6600",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "-23",
+      "name": "نظرية معلومات",
+      "short": "نظرية معلومات",
+      "color": "#6699FF",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "-26",
+      "name": "نظرية احتسابية",
+      "short": "نظرية احتسابية",
+      "color": "#00FF00",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*11",
+      "name": "اللغة الانكليزية1",
+      "short": "اللغة الانكليزية1",
+      "color": "#666666",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*12",
+      "name": "التشفير الانسيابي ",
+      "short": "التشفير الانسيابي ",
+      "color": "#66CCFF",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "-33",
+      "name": "اساسيات تقنيات البرمجة",
+      "short": "تقنيات البرمجة",
+      "color": "#993333",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "-35",
+      "name": "بحوث عمليات",
+      "short": "بحوث عمليات",
+      "color": "#FFCC66",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*15",
+      "name": "برمجة مواقع الثابتة",
+      "short": "برمجة مواقع الثابتة",
+      "color": "#CC3399",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*16",
+      "name": "برمجة نوافذ 1",
+      "short": "برمجة نوافذ 1",
+      "color": "#0000FF",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*17",
+      "name": "برمجة شيئية1",
+      "short": "برمجة شيئية1",
+      "color": "#FFFF00",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "-44",
+      "name": "تعليم الماكنة ",
+      "short": "Machine Learning",
+      "color": "#B0B0D9",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*19",
+      "name": "وسائط متعددة 1",
+      "short": "وسائط متعددة 1",
+      "color": "#993399",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*20",
+      "name": "رياضيات1",
+      "short": "رياضيات1",
+      "color": "#FFC000",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*21",
+      "name": "رياضيات 3",
+      "short": "رياضيات 3",
+      "color": "#CCFF33",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "-52",
+      "name": "رسوم حاسوب",
+      "short": "رسوم حاسوب",
+      "color": "#CC00CC",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*23",
+      "name": "شبكات الحاسوب 1",
+      "short": "شبكات الحاسوب 1",
+      "color": "#FF9933",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "-55",
+      "name": "قواعد بيانات موزعة",
+      "short": "قواعد بيانات موزعة",
+      "color": "#6666FF",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "-59",
+      "name": "الخوارزميات وتعقيداتها",
+      "short": "الخوارزميات وتعقيداتها",
+      "color": "#FF0000",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "-61",
+      "name": "التخطيط والانسان الالي",
+      "short": "التخطيط والروبوت",
+      "color": "#66CCFF",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*27",
+      "name": "اخفاء معلومات والعلامة مائية",
+      "short": "اخفاء معلومات والعلامة مائية",
+      "color": "#339933",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*28",
+      "name": "طرق البحث الموجهة",
+      "short": "طرق البحث الموجهة",
+      "color": "#CC99FF",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*29",
+      "name": "برمجة مهيكلة 1",
+      "short": "برمجة مهيكلة 1",
+      "color": "#339933",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "-76",
+      "name": " نظم ادارة المعلومات",
+      "short": " نظم ادارة المعلومات",
+      "color": "#808080",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "-80",
+      "name": "معالجة الاشارات الرقمية",
+      "short": "معالجة الاشارات الرقمية",
+      "color": "#FFFFCC",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*32",
+      "name": "التبديل والتوجيه في الشبكة 1",
+      "short": "التبديل والتوجيه في الشبكة 1",
+      "color": "#CC99FF",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*33",
+      "name": "ادارة شبكات 1",
+      "short": "ادارة شبكات 1",
+      "color": "#00C0FF",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*34",
+      "name": "برمجة الشبكات 1",
+      "short": "برمجة الشبكات 1",
+      "color": "#0080FF",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*35",
+      "name": "نظم المعلومات",
+      "short": "نظم معلومات",
+      "color": "#DDFF97",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*36",
+      "name": "مقدمة الى الذكاء الاصطناعي",
+      "short": "مقدمة الذكاء",
+      "color": "#FFC000",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*37",
+      "name": "مجلس القسم",
+      "short": "مجلس القسم",
+      "color": "#3333FF",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*38",
+      "name": "اللجنة العلمية",
+      "short": "اللجنة العلمية",
+      "color": "#CC0066",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*39",
+      "name": "اساسيات قواعد بيانات",
+      "short": "اساسيات قواعد بيانات",
+      "color": "#009999",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*40",
+      "name": "دراسات عليا",
+      "short": "دراسات عليا",
+      "color": "#C0C0C0",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*41",
+      "name": "اللغة الانكليزية 3",
+      "short": "اللغة الانكليزية 3",
+      "color": "#00FFCC",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*42",
+      "name": "",
+      "short": "",
+      "color": "#003300",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*43",
+      "name": "ادارة مشاريع",
+      "short": "ادارة مشاريع",
+      "color": "#00C0C8",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*44",
+      "name": "معالجة مايكروية",
+      "short": "معالجة مايكروية",
+      "color": "#14C030",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*45",
+      "name": "رسوم الحاسوب والرؤيا 1",
+      "short": "رسوم الحاسوب والرؤيا 1",
+      "color": "#FFCCCC",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*46",
+      "name": "صيغ البرمجة المتوازية",
+      "short": "صيغ البرمجة المتوازية",
+      "color": "#FF9933",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*47",
+      "name": "نمذجة وتحليل البرمجيات",
+      "short": "نمذجة وتحليل البرمجيات",
+      "color": "#FF6600",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*48",
+      "name": "تقنيات استرجاع المعلومات",
+      "short": "تقنيات استرجاع المعلومات",
+      "color": "#CC0000",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*49",
+      "name": "تمثيل المعرفة",
+      "short": "تمثيل المعرفة",
+      "color": "#993300",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*50",
+      "name": "انظمة معلومات الويب",
+      "short": "انظمة معلومات الويب",
+      "color": "#800080",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*51",
+      "name": "2D رسوم الحاسوب",
+      "short": "2D رسوم الحاسوب",
+      "color": "#6666FF",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*52",
+      "name": "معالجة اللغات الطبيعية وبايثون",
+      "short": "معالجة اللغات الطبيعية وبايثون",
+      "color": "#C0C0C0",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*53",
+      "name": "الشفرات الخبيثة",
+      "short": "الشفرات الخبيثة",
+      "color": "#993333",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*54",
+      "name": "المفتاح العام",
+      "short": "المفتاح العام",
+      "color": "#99FF66",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*55",
+      "name": "اساسيات الوسائط المتعددة",
+      "short": "اساسيات الوسائط المتعددة",
+      "color": "#666666",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*56",
+      "name": "امنية البيانات 1",
+      "short": "امنية البيانات 1",
+      "color": "#00FF00",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "-43",
+      "name": "تشفير متقدم",
+      "short": "تشفير متقدم",
+      "color": "#0000CC",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*58",
+      "name": "معامل",
+      "short": "معامل",
+      "color": "#99FF99",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*59",
+      "name": "حوسبة مرنة",
+      "short": "حوسبة مرنة",
+      "color": "#FF00FF",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*60",
+      "name": "امنية الحوسبة السحابية",
+      "short": "امنية الحوسبة السحابية",
+      "color": "#C0C000",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*61",
+      "name": "تفاعل الانسان مع الالة",
+      "short": "تفاعل الانسان مع الالة",
+      "color": "#00C0C8",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*62",
+      "name": "مخازن البيانات",
+      "short": "مخازن البيانات",
+      "color": "#FF0000",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*63",
+      "name": "مفاهيم الشبكات اللاسلكية",
+      "short": "مفاهيم الشبكات اللاسلكية",
+      "color": "#14C0C0",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*64",
+      "name": "مبادئ الوسائط الرقمية",
+      "short": "مبادئ الوسائط الرقمية",
+      "color": "#1414C0",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*65",
+      "name": "تركيب الحاسوب",
+      "short": "تركيب الحاسوب",
+      "color": "#DDFF97",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*66",
+      "name": "احصاء",
+      "short": "احصاء",
+      "color": "#0000FF",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*67",
+      "name": "اساسيات تطوير البرمجيات",
+      "short": "اساسيات تطوير البرمجيات",
+      "color": "#0000FF",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*68",
+      "name": "تكنولوجيا المعلومات",
+      "short": "تكنولوجيا المعلومات",
+      "color": "#FF8000",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*69",
+      "name": "لغة برولوك",
+      "short": "لغة برولوك",
+      "color": "#CCCC00",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*70",
+      "name": "تقنيات الترميز",
+      "short": "تقنيات الترميز",
+      "color": "#6600CC",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*71",
+      "name": "هندسة برمجيات",
+      "short": "هندسة برمجيات",
+      "color": "#FF8000",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*72",
+      "name": "تقنيات الكترونية",
+      "short": "تقنيات الكترونية",
+      "color": "#60FFC0",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*73",
+      "name": "نظرية ارقام",
+      "short": "نظرية ارقام",
+      "color": "#339966",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*74",
+      "name": "تقنيات الوسائط المتعددة",
+      "short": "تقنيات الوسائط المتعددة",
+      "color": "#990099",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*75",
+      "name": "معالجة اللغات الطبيعية",
+      "short": "معالجة اللغات الطبيعية",
+      "color": "#14C0C0",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*76",
+      "name": "الرسوم المتحركة",
+      "short": "الرسوم المتحركة",
+      "color": "#99FF66",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "*77",
+      "name": "حقوق الانسان",
+      "short": "حقوق الانسان",
+      "color": "#DDFF97",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    }
+  ],
+  "data_columns": [
+    "name",
+    "short",
+    "color",
+    "picture_url",
+    "timeoff",
+    "contract_weight"
+  ]
+}

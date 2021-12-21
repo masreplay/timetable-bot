@@ -1,0 +1,86 @@
+{
+  "id": "daysdefs",
+  "data_rows": [
+    {
+      "id": "*1",
+      "name": "الأحد",
+      "short": "احد",
+      "typ": "one",
+      "vals": [
+        "10000"
+      ],
+      "val": 0
+    },
+    {
+      "id": "*2",
+      "name": "الإثنين",
+      "short": "اثنين",
+      "typ": "one",
+      "vals": [
+        "01000"
+      ],
+      "val": 1
+    },
+    {
+      "id": "*3",
+      "name": "الثلاثاء",
+      "short": "ثلاثاء",
+      "typ": "one",
+      "vals": [
+        "00100"
+      ],
+      "val": 2
+    },
+    {
+      "id": "*4",
+      "name": "الأربعاء",
+      "short": "اربعاء",
+      "typ": "one",
+      "vals": [
+        "00010"
+      ],
+      "val": 3
+    },
+    {
+      "id": "*5",
+      "name": "الخميس",
+      "short": "خميس",
+      "typ": "one",
+      "vals": [
+        "00001"
+      ],
+      "val": 4
+    },
+    {
+      "id": "*6",
+      "name": "Any day",
+      "short": "X",
+      "typ": "any",
+      "vals": [
+        "10000",
+        "01000",
+        "00100",
+        "00010",
+        "00001"
+      ],
+      "val": null
+    },
+    {
+      "id": "*7",
+      "name": "Every day",
+      "short": "E",
+      "typ": "all",
+      "vals": [
+        "11111"
+      ],
+      "val": null
+    }
+  ],
+  "data_columns": [
+    "name",
+    "short",
+    "typ",
+    "vals",
+    "val"
+  ]
+}

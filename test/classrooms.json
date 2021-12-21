@@ -1,0 +1,444 @@
+{
+  "id": "classrooms",
+  "data_rows": [
+    {
+      "id": "-1",
+      "name": "قاعة 1",
+      "short": "ق1",
+      "buildingid": "*1",
+      "sharedroom": false,
+      "needssupervision": false,
+      "color": "#0000CC",
+      "nearbyclassroomids": []
+    },
+    {
+      "id": "-2",
+      "name": "قاعة 2",
+      "short": "ق 2",
+      "buildingid": "*1",
+      "sharedroom": false,
+      "needssupervision": false,
+      "color": "#C0C0C0",
+      "nearbyclassroomids": []
+    },
+    {
+      "id": "-3",
+      "name": "قاعة 3",
+      "short": "ق 3",
+      "buildingid": "*1",
+      "sharedroom": false,
+      "needssupervision": false,
+      "color": "#996633",
+      "nearbyclassroomids": []
+    },
+    {
+      "id": "-4",
+      "name": "قاعة 4",
+      "short": "ق 4",
+      "buildingid": "*1",
+      "sharedroom": false,
+      "needssupervision": false,
+      "color": "#009933",
+      "nearbyclassroomids": []
+    },
+    {
+      "id": "-5",
+      "name": "قاعة 5",
+      "short": "ق 5",
+      "buildingid": "*1",
+      "sharedroom": false,
+      "needssupervision": false,
+      "color": "#C014FF",
+      "nearbyclassroomids": []
+    },
+    {
+      "id": "-6",
+      "name": "قاعة 6",
+      "short": "ق 6",
+      "buildingid": "*1",
+      "sharedroom": false,
+      "needssupervision": false,
+      "color": "#FF5050",
+      "nearbyclassroomids": []
+    },
+    {
+      "id": "-7",
+      "name": "قاعة 7",
+      "short": "ق 7",
+      "buildingid": "*1",
+      "sharedroom": false,
+      "needssupervision": false,
+      "color": "#CC9900",
+      "nearbyclassroomids": []
+    },
+    {
+      "id": "-8",
+      "name": "قاعة  8",
+      "short": "ق 8",
+      "buildingid": "*2",
+      "sharedroom": false,
+      "needssupervision": false,
+      "color": "#FF9966",
+      "nearbyclassroomids": []
+    },
+    {
+      "id": "-9",
+      "name": "قاعة 9",
+      "short": "ق 9",
+      "buildingid": "*2",
+      "sharedroom": false,
+      "needssupervision": false,
+      "color": "#99FF66",
+      "nearbyclassroomids": []
+    },
+    {
+      "id": "-10",
+      "name": "قاعة 10",
+      "short": "ق 10",
+      "buildingid": "*2",
+      "sharedroom": false,
+      "needssupervision": false,
+      "color": "#FF3300",
+      "nearbyclassroomids": []
+    },
+    {
+      "id": "-11",
+      "name": "قاعة 11",
+      "short": "ق 11",
+      "buildingid": "*2",
+      "sharedroom": false,
+      "needssupervision": false,
+      "color": "#808080",
+      "nearbyclassroomids": []
+    },
+    {
+      "id": "-13",
+      "name": "قاعة 13",
+      "short": "ق 13",
+      "buildingid": "*2",
+      "sharedroom": false,
+      "needssupervision": false,
+      "color": "#003300",
+      "nearbyclassroomids": []
+    },
+    {
+      "id": "-26",
+      "name": "قاعة 14",
+      "short": "ق14",
+      "buildingid": "*2",
+      "sharedroom": false,
+      "needssupervision": false,
+      "color": "#CC3399",
+      "nearbyclassroomids": []
+    },
+    {
+      "id": "-27",
+      "name": "قاعة 15",
+      "short": "ق15",
+      "buildingid": "*2",
+      "sharedroom": false,
+      "needssupervision": false,
+      "color": "#0066CC",
+      "nearbyclassroomids": []
+    },
+    {
+      "id": "-36",
+      "name": "ق16",
+      "short": "ق16",
+      "buildingid": "",
+      "sharedroom": false,
+      "needssupervision": false,
+      "color": "#CCCC00",
+      "nearbyclassroomids": []
+    },
+    {
+      "id": "-32",
+      "name": "قاعة 17",
+      "short": "ق 17",
+      "buildingid": "*2",
+      "sharedroom": false,
+      "needssupervision": false,
+      "color": "#99CCFF",
+      "nearbyclassroomids": []
+    },
+    {
+      "id": "-33",
+      "name": "قاعة 18",
+      "short": "ق 18",
+      "buildingid": "*2",
+      "sharedroom": false,
+      "needssupervision": false,
+      "color": "#FF8000",
+      "nearbyclassroomids": []
+    },
+    {
+      "id": "-37",
+      "name": "ق19",
+      "short": "ق19",
+      "buildingid": "",
+      "sharedroom": false,
+      "needssupervision": false,
+      "color": "#8000FF",
+      "nearbyclassroomids": []
+    },
+    {
+      "id": "-29",
+      "name": "prolog",
+      "short": "prolog",
+      "buildingid": "*1",
+      "sharedroom": false,
+      "needssupervision": false,
+      "color": "#99FF66",
+      "nearbyclassroomids": []
+    },
+    {
+      "id": "-15",
+      "name": "VB1",
+      "short": "VB1",
+      "buildingid": "*1",
+      "sharedroom": false,
+      "needssupervision": false,
+      "color": "#FF5050",
+      "nearbyclassroomids": []
+    },
+    {
+      "id": "-16",
+      "name": "VB2",
+      "short": "VB2",
+      "buildingid": "*1",
+      "sharedroom": false,
+      "needssupervision": false,
+      "color": "#FFFF00",
+      "nearbyclassroomids": []
+    },
+    {
+      "id": "-17",
+      "name": "Oracle",
+      "short": "Oracle",
+      "buildingid": "*1",
+      "sharedroom": false,
+      "needssupervision": false,
+      "color": "#663300",
+      "nearbyclassroomids": []
+    },
+    {
+      "id": "-18",
+      "name": "C++1",
+      "short": "C++1",
+      "buildingid": "*1",
+      "sharedroom": false,
+      "needssupervision": false,
+      "color": "#3333FF",
+      "nearbyclassroomids": []
+    },
+    {
+      "id": "-19",
+      "name": "C++2",
+      "short": "C++2",
+      "buildingid": "*1",
+      "sharedroom": false,
+      "needssupervision": false,
+      "color": "#00C0C8",
+      "nearbyclassroomids": []
+    },
+    {
+      "id": "-20",
+      "name": "Net",
+      "short": "Net",
+      "buildingid": "*1",
+      "sharedroom": false,
+      "needssupervision": false,
+      "color": "#FF99FF",
+      "nearbyclassroomids": []
+    },
+    {
+      "id": "-21",
+      "name": "Web",
+      "short": "Web",
+      "buildingid": "*1",
+      "sharedroom": false,
+      "needssupervision": false,
+      "color": "#CC66FF",
+      "nearbyclassroomids": []
+    },
+    {
+      "id": "-38",
+      "name": "matlab",
+      "short": "matlab",
+      "buildingid": "*1",
+      "sharedroom": false,
+      "needssupervision": false,
+      "color": "#FF80C0",
+      "nearbyclassroomids": []
+    },
+    {
+      "id": "-39",
+      "name": "Multi-media",
+      "short": "Multi-media",
+      "buildingid": "",
+      "sharedroom": false,
+      "needssupervision": false,
+      "color": "#003300",
+      "nearbyclassroomids": []
+    },
+    {
+      "id": "-35",
+      "name": "قاعة الاجتماعات",
+      "short": "قاعة الاجتماعات",
+      "buildingid": "*1",
+      "sharedroom": false,
+      "needssupervision": false,
+      "color": "#6699FF",
+      "nearbyclassroomids": []
+    },
+    {
+      "id": "-40",
+      "name": "المعامل",
+      "short": "المعامل",
+      "buildingid": "",
+      "sharedroom": false,
+      "needssupervision": false,
+      "color": "#990099",
+      "nearbyclassroomids": []
+    },
+    {
+      "id": "-41",
+      "name": "دراسات عليا",
+      "short": "دراسات عليا",
+      "buildingid": "",
+      "sharedroom": false,
+      "needssupervision": false,
+      "color": "#00FF00",
+      "nearbyclassroomids": []
+    },
+    {
+      "id": "-42",
+      "name": "ساعات طلابية حرة",
+      "short": "ساعات طلابية حرة",
+      "buildingid": "",
+      "sharedroom": false,
+      "needssupervision": false,
+      "color": "#993333",
+      "nearbyclassroomids": []
+    },
+    {
+      "id": "-43",
+      "name": "قاعة 20 ",
+      "short": "الكتروني",
+      "buildingid": "",
+      "sharedroom": false,
+      "needssupervision": false,
+      "color": "#1C1C1C",
+      "nearbyclassroomids": []
+    },
+    {
+      "id": "-44",
+      "name": "قاعة 21",
+      "short": "الكتروني",
+      "buildingid": "",
+      "sharedroom": false,
+      "needssupervision": false,
+      "color": "#DDFF97",
+      "nearbyclassroomids": []
+    },
+    {
+      "id": "-45",
+      "name": "قاعة الكترونية",
+      "short": "الكتروني",
+      "buildingid": "",
+      "sharedroom": false,
+      "needssupervision": false,
+      "color": "#808000",
+      "nearbyclassroomids": []
+    },
+    {
+      "id": "-46",
+      "name": "ق23",
+      "short": "الكتروني",
+      "buildingid": "",
+      "sharedroom": false,
+      "needssupervision": false,
+      "color": "#990033",
+      "nearbyclassroomids": []
+    },
+    {
+      "id": "-47",
+      "name": "ق24",
+      "short": "الكتروني",
+      "buildingid": "",
+      "sharedroom": false,
+      "needssupervision": false,
+      "color": "#60FFC0",
+      "nearbyclassroomids": []
+    },
+    {
+      "id": "-48",
+      "name": "25",
+      "short": "الكتروني",
+      "buildingid": "",
+      "sharedroom": false,
+      "needssupervision": false,
+      "color": "#FF0000",
+      "nearbyclassroomids": []
+    },
+    {
+      "id": "-49",
+      "name": "ق 26",
+      "short": "الكتروني",
+      "buildingid": "",
+      "sharedroom": false,
+      "needssupervision": false,
+      "color": "#FF9933",
+      "nearbyclassroomids": []
+    },
+    {
+      "id": "-50",
+      "name": "ق27",
+      "short": "الكتروني",
+      "buildingid": "",
+      "sharedroom": false,
+      "needssupervision": false,
+      "color": "#14C0C0",
+      "nearbyclassroomids": []
+    },
+    {
+      "id": "-51",
+      "name": "قاعة 28",
+      "short": "الكتروني",
+      "buildingid": "",
+      "sharedroom": false,
+      "needssupervision": false,
+      "color": "#00CC99",
+      "nearbyclassroomids": []
+    },
+    {
+      "id": "-52",
+      "name": "قاعة 29",
+      "short": "الكتروني",
+      "buildingid": "",
+      "sharedroom": false,
+      "needssupervision": false,
+      "color": "#663300",
+      "nearbyclassroomids": []
+    },
+    {
+      "id": "*43",
+      "name": "قاعة 30",
+      "short": "الكتروني",
+      "buildingid": "",
+      "sharedroom": false,
+      "needssupervision": false,
+      "color": "#FFC000",
+      "nearbyclassroomids": []
+    }
+  ],
+  "data_columns": [
+    "name",
+    "short",
+    "buildingid",
+    "sharedroom",
+    "needssupervision",
+    "color",
+    "nearbyclassroomids"
+  ]
+}

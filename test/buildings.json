@@ -1,0 +1,22 @@
+{
+  "id": "buildings",
+  "data_rows": [
+    {
+      "id": "*1",
+      "name": "البناية الرئيسية",
+      "short": "بناية رئيسية",
+      "color": "#FF0000"
+    },
+    {
+      "id": "*2",
+      "name": "بناية الملحق",
+      "short": "الملحق",
+      "color": "#00FF00"
+    }
+  ],
+  "data_columns": [
+    "name",
+    "short",
+    "color"
+  ]
+}

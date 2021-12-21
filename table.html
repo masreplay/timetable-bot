@@ -1,0 +1,91 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table {
+            border: 1px solid #ddd;
+            border-collapse: separate;
+            border-left: 0;
+            border-radius: 4px;
+            border-spacing: 0px;
+            width: 100%;
+        }
+
+        thead {
+            display: table-header-group;
+            vertical-align: middle;
+            border-color: inherit;
+            border-collapse: separate;
+        }
+
+        tr {
+            display: table-row;
+            vertical-align: inherit;
+            border-color: inherit;
+        }
+
+        th,
+        td {
+            padding: 5px 4px 6px 4px;
+            text-align: middle;
+            vertical-align: middle;
+            border-left: 1px solid #ddd;
+        }
+
+
+        td {
+            border-top: 1px solid #ddd;
+            text-align: center;
+        }
+
+        thead:first-child tr:first-child th:first-child,
+        tbody:first-child tr:first-child td:first-child {
+            border-radius: 4px 0 0 0;
+        }
+
+        thead:last-child tr:last-child th:first-child,
+        tbody:last-child tr:last-child td:first-child {
+            border-radius: 0 0 0 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="background-color: red;">
+
+        <table>
+            <thead>
+                <colgroup>
+                    <colgroup>
+                        <col span="4" width="16.6%">
+                    </colgroup>
+
+                </colgroup>
+                <tr>
+                    <th></th>
+                    <th>08:30-10:00</th>
+                    <th>10:30-11:00</th>
+                    <th>11:30-12:30</th>
+                    <th>01:00-2:30</th>
+                    <th>2:30-4:00</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td>رياضيات تيست تيستاية</td>
+                    <td>رياضيات تيست تيستاية</td>
+                    <td>رياضيات تيست تيستاية</td>
+                    <td>رياضيات تيست تيستاية</td>
+                    <td>رياضيات تيست تيستاية</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>

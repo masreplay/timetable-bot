@@ -1,0 +1,63 @@
+{
+  "cards": {
+    "def": "البطاقة وين موجودة بالجدول الوكت واليوم والدرس شنوة"
+  },
+  "data":[
+    {
+      "id": "*27",
+      "name": "اخفاء معلومات والعلامة مائية",
+      "short": "اخفاء معلومات والعلامة مائية",
+      "color": "#339933",
+      "picture_url": "",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "contract_weight": 1
+    },
+    {
+      "id": "-29",
+      "name": "prolog",
+      "short": "prolog",
+      "buildingid": "*1",
+      "sharedroom": false,
+      "needssupervision": false,
+      "color": "#99FF66",
+      "nearbyclassroomids": []
+    },
+
+    {
+      "id": "*20",
+      "subjectid": "*27",
+      "teacherids": [
+        "*58"
+      ],
+      "groupids": [
+        "*101"
+      ],
+      "classids": [
+        "*21"
+      ],
+      "count": 1,
+      "durationperiods": 1,
+      "classroomidss": [
+        [
+          "-29"
+        ]
+      ],
+      "termsdefid": "*3",
+      "weeksdefid": "*3",
+      "daysdefid": "*6",
+      "terms": "1",
+      "seminargroup": null,
+      "bell": "",
+      "studentids": [],
+      "groupnames": [
+        ""
+      ]
+    }
+  ]
+}
