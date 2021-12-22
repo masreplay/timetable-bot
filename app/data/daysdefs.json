@@ -50,30 +50,6 @@
         "00001"
       ],
       "val": 4
-    },
-    {
-      "id": "*6",
-      "name": "Any day",
-      "short": "X",
-      "typ": "any",
-      "vals": [
-        "10000",
-        "01000",
-        "00100",
-        "00010",
-        "00001"
-      ],
-      "val": null
-    },
-    {
-      "id": "*7",
-      "name": "Every day",
-      "short": "E",
-      "typ": "all",
-      "vals": [
-        "11111"
-      ],
-      "val": null
     }
   ],
   "data_columns": [

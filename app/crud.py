@@ -1,7 +1,7 @@
 from typing import Type
 
 from app import db
-from schemas import *
+from app.schemas import *
 
 Cards: Type = list[Card]
 
@@ -67,6 +67,14 @@ def get_teacher_by_lesson_id(lesson_id: str) -> Teacher:
     teachers = lesson.teacherids
     if len(teachers) > 0:
         return get_teacher(teachers[0])
+
+
+def get_periods() -> list[Period]:
+    return db.get_periods()
+
+
+def get_days() -> list[Day]:
+    return db.get_days_def()
 
 
 def get_period(period_id: str, periods=db.get_periods()) -> Period:
