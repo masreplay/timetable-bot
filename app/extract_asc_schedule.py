@@ -14,7 +14,7 @@ def main():
     json_file = open("asc_schedule.json", encoding="utf8")
     data = json.load(json_file, )
 
-    os.chdir("data")
+    os.chdir("../data")
 
     ignores = ["weeksdefs", "weeks", "termsdefs", "terms", "breaks", "studentsubjects", "students"]
 

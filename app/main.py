@@ -138,7 +138,7 @@ def main():
         shutil.copyfileobj(response.raw, out_file)
 
 
-def main1():
+def regenerate_schedule_image():
     url = 'http://localhost:3000/image'
 
     print_schedule(schedule)
@@ -150,18 +150,4 @@ def main1():
 
 if __name__ == '__main__':
     main()
-    # main1()
-
-# print(
-#             f"{_class.short}",
-#             "\n".join(
-#                 f"{card.id}, "
-#                 f"{get_subject_by_lesson_id(card.lessonid).short}, "
-#                 f"{get_teacher_by_lesson_id(card.lessonid).short}, "
-#                 f"{get_class_by_lesson_id(card.lessonid).short}, "
-#                 f"{get_period(card.period).time}, "
-#                 f"{get_day(card.days).name}"
-#                 for card in schedule_sort
-#             ),
-#             sep="\n"
-#         )
+    # regenerate_schedule_image()
