@@ -2,34 +2,23 @@ import shutil
 
 import requests
 
-from app.crud import *
 from app.view import *
 
-
-# matlab -38
-# classroom_schedule("-38")
-# class_schedule("*22")
-# ولاء *58
-# teacher_schedule("*24")
-# print("\n".join([f"{teacher.short}, {teacher.id}" for teacher in get_teachers()]))
+schedule: Schedule = teacher_schedule("*15")
 
 
-def body(periods: list[Period], days: list[Day], cards: list[Card]):
-    return f"""<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
+def body(periods: list[Period], days: list[Day], cards: Schedule):
+    col_width = 100 / (len(periods) + 1)
+    row_height = 100 / (len(days) + 1)
+    style = f"""<style>
         table {{
             border: 1px solid #ddd;
             border-collapse: separate;
             border-left: 0;
-            border-radius: 4px;
+            border-radius: 10px;
             border-spacing: 0px;
             width: 100%;
+            height: 100%;
         }}
 
         thead {{
@@ -45,13 +34,15 @@ def body(periods: list[Period], days: list[Day], cards: list[Card]):
         
         tr {{
             display: table-row;
+            height: {row_height}%;
             vertical-align: inherit;
             border-color: inherit;
         }}
 
         th,
         td {{
-            padding: 5px 4px 6px 4px;
+            white-space:pre-wrap;
+            word-wrap:break-word;
             text-align: middle;
             vertical-align: middle;
             border-left: 1px solid #ddd;
@@ -71,19 +62,22 @@ def body(periods: list[Period], days: list[Day], cards: list[Card]):
         tbody:last-child tr:last-child td:first-child {{
             border-radius: 0 0 0 4px;
         }}
-    </style>
+    </style>"""
+    return f"""<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {style}
 </head>
 
 <body>
-    <div style="background-color: white ;">
-
+    <div style="background-color: white; padding: 1%;">
         <table>
             <thead>
                 <colgroup>
-                    <colgroup>
-                        <col span="4" width="{100 / len(periods)}%">
-                    </colgroup>
-
+                    <col span="4" width="{col_width}%">
                 </colgroup>
                 <tr>
                     <th></th>
@@ -98,48 +92,65 @@ def body(periods: list[Period], days: list[Day], cards: list[Card]):
 </html>"""
 
 
-def generate_tab(days: list[Day], periods: list[Period], cards: list[Card]):
+def generate_tab(days: list[Day], periods: list[Period], cards: Schedule):
     card_tags = ""
-    print(len(cards))
     for day in days:
-        row = f"<tr><td>{day.name}</td>"
-        for card in cards:
-            if card.days == day.vals[0]:
-                row += f"<td>{card_into_table(card)}</td>"
+        _day = day.vals[0]
+        row = []
+        for period in periods:
+            card = get_card(day=_day, period=period.period, cards=cards)
+            if card:
+                row.append(
+                    f'<td '
+                    f'style="background-color: {get_teacher_by_lesson_id(card.lessonid).color}">'
+                    f'{card_into_table(card)}</td>'
+                )
             else:
-                row += "<td></td>"
-        card_tags += row
+                row.append(f"<td></td>")
+        card_tags += f"<tr><td>{day.short}</td>{''.join(row)}</tr>"
+        row.clear()
+
     return card_tags
 
 
-# class: software-fourth-
-def class_schedule(class_id: str):
-    _class = get_class(class_id)
-
-    if _class:
-        schedule = get_class_schedule(class_id)
-        return sorted(schedule, key=lambda card: get_day(card.days).id)
-
-
 def card_into_table(card: Card):
-    return f"{get_subject_by_lesson_id(card.lessonid).short}, " \
-           f"{get_teacher_by_lesson_id(card.lessonid).short}, " \
-           f"{get_class_by_lesson_id(card.lessonid).short}, "
+    card_data = \
+        f"{get_subject_by_lesson_id(card.lessonid).short}\n" \
+        f"{get_teacher_by_lesson_id(card.lessonid).short}\n" \
+        f"{get_class_by_lesson_id(card.lessonid).short}\n"
+    if len(card.classroomids) > 0:
+        card_data += f"{get_classroom(card.classroomids[0]).short}"
+    return card_data
 
 
 def main():
-    class_schedule("*22")
     url = 'http://localhost:3000/image'
-    data = body(get_periods(), get_days(), class_schedule("*21"))
+    periods = get_periods()
+    days = get_days()
+    data = body(periods=periods, days=days, cards=schedule)
+
     response = requests.get(url, data={"html": data}, stream=True)
+
     with open("table.g.html", "w", encoding="utf-8") as file:
         file.write(data)
+
+    with open('table.png', 'wb') as out_file:
+        shutil.copyfileobj(response.raw, out_file)
+
+
+def main1():
+    url = 'http://localhost:3000/image'
+
+    print_schedule(schedule)
+    with open("table.g.html", "r", encoding="utf-8") as file:
+        response = requests.get(url, data={"html": file.read()}, stream=True)
     with open('table.png', 'wb') as out_file:
         shutil.copyfileobj(response.raw, out_file)
 
 
 if __name__ == '__main__':
     main()
+    # main1()
 
 # print(
 #             f"{_class.short}",

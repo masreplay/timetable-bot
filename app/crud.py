@@ -1,12 +1,8 @@
-from typing import Type
-
 from app import db
 from app.schemas import *
 
-Cards: Type = list[Card]
 
-
-def get_classroom_schedule(classroom_id: str, cards: Cards = db.get_cards()) -> Cards:
+def get_classroom_schedule(classroom_id: str, cards: Schedule = db.get_cards()) -> Schedule:
     schedule = []
     for card in cards:
         classrooms: list = card.classroomids
@@ -16,7 +12,7 @@ def get_classroom_schedule(classroom_id: str, cards: Cards = db.get_cards()) -> 
     return schedule
 
 
-def get_class_schedule(class_id: str, cards: Cards = db.get_cards()) -> Cards:
+def get_class_schedule(class_id: str, cards: Schedule = db.get_cards()) -> Schedule:
     schedule = []
     for card in cards:
         _class = get_class_by_lesson_id(card.lessonid)
@@ -25,7 +21,7 @@ def get_class_schedule(class_id: str, cards: Cards = db.get_cards()) -> Cards:
     return schedule
 
 
-def get_teacher_schedule(teacher_id: str, cards: Cards = db.get_cards()) -> Cards:
+def get_teacher_schedule(teacher_id: str, cards: Schedule = db.get_cards()) -> Schedule:
     schedule = []
     for card in cards:
         _class = get_teacher_by_lesson_id(card.lessonid)
@@ -46,6 +42,12 @@ def get_teacher(teacher_id: str, teachers=db.get_teachers()) -> Teacher:
             return teacher
 
 
+def get_card(day: str, period: str, cards: db.get_cards()) -> Optional[Card]:
+    for card in cards:
+        if card.period == period and card.days == day:
+            return card
+
+
 def get_teachers() -> list[Teacher]:
     return db.get_teachers()
 
@@ -53,6 +55,11 @@ def get_teachers() -> list[Teacher]:
 def get_subject_by_lesson_id(lesson_id: str) -> Subject:
     lesson = get_lesson(lesson_id)
     return get_subject(lesson.subjectid)
+
+
+def get_classroom_by_lesson_id(lesson_id: str) -> Classroom:
+    lesson = get_lesson(lesson_id)
+    return get_classroom(lesson.classroomidss[0][0])
 
 
 def get_class_by_lesson_id(lesson_id: str) -> Class:
