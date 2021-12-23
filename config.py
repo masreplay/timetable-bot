@@ -8,6 +8,7 @@ load_dotenv()
 
 class Settings(BaseSettings):
     html_to_image_service: str
+    telegram_bot_api_token: str
 
     class Config:
         env_file = ".env"

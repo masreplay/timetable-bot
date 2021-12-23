@@ -2,7 +2,9 @@ import shutil
 
 import requests
 
-from asc_scrapper.view import *
+from asc_scrapper.crud import *
+from asc_scrapper.schemas import *
+from asc_scrapper.view import teacher_schedule
 from config import get_settings
 
 
@@ -126,11 +128,11 @@ def main():
     schedule: Schedule = teacher_schedule("*15")
     url = get_settings().html_to_image_service
 
-    print_schedule(schedule)
     with open("table.g.html", "r", encoding="utf-8") as file:
         response = requests.get(url, data={"html": file.read()}, stream=True)
     with open('table.png', 'wb') as out_file:
         shutil.copyfileobj(response.raw, out_file)
+
 
 if __name__ == '__main__':
     main()

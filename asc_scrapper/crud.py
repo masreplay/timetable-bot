@@ -21,6 +21,15 @@ def get_class_schedule(class_id: str, cards: Schedule = db.get_cards()) -> Sched
     return schedule
 
 
+def get_schedule_by_class_name(name: str, cards: Schedule = db.get_cards()) -> Schedule:
+    schedule = []
+    for card in cards:
+        _class = get_class_by_lesson_id(card.lessonid)
+        if _class and _class.name == name:
+            schedule.append(card)
+    return schedule
+
+
 def get_teacher_schedule(teacher_id: str, cards: Schedule = db.get_cards()) -> Schedule:
     schedule = []
     for card in cards:
