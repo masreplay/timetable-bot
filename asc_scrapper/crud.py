@@ -1,5 +1,5 @@
-from app import db
-from app.schemas import *
+from asc_scrapper import db
+from asc_scrapper.schemas import *
 
 
 def get_classroom_schedule(classroom_id: str, cards: Schedule = db.get_cards()) -> Schedule:

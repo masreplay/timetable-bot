@@ -1,7 +1,7 @@
 from functools import lru_cache
 
-from app.extract_asc_schedule import load_data
-from app.schemas import *
+from asc_scrapper.extract_asc_schedule import load_data
+from asc_scrapper.schemas import *
 
 
 @lru_cache()

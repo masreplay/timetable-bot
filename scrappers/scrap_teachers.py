@@ -1,20 +1,16 @@
 import json
 import uuid
-from typing import List, Dict, Set
+from typing import List, Dict
 
 import requests
 import urllib3
 from bs4 import BeautifulSoup as BSHTML
 
-from app.const import *
-from app.scrappers.email_extract import get_emails
+from asc_scrapper.const import *
+from scrappers.email_extract import get_emails
 
 
 def main():
-    # http = urllib3.PoolManager()
-    # for i in range(100):
-    #     url = 'https://cs.uotechnology.edu.iq/index.php/s/cv/1258-bashar-saadoon-mahdi'
-    #     http.request('GET', url)
     extract_department_teachers("ae")
 
 

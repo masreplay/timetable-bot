@@ -2,12 +2,11 @@ import shutil
 
 import requests
 
-from app.view import *
+from asc_scrapper.view import *
+from config import get_settings
 
-schedule: Schedule = teacher_schedule("*15")
 
-
-def body(periods: list[Period], days: list[Day], cards: Schedule):
+def schedule_html(periods: list[Period], days: list[Day], cards: Schedule):
     col_width = 100 / (len(periods) + 1)
     row_height = 100 / (len(days) + 1)
     style = f"""<style>
@@ -31,7 +30,7 @@ def body(periods: list[Period], days: list[Day], cards: Schedule):
         th {{
             color: violet;
         }}
-        
+
         tr {{
             display: table-row;
             height: {row_height}%;
@@ -124,22 +123,8 @@ def card_into_table(card: Card):
 
 
 def main():
-    url = 'http://localhost:3000/image'
-    periods = get_periods()
-    days = get_days()
-    data = body(periods=periods, days=days, cards=schedule)
-
-    response = requests.get(url, data={"html": data}, stream=True)
-
-    with open("table.g.html", "w", encoding="utf-8") as file:
-        file.write(data)
-
-    with open('table.png', 'wb') as out_file:
-        shutil.copyfileobj(response.raw, out_file)
-
-
-def regenerate_schedule_image():
-    url = 'http://localhost:3000/image'
+    schedule: Schedule = teacher_schedule("*15")
+    url = get_settings().html_to_image_service
 
     print_schedule(schedule)
     with open("table.g.html", "r", encoding="utf-8") as file:
@@ -147,7 +132,5 @@ def regenerate_schedule_image():
     with open('table.png', 'wb') as out_file:
         shutil.copyfileobj(response.raw, out_file)
 
-
 if __name__ == '__main__':
     main()
-    # regenerate_schedule_image()

@@ -7,7 +7,7 @@ from extract_emails.workers import DefaultWorker
 
 def get_emails(links: List[str]) -> List[str]:
     emails: List[str] = []
-    with ChromeBrowser(executable_path="./chromedriver.exe") as browser:
+    with ChromeBrowser(executable_path="chromedriver.exe") as browser:
         for link in links:
             factory = DefaultFilterAndEmailFactory(
                 website_url=link,
