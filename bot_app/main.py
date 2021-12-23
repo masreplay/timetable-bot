@@ -42,7 +42,7 @@ async def cmd_start(message: types.Message):
     markup.add("وسائط", "وسائط")
     markup.add("شبكات", "نظم")
 
-    await message.reply("اختر القسم", reply_markup=markup)
+    await message.reply("اختر الفرع", reply_markup=markup)
 
 
 @dp.message_handler(state=Form.branch)

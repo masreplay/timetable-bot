@@ -30,7 +30,7 @@ def schedule_html(periods: list[Period], days: list[Day], cards: Schedule):
         }}
 
         th {{
-            color: violet;
+            color: black;
         }}
 
         tr {{
