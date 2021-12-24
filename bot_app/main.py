@@ -22,9 +22,48 @@ bot = Bot(token=API_TOKEN)
 storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
 
-branches = ["امنية", "برمجيات", "وسائط", "ذكاء", "شبكات", "نظم"]
-stages = ["ثاني", "اول", "رابع", "ثالث"]
-shifts = ["صباحي", "مسائي"]
+# branches = ["امنية", "برمجيات", "وسائط", "ذكاء", "شبكات", "نظم"]
+# stages = ["ثاني", "اول", "رابع", "ثالث"]
+# shifts = ["صباحي", "مسائي"]
+
+branches = {
+    "امنية": {
+        "اول": ["صباحي", "مسائي"],
+        "ثاني": ["صباحي", "مسائي"],
+        "ثالث": ["صباحي", "مسائي"],
+        "رابع": ["صباحي", "مسائي"],
+    },
+    "برمجيات": {
+        "ثاني": ["صباحي", "مسائي"],
+        "اول": ["صباحي", "مسائي"],
+        "رابع": ["صباحي", "مسائي"],
+        "ثالث": ["صباحي", "مسائي"]
+    },
+    "وسائط": {
+        "ثاني": ["صباحي", "مسائي"],
+        "اول": ["صباحي", "مسائي"],
+        "رابع": ["صباحي", "مسائي"],
+        "ثالث": ["صباحي", "مسائي"]
+    },
+    "ذكاء": {
+        "ثاني": ["صباحي", "مسائي"],
+        "اول": ["صباحي", "مسائي"],
+        "رابع": ["صباحي", "مسائي"],
+        "ثالث": ["صباحي", "مسائي"]
+    },
+    "شبكات": {
+        "ثاني": ["صباحي", "مسائي"],
+        "اول": ["صباحي", "مسائي"],
+        "رابع": ["صباحي", "مسائي"],
+        "ثالث": ["صباحي", "مسائي"]
+    },
+    "نظم": {
+        "ثاني": ["صباحي", "مسائي"],
+        "اول": ["صباحي", "مسائي"],
+        "رابع": ["صباحي", "مسائي"],
+        "ثالث": ["صباحي", "مسائي"]
+    },
+}
 
 
 # States
@@ -43,9 +82,11 @@ async def cmd_schedule(message: types.Message):
     await Form.branch.set()
 
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, selective=True)
-    markup.add("امنية", "برمجيات")
-    markup.add("وسائط", "وسائط")
-    markup.add("شبكات", "نظم")
+
+    # return list of branches
+    items = list(branches.keys())
+    for i in range(0, len(items), 2):
+        markup.add(items[i], items[i + 1])
 
     await message.reply("اختر الفرع", reply_markup=markup)
 
@@ -61,6 +102,8 @@ async def cancel_handler(message: types.Message, state: FSMContext):
     if current_state is None:
         return
 
+    types.ReplyKeyboardRemove()
+
     logging.info('Cancelling state %r', current_state)
     # Cancel state and inform user about it
     await state.finish()
@@ -68,7 +111,7 @@ async def cancel_handler(message: types.Message, state: FSMContext):
     await message.reply('تم الالغاء', reply_markup=types.ReplyKeyboardRemove())
 
 
-@dp.message_handler(lambda message: message.text not in branches, state=Form.branch)
+@dp.message_handler(lambda message: message.text not in branches.keys(), state=Form.branch)
 async def process_branch_invalid(message: types.Message):
     return await message.reply("اختر من القائمة")
 
@@ -82,16 +125,25 @@ async def process_branch(message: types.Message, state: FSMContext):
         data['branch'] = message.text
 
     await Form.next()
+
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, selective=True)
-    markup.add("ثاني", "اول")
-    markup.add("رابع", "ثالث")
+
+    # Return list of stages remove stage witch doesn't have any shifts
+    unfiltered_stages = list(branches[data['branch']].items())
+    stages = [stage for stage, shifts in unfiltered_stages if len(shifts) > 0]
+
+    for i in range(0, len(stages), 2):
+        try:
+            markup.add(stages[i], stages[i + 1])
+        except IndexError:
+            markup.add(stages[i])
 
     await message.reply("اختر المرحلة", reply_markup=markup)
 
 
-@dp.message_handler(lambda message: message.text not in stages, state=Form.stage)
-async def process_stage_invalid(message: types.Message):
-    return await message.reply("اختر من القائمة")
+# @dp.message_handler(lambda message: message.text not in branches, state=Form.stage)
+# async def process_stage_invalid(message: types.Message):
+#     return await message.reply("اختر من القائمة")
 
 
 @dp.message_handler(state=Form.stage)
@@ -102,14 +154,21 @@ async def process_stage(message: types.Message, state: FSMContext):
     await Form.next()
 
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, selective=True)
-    markup.add("مسائي", "صباحي")
+
+    shifts = list(branches[data['branch']][data['stage']])
+
+    for i in range(0, len(shifts), 2):
+        try:
+            markup.add(shifts[i], shifts[i + 1])
+        except IndexError:
+            markup.add(shifts[i])
 
     await message.reply("اختر نوع الدراسة", reply_markup=markup)
 
 
-@dp.message_handler(lambda message: message.text not in shifts, state=Form.shift)
-async def process_shift_invalid(message: types.Message):
-    return await message.reply("اختر من القائمة")
+# @dp.message_handler(lambda message: message.text not in shifts, state=Form.shift)
+# async def process_shift_invalid(message: types.Message):
+#     return await message.reply("اختر من القائمة")
 
 
 @dp.message_handler(state=Form.shift)
@@ -139,6 +198,24 @@ async def process_shift(message: types.Message, state: FSMContext):
 
     # Finish conversation
     await state.finish()
+
+
+@dp.message_handler(commands='teachers')
+async def cmd_schedule(message: types.Message):
+    """
+    Conversation's entry point
+    """
+    # Set state
+    await Form.branch.set()
+
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, selective=True)
+
+    # return list of branches
+    items = list(branches.keys())
+    for i in range(0, len(items), 2):
+        markup.add(items[i], items[i + 1])
+
+    await message.reply("اختر الفرع", reply_markup=markup)
 
 
 if __name__ == '__main__':
