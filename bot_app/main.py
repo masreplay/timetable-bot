@@ -210,12 +210,7 @@ async def cmd_schedule(message: types.Message):
 
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, selective=True)
 
-    # return list of branches
-    items = list(branches.keys())
-    for i in range(0, len(items), 2):
-        markup.add(items[i], items[i + 1])
-
-    await message.reply("اختر الفرع", reply_markup=markup)
+    await message.reply("استاذة القسم؟", reply_markup=markup)
 
 
 if __name__ == '__main__':
