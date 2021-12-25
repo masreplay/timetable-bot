@@ -6,11 +6,12 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Text
 from aiogram.dispatcher.filters.state import State, StatesGroup
-from aiogram.types import ParseMode
+from aiogram.types import ParseMode, CallbackQuery
 from aiogram.utils import executor
 
 from asc_scrapper.main import get_schedule_image
 from config import get_settings
+from i18n import translate
 
 logging.basicConfig(level=logging.INFO)
 
@@ -73,11 +74,20 @@ class Form(StatesGroup):
     shift = State()  # Will be represented in storage as 'Form:gender'
 
 
+@dp.message_handler(commands='start')
+async def cmd_schedule(message: types.Message):
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, selective=True)
+
+    markup.add("مرحلة دراسية 🏬")
+    markup.add("استاذ 🧑‍🏫")
+    markup.add("مادة 📔")
+    await Form.next()
+    await message.reply("اختر نوع الجدول", reply_markup=markup)
+
+
+@dp.callback_query_handler(lambda c: c.data == 'creditss')
 @dp.message_handler(commands='schedule')
 async def cmd_schedule(message: types.Message):
-    """
-    Conversation's entry point
-    """
     # Set state
     await Form.branch.set()
 
@@ -202,15 +212,57 @@ async def process_shift(message: types.Message, state: FSMContext):
 
 @dp.message_handler(commands='teachers')
 async def cmd_schedule(message: types.Message):
-    """
-    Conversation's entry point
-    """
-    # Set state
-    await Form.branch.set()
-
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, selective=True)
 
     await message.reply("استاذة القسم؟", reply_markup=markup)
+
+
+@dp.message_handler(commands='about')
+async def cmd_about(message: types.Message):
+    buttons = types.InlineKeyboardMarkup(resize_keyboard=True, selective=True)
+
+    buttons.add(types.InlineKeyboardButton('منو سوة هذا الاختراع؟', callback_data='credits'))
+    buttons.add(types.InlineKeyboardButton('شنو الطريقة السوينا بيها؟', callback_data='technologies'))
+    buttons.add(types.InlineKeyboardButton('شلون يشتغل؟', callback_data='how_does_it_work'))
+
+    await bot.send_message(
+        chat_id=message.chat.id,
+        text=md.text(translate("ar", "about")),
+        reply_markup=buttons,
+        parse_mode=ParseMode.MARKDOWN,
+    )
+
+
+@dp.callback_query_handler(lambda c: c.data == 'credits')
+async def process_credits(call: CallbackQuery):
+    await bot.answer_callback_query(call.id)
+    await bot.edit_message_text(
+        text=md.text(translate("ar", "credits")),
+        message_id=call.message.message_id,
+        chat_id=call.message.chat.id,
+    )
+
+
+@dp.callback_query_handler(lambda c: c.data == 'technologies')
+async def process_technologies(call: CallbackQuery):
+    await bot.answer_callback_query(call.id)
+    await bot.edit_message_text(
+        text=md.text(translate("ar", "technologies")),
+        message_id=call.message.message_id,
+        chat_id=call.message.chat.id,
+        parse_mode=ParseMode.MARKDOWN,
+    )
+
+
+@dp.callback_query_handler(lambda c: c.data == 'how_does_it_work')
+async def process_credits(call: CallbackQuery):
+    await bot.answer_callback_query(call.id)
+    await bot.edit_message_text(
+        text=md.text(translate("ar", "how_does_it_work")),
+        message_id=call.message.message_id,
+        chat_id=call.message.chat.id,
+        parse_mode=ParseMode.MARKDOWN,
+    )
 
 
 if __name__ == '__main__':
