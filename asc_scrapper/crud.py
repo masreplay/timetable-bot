@@ -1,4 +1,4 @@
-from asc_scrapper import db
+from data import db
 from asc_scrapper.schemas import *
 
 
