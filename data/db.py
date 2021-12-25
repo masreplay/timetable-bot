@@ -4,7 +4,7 @@ from functools import lru_cache
 from asc_scrapper.extract_asc_schedule import load_data
 from asc_scrapper.schemas import *
 
-dir_name = os.path.dirname(os.path.abspath('cards.json'))
+dir_name = os.path.dirname(os.path.abspath('cards.json') + "/")
 
 
 @lru_cache()
