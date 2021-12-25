@@ -1,4 +1,4 @@
-from crud import *
+from asc_scrapper.crud import *
 
 
 def classroom_schedule(classroom_id: str):
