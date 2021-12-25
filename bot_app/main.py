@@ -3,29 +3,24 @@ import logging
 import aiogram.utils.markdown as md
 from aiogram import Bot, Dispatcher, types
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
+from aiogram.contrib.middlewares.logging import LoggingMiddleware
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Text
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.types import ParseMode, CallbackQuery
-from aiogram.utils import executor
+from aiogram.utils.executor import start_webhook
 
 from asc_scrapper.main import get_schedule_image
-from config import get_settings
+from config import *
 from i18n import translate
 
 logging.basicConfig(level=logging.INFO)
 
-API_TOKEN = get_settings().telegram_bot_api_token
+bot = Bot(token=get_settings().telegram_bot_api_token)
 
-bot = Bot(token=API_TOKEN)
-
-# For example use simple MemoryStorage for Dispatcher.
 storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
-
-# branches = ["امنية", "برمجيات", "وسائط", "ذكاء", "شبكات", "نظم"]
-# stages = ["ثاني", "اول", "رابع", "ثالث"]
-# shifts = ["صباحي", "مسائي"]
+dp.middleware.setup(LoggingMiddleware())
 
 branches = {
     "امنية": {
@@ -151,11 +146,6 @@ async def process_branch(message: types.Message, state: FSMContext):
     await message.reply("اختر المرحلة", reply_markup=markup)
 
 
-# @dp.message_handler(lambda message: message.text not in branches, state=Form.stage)
-# async def process_stage_invalid(message: types.Message):
-#     return await message.reply("اختر من القائمة")
-
-
 @dp.message_handler(state=Form.stage)
 async def process_stage(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
@@ -265,5 +255,23 @@ async def process_credits(call: CallbackQuery):
     )
 
 
-if __name__ == '__main__':
-    executor.start_polling(dp, skip_updates=False)
+async def on_startup(_):
+    logging.warning(
+        'Starting connection. ')
+    await bot.set_webhook(WEBHOOK_URL, drop_pending_updates=True)
+
+
+async def on_shutdown(_):
+    logging.warning('Bye! Shutting down webhook connection')
+
+
+def main():
+    logging.basicConfig(level=logging.INFO)
+    start_webhook(
+        dispatcher=dp,
+        webhook_path=WEBHOOK_PATH,
+        skip_updates=True,
+        on_startup=on_startup,
+        host=WEBAPP_HOST,
+        port=WEBAPP_PORT,
+    )

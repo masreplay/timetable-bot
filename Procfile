@@ -1,2 +1,3 @@
-web: python bot_app/main.py
+web: ado start
+
 
