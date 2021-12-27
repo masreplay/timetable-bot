@@ -1,2 +1,2 @@
-# csuot-bot
-scrap the data from web pages
+# University of technology Computer Science Department App
+scrape data from aSc TimeTables
