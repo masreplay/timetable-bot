@@ -1,13 +1,14 @@
 import json
 import uuid
-from typing import List, Dict
+from typing import List
 
 import requests
 import urllib3
 from bs4 import BeautifulSoup as BSHTML
 
-from asc_scrapper.const import *
+from config import get_settings
 from scrappers.email_extract import get_emails
+from scrappers.schemas import UotTeacher, UotTeachers, UotRole, UotRoles
 
 
 def main():
@@ -15,7 +16,7 @@ def main():
 
 
 def translate_list(untranslated: List[str], source: str = "en", target: str = "ar") -> List[str]:
-    translations = requests.get(translation_key, params={
+    translations = requests.get(get_settings().translation_key, params={
         "q": untranslated,
         "source": source,
         "target": target,
@@ -38,7 +39,7 @@ def extract_department_teachers(department_abbr: str):
     print("Getting teachers urls, image and en_name...")
     names = []
     teachers_urls = []
-    teachers = []
+    teachers: UotTeachers = []
 
     for link in soup.findAll('a'):
         href = link['href']
@@ -53,16 +54,16 @@ def extract_department_teachers(department_abbr: str):
                 teachers_urls.append(teacher_url)
                 names.append(teacher_name)
 
-                teacher = {
-                    "id": uuid.uuid4().__str__(),
-                    "ar_name": "",
-                    "en_name": teacher_name,
-                    "image": _base_department_url + image["src"],
-                    "stage_id": [""],
-                    "email": "",
-                    "uot_url": teacher_url,
-                    "role_id": ""
-                }
+                teacher: UotTeacher = UotTeacher(
+                    id=uuid.uuid4().__str__(),
+                    ar_name=None,
+                    en_name=teacher_name,
+                    image=_base_department_url + image["src"],
+                    stages_id=[],
+                    email=None,
+                    uot_url=teacher_url,
+                    role_id=None
+                )
                 teachers.append(teacher)
 
     # translate en_name to ar_name
@@ -72,12 +73,12 @@ def extract_department_teachers(department_abbr: str):
 
     for (i, teacher) in enumerate(teachers):
         ar_name = t_name[i]
-        teachers[i]["ar_name"] = ar_name
+        teachers[i] = ar_name
 
     # Get teacher role
     print("Getting teacher role...")
     roles = []
-    roles_objects: List[Dict[str, str]] = []
+    roles_objects: UotRoles = []
     for (i, link) in enumerate(teachers_urls):
 
         response = http.request('GET', link)
@@ -94,30 +95,30 @@ def extract_department_teachers(department_abbr: str):
         if role not in roles:
             role_id = uuid.uuid4().__str__()
             roles_objects.append(
-                {
-                    "id": role_id,
-                    "en_name": role
-                }
+                UotRole(
+                    id=role_id,
+                    en_name=role
+                )
             )
             roles.append(role)
             print(role)
         else:
             # get the id of the role if it's in roles
-            role_id = [value for value in roles_objects if value["en_name"] == role][0]["id"]
+            role_id = [value for value in roles_objects if value.en_name == role][0].id
             print(f"Copy {role}")
-        teachers[i]["role_id"] = role_id
+        teachers[i].role_id = role_id
 
     print("Translating roles...")
     translation = translate_list(roles)
     for (i, ar_name) in enumerate(translation):
-        roles_objects[i]["ar_name"] = ar_name
-        roles_objects[i]["en_name"] = roles[i]
+        roles_objects[i].ar_name = ar_name
+        roles_objects[i].en_name = roles[i]
 
     # extract teacher email by his url
     print("Extracting emails...")
     teachers_emails = get_emails(teachers_urls)
     for (i, email) in enumerate(teachers_emails):
-        teachers[i]["email"] = email
+        teachers[i].email = email
 
     # write roles json
     print("Writing roles json...")

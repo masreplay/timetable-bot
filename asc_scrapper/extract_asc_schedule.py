@@ -5,9 +5,9 @@ from typing import Type, List
 from pydantic import parse_obj_as
 
 
-def load_data(file_name: str, data_type: Type):
+def load_data(file_name: str, data_type: Type, data_rows: str = "data_rows"):
     with open(file_name, 'r', encoding="utf-8") as file:
-        return parse_obj_as(List[data_type], json.load(file)["data_rows"])
+        return parse_obj_as(List[data_type], json.load(file)[data_rows])
 
 
 def main():

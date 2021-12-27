@@ -5,7 +5,6 @@ from asc_scrapper.extract_asc_schedule import load_data
 from asc_scrapper.schemas import *
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-STATIC_ROOT = 'staticfiles'
 
 
 @lru_cache()

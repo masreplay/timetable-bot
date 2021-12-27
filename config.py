@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     telegram_bot_api_token: str
     heroku_app_name: str
     port: int
+    translation_key: str
 
     class Config:
         env_file = ".env"

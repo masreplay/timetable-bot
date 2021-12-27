@@ -1,0 +1,124 @@
+{
+  "results": [
+    {
+      "id": "15f04b20-77cf-4870-b5f8-47fd92577a7e",
+      "en_name": "Assistant Lecturer",
+      "ar_name": "مدرس مساعد"
+    },
+    {
+      "id": "fc803e32-30f3-477c-b18e-a45ba90921f0",
+      "en_name": "Professor",
+      "ar_name": "أستاذ"
+    },
+    {
+      "id": "2e104deb-042e-426d-ad78-a557c73f45d2",
+      "en_name": "Assistant Professor",
+      "ar_name": "استاذ مساعد"
+    },
+    {
+      "id": "bc5905fd-bac1-4b55-a3bc-69310ead5b4b",
+      "en_name": "Doctor Lecture",
+      "ar_name": "محاضرة دكتور"
+    },
+    {
+      "id": "3550f30d-c123-4cc6-b485-60337b0c3405",
+      "en_name": "Lecturer-Assist Prof",
+      "ar_name": "محاضر - أ.د."
+    },
+    {
+      "id": "99b2d540-93cb-4c8f-9643-f0675ddd42a8",
+      "en_name": "Assist.Prof.Dr.",
+      "ar_name": "مساعد الأستاذ د."
+    },
+    {
+      "id": "0a569347-a282-4935-abe1-370922a83c5c",
+      "en_name": "Assistant Professor Dr.",
+      "ar_name": "استاذ مساعد د."
+    },
+    {
+      "id": "3b1ff145-0a0c-4850-99f3-74d199bd9c1c",
+      "en_name": "Professor Lecturer",
+      "ar_name": "أستاذ محاضر"
+    },
+    {
+      "id": "dc4bca73-83e2-49eb-b31f-4135e6ef1017",
+      "en_name": "Lecturer",
+      "ar_name": "محاضر"
+    },
+    {
+      "id": "1b6c6c2a-60f9-46dd-bd47-5361890c373b",
+      "en_name": "Professor Doctor",
+      "ar_name": "أستاذ دكتور"
+    },
+    {
+      "id": "e4389c65-ec50-4d8f-9887-b0f567e2b6bf",
+      "en_name": "#",
+      "ar_name": "#"
+    },
+    {
+      "id": "69001ee8-3b2c-4651-a4a2-74aa0406419f",
+      "en_name": "Assit. Proph Dr.",
+      "ar_name": "Assit. النبي د."
+    },
+    {
+      "id": "95342015-e5b2-4342-ab52-f05ba1e37c03",
+      "en_name": "Assistants Professor",
+      "ar_name": "مساعد أستاذ"
+    },
+    {
+      "id": "c276305f-bb79-4776-b558-0ce0b73b1c09",
+      "en_name": "Dr. Lecture",
+      "ar_name": "محاضرة دكتور"
+    },
+    {
+      "id": "15061a08-4977-49dd-8fec-6fb42fd1ea36",
+      "en_name": "Professor Dr.",
+      "ar_name": "الأستاذ د."
+    },
+    {
+      "id": "cc02d64e-a169-42c8-8c0e-6faac149799a",
+      "en_name": "Dr. Lecturer",
+      "ar_name": "محاضر د"
+    },
+    {
+      "id": "18562cbf-bb8c-4f19-8187-20c4b10f9b4a",
+      "en_name": "Lecturer. Doctor",
+      "ar_name": "محاضر. طبيبة"
+    },
+    {
+      "id": "c0423611-131a-4738-a706-870c8adfdd24",
+      "en_name": "M.Sc. Lecturer",
+      "ar_name": "ماجستير محاضر"
+    },
+    {
+      "id": "d3b3fd07-d19a-4307-97cd-1ddedd7b136b",
+      "en_name": "Assistant Lecture",
+      "ar_name": "محاضرة مساعد"
+    },
+    {
+      "id": "db605683-71e9-4a5a-88cb-f4954d6ac8ef",
+      "en_name": "Lecture",
+      "ar_name": "محاضرة"
+    },
+    {
+      "id": "d9ad2334-0937-4dd8-a969-6f3853949248",
+      "en_name": "Assist. Prof. Dr.",
+      "ar_name": "مساعدة. أ.د."
+    },
+    {
+      "id": "a492f6fe-5c14-4b01-9055-5173914a0be7",
+      "en_name": "Assistance Lecture",
+      "ar_name": "محاضرة مساعدة"
+    },
+    {
+      "id": "708cb12a-b96e-49ff-af0f-2d485cb0ecca",
+      "en_name": "Asst. Prof. Doctor",
+      "ar_name": "مساعد. استاذ دكتور"
+    },
+    {
+      "id": "81c04be9-b2af-4c1a-bd9c-9a48882330a9",
+      "en_name": "Lecturer Docter",
+      "ar_name": "محاضر دكتور"
+    }
+  ]
+}
