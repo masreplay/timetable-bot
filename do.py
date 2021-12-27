@@ -1,5 +1,3 @@
-''' Run a function by ado <func_name> '''
-
 from config import *
 
 
