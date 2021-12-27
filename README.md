@@ -5,6 +5,8 @@
 ___
 **Unofficial Telegram bot for LMS**
 
+**Bot id:** [@csuotbot](https://t.me/csuotbot)
+
 If you ar Teacher, Administrator or Supervisor in department of Computer Science please contact me to make it official
 💙
 
@@ -12,8 +14,10 @@ If you ar Teacher, Administrator or Supervisor in department of Computer Science
 
 * Timetables 📅
     * Teachers 👩‍🏫
-    * Classrooms 🎒
-    * Classes
+    * Classrooms 🏫
+    * Classes 🎓
+    * Lesson 📖
+
 * More coming soon...
 
 ## Stack
@@ -21,6 +25,12 @@ If you ar Teacher, Administrator or Supervisor in department of Computer Science
 Coming soon...
 
 <img src="readme/stack.png">
+
+## HTML to Image
+
+Coming soon...
+
+## aSc TimeTable scrape
 
 Data Scraping from [*aSc TimeTables software*](https://asctimetables.com/)
 and [aSc edupage website](edupage.org/timetable)
