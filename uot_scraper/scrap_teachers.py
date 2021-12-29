@@ -7,8 +7,8 @@ import urllib3
 from bs4 import BeautifulSoup as BSHTML
 
 from config import get_settings
-from scrappers.email_extract import get_emails
-from scrappers.schemas import UotTeacher, UotTeachers, UotRole, UotRoles
+from uot_scraper.email_extract import get_emails
+from uot_scraper.schemas import UotTeacher, UotTeachers, UotRole, UotRoles
 
 
 def main():
@@ -20,7 +20,7 @@ def translate_list(untranslated: List[str], source: str = "en", target: str = "a
         "q": untranslated,
         "source": source,
         "target": target,
-    }).json()["data"]["translations"]
+    }).json()["asc_data"]["translations"]
     return [t["translatedText"] for t in translations]
 
 
@@ -85,10 +85,10 @@ def extract_department_teachers(department_abbr: str):
         soup = BSHTML(response.data, "html.parser")
         if len(soup.findAll("span", {"style": "font-size: 12pt; color: #000000;"})) != 0:
             role_tag = soup.findAll("span", {"style": "font-size: 12pt; color: #000000;"})
-            role_tag = role_tag[-1].text.title().rstrip()
+            role_tag = role_tag[-1].msg.title().rstrip()
         else:
             role_tag = soup.findAll("span", {"style": "font-size: 12pt;color: #000000;"})
-            role_tag = role_tag[-1].text.title().rstrip()
+            role_tag = role_tag[-1].msg.title().rstrip()
 
         role = role_tag if len(role_tag) < 25 else "#"
         role_id: str

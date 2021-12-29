@@ -116,7 +116,7 @@ async def cancel_handler(message: types.Message, state: FSMContext):
     await message.reply('تم الالغاء', reply_markup=types.ReplyKeyboardRemove())
 
 
-@dp.message_handler(lambda message: message.text not in branches.keys(), state=Form.branch)
+@dp.message_handler(lambda message: message.msg not in branches.keys(), state=Form.branch)
 async def process_branch_invalid(message: types.Message):
     return await message.reply("اختر من القائمة")
 

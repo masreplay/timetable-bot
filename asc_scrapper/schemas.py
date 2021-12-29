@@ -1,6 +1,6 @@
 from typing import List, Any, Dict, Optional, Type
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class Card(BaseModel):
@@ -82,6 +82,29 @@ class Teacher(BaseModel):
     fontcolorprint2: str
     fontcolorscreen: str
     timeoff: List[List[List[str]]]
+
+    @property
+    def get_name(self) -> Optional[str]:
+        name = self.short.split(".")
+        # remove where د.م.
+        name = name[-1]
+        if len(name) not in [0, 1]:
+            # remove where د م ا or empty spaces
+            separated_name = name.split(" ")
+            for part in separated_name:
+                if len(part) in [0, 1]:
+                    separated_name.remove(part)
+            return " ".join(separated_name)
+
+    @property
+    def first_name(self):
+        if self.get_name:
+            return self.get_name.split()[0]
+
+    @property
+    def second_name(self):
+        if self.get_name:
+            return self.get_name.split()[1]
 
 
 class Class(BaseModel):

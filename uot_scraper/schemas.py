@@ -25,6 +25,14 @@ class UotTeacher(BaseModel):
     uot_url: str
     role_id: Optional[str]
 
+    @property
+    def first_name(self):
+        return self.ar_name.split()[0]
+
+    @property
+    def second_name(self):
+        return self.ar_name.split()[1]
+
 
 class UotRole(BaseModel):
     id: str
