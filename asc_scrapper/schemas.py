@@ -3,7 +3,7 @@ from typing import List, Any, Dict, Optional, Type
 from pydantic import BaseModel, Field
 
 
-class Card(BaseModel):
+class AscCard(BaseModel):
     id: str
     lessonid: str
     period: str
@@ -12,10 +12,10 @@ class Card(BaseModel):
     classroomids: List[str]
 
 
-Schedule: Type = list[Card]
+Schedule: Type = list[AscCard]
 
 
-class Day(BaseModel):
+class AscDay(BaseModel):
     id: str
     name: str
     short: str
@@ -24,7 +24,7 @@ class Day(BaseModel):
     val: Optional[int]
 
 
-class Subject(BaseModel):
+class AscSubject(BaseModel):
     id: str
     name: str
     short: str
@@ -34,7 +34,7 @@ class Subject(BaseModel):
     contract_weight: int
 
 
-class Lesson(BaseModel):
+class AscLesson(BaseModel):
     id: str
     subjectid: str
     teacherids: List[str]
@@ -53,7 +53,7 @@ class Lesson(BaseModel):
     groupnames: List[str]
 
 
-class Period(BaseModel):
+class AscPeriod(BaseModel):
     id: str
     period: str
     name: str
@@ -72,7 +72,7 @@ class Period(BaseModel):
         return f"{self.starttime} - {self.endtime}"
 
 
-class Teacher(BaseModel):
+class AscTeacher(BaseModel):
     id: str
     short: str
     gender: str
@@ -107,7 +107,7 @@ class Teacher(BaseModel):
             return self.get_name.split()[1]
 
 
-class Class(BaseModel):
+class AscClass(BaseModel):
     id: str
     name: str
     short: str
@@ -120,7 +120,7 @@ class Class(BaseModel):
     classroomid: str
 
 
-class Classroom(BaseModel):
+class AscClassroom(BaseModel):
     id: str
     name: str
     short: str

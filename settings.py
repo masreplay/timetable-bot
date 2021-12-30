@@ -10,6 +10,7 @@ class Settings(BaseSettings):
     html_to_image_service: str
     telegram_bot_api_token: str
     heroku_app_name: str
+    database_url: str
     port: int
     translation_key: str
 

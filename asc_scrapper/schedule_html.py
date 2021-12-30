@@ -5,10 +5,10 @@ import requests
 from asc_scrapper.crud import *
 from asc_scrapper.schemas import *
 from asc_scrapper.view import teacher_schedule
-from config import get_settings
+from settings import get_settings
 
 
-def schedule_html(periods: list[Period], days: list[Day], cards: Schedule):
+def schedule_html(periods: list[AscPeriod], days: list[AscDay], cards: Schedule):
     col_width = 100 / (len(periods) + 1)
     row_height = 100 / (len(days) + 1)
     style = f"""<style>

@@ -2,7 +2,7 @@ import os
 
 from sqlmodel import create_engine, SQLModel, Session
 
-from config import get_settings, Settings
+from settings import get_settings, Settings
 
 settings: Settings = get_settings()
 

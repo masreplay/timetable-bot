@@ -1,13 +1,14 @@
 import logging
+import time
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.logger import logger
 from starlette.middleware.cors import CORSMiddleware
 
 from app.routers import users
 
 app = FastAPI(
-    title="Installmensts App",
+    title="CS UOT App",
     version="1",
 )
 
@@ -16,9 +17,17 @@ app.include_router(users.router)
 origins = [
     "http://localhost",
     "http://localhost:8080",
-    "http://localhost:52120",
-    "https://installment-web.herokuapp.com/"
 ]
+
+
+@app.middleware("http")
+async def add_process_time_header(request: Request, call_next):
+    start_time = time.time()
+    response = await call_next(request)
+    process_time = time.time() - start_time
+    response.headers["X-Process-Time"] = str(process_time)
+    return response
+
 
 app.add_middleware(
     CORSMiddleware,
