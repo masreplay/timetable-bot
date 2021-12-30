@@ -1,6 +1,7 @@
 from typing import Any, List, Optional
+from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Cookie, Header
 from sqlmodel import Session
 
 from app import schemas, crud
@@ -15,11 +16,13 @@ def read_teachers(
         skip: int = 0,
         limit: int = 100,
         query: Optional[str] = None,
+        role_id: Optional[UUID] = None,
+
 ) -> Any:
     """
     Retrieve teachers.
     """
-    teachers = crud.teacher.get_filter(db, skip=skip, limit=limit, query=query)
+    teachers = crud.teacher.get_filter(db, skip=skip, limit=limit, query=query,role_id=role_id)
     return teachers
 
 

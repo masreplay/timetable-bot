@@ -1,14 +1,19 @@
+from typing import Optional
+
+from pydantic import Field
 from sqlmodel import SQLModel
 
 from app.schemas.base_model import BaseSchema
+from app.utils.utils import Permission
 
 
 class RoleBase(SQLModel):
-    name: str
+    ar_name: str
+    en_name: str
 
 
 class Role(BaseSchema, RoleBase, table=True):
-    pass
+    permission: Optional[str] = Field(None)
 
 
 class RoleCreate(RoleBase):

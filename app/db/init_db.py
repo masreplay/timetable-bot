@@ -1,23 +1,42 @@
-from sqlalchemy.orm import Session
+from uuid import UUID
+
+from sqlmodel import Session, select
 
 from app import crud, schemas
-from app.db import base  # noqa: F401
+from app.schemas import Role
 from core.config import get_settings
+
+# Seed data base
+from uot_scraper.db import get_teachers, get_roles
 
 settings = get_settings()
 
 
 def init_db(db: Session) -> None:
-    # Tables should be created with Alembic migrations
-    # But if you don't want to use migrations, create
-    # the tables un-commenting the next line
-    # Base.metadata.create_all(bind=engine)
+    teachers = crud.teacher.get_multi(db=db, limit=1000)
+    for teacher in teachers:
+        db.delete(teacher)
 
-    user = crud.teacher.get_by_email(db, email=settings.FIRST_SUPERUSER)
-    if not user:
-        user_in = schemas.UserCreate(
-            email=settings.FIRST_SUPERUSER,
-            password=settings.FIRST_SUPERUSER_PASSWORD,
-            is_superuser=True,
+    roles = crud.role.get_multi(db=db, limit=1000)
+    for role in roles:
+        db.delete(role)
+
+    db.commit()
+    roles = get_roles()
+    for role in roles:
+        role_in = schemas.Role(
+            id=role.id,
+            ar_name=role.ar_name,
+            en_name=role.en_name
         )
-        user = crud.teacher.create(db, obj_in=user_in)  # noqa: F841
+        db.add(role_in)
+        db.commit()
+
+    teachers = get_teachers()
+    for teacher in teachers:
+        teacher_in = schemas.TeacherCreate(
+            en_name=teacher.en_name,
+            ar_name=teacher.ar_name,
+            role_id=UUID(teacher.role_id),
+        )
+        crud.teacher.create(db, obj_in=teacher_in)

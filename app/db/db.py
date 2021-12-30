@@ -1,5 +1,4 @@
-import os
-
+from sqlalchemy.orm import sessionmaker
 from sqlmodel import create_engine, SQLModel, Session
 
 from core.config import get_settings, Settings

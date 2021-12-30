@@ -6,6 +6,7 @@ from fastapi.logger import logger
 from starlette.middleware.cors import CORSMiddleware
 
 from app.api.api_v1 import api
+from app.open_api_to_files.main import get_models_zip
 from core.config import get_settings
 
 settings = get_settings()
@@ -32,12 +33,13 @@ async def add_process_time_header(request: Request, call_next):
     return response
 
 
-# CORS
-origins = [
-    "http://localhost",
-    "http://localhost:8080",
-]
+# Models to files
+@app.get(f"{settings.API_V1_STR}/models", tags=["models"])
+def get_all_models():
+    return get_models_zip(app.routes)
 
+
+# CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[str(origin) for origin in settings.BACKEND_CORS_ORIGINS],
