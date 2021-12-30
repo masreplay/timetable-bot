@@ -5,7 +5,7 @@ import requests
 from asc_scrapper.crud import *
 from asc_scrapper.schemas import *
 from asc_scrapper.view import teacher_schedule
-from settings import get_settings
+from core.config import get_settings
 
 
 def schedule_html(periods: list[AscPeriod], days: list[AscDay], cards: Schedule):

@@ -5,21 +5,24 @@ from fastapi import FastAPI, Request
 from fastapi.logger import logger
 from starlette.middleware.cors import CORSMiddleware
 
-from app.routers import users
+from app.api.api_v1 import api
+from core.config import get_settings
+
+settings = get_settings()
 
 app = FastAPI(
     title="CS UOT App",
     version="1",
+    openapi_url=f"{settings.API_V1_STR}/openapi.json",
+    docs_url=f"{settings.API_V1_STR}/docs",
+    redoc_url=f"{settings.API_V1_STR}/redoc",
 )
 
-app.include_router(users.router)
-
-origins = [
-    "http://localhost",
-    "http://localhost:8080",
-]
+# Routers
+app.include_router(api.api_router, prefix=settings.API_V1_STR)
 
 
+# Process time
 @app.middleware("http")
 async def add_process_time_header(request: Request, call_next):
     start_time = time.time()
@@ -29,14 +32,21 @@ async def add_process_time_header(request: Request, call_next):
     return response
 
 
+# CORS
+origins = [
+    "http://localhost",
+    "http://localhost:8080",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[str(origin) for origin in settings.BACKEND_CORS_ORIGINS],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
+# Logging
 gunicorn_error_logger = logging.getLogger("gunicorn.error")
 gunicorn_logger = logging.getLogger("gunicorn")
 

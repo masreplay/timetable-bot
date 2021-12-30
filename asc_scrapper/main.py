@@ -3,7 +3,7 @@ import requests
 from asc_scrapper.crud import get_schedule_by_class_name, get_periods, get_days
 from asc_scrapper.schedule_html import schedule_html
 from asc_scrapper.schemas import Schedule
-from settings import get_settings
+from core.config import get_settings
 
 
 def get_schedule_image(name: str, test: bool = True):

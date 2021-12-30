@@ -4,8 +4,7 @@ from alembic import context
 from sqlalchemy import create_engine
 from sqlmodel import SQLModel
 
-from app.db import DATABASE_URL
-from app.schemas.teacher import (Teacher)
+from app.db.db import DATABASE_URL
 
 config = context.config
 

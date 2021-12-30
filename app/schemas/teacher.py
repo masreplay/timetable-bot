@@ -1,16 +1,19 @@
-from datetime import datetime
-from typing import Optional
+from sqlmodel import SQLModel
 
-from sqlmodel import SQLModel, Field
+from app.schemas.base_model import BaseSchema
 
 
-class Teacher(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
-    # TODO Fix default None
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-    deleted_at: Optional[datetime] = Field(default=None)
+class TeacherBase(SQLModel):
     name: str
 
 
-class TeacherCreate(SQLModel):
-    name: str
+class Teacher(BaseSchema, TeacherBase, table=True):
+    pass
+
+
+class TeacherCreate(TeacherBase):
+    pass
+
+
+class TeacherUpdate(TeacherBase):
+    pass

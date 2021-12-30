@@ -6,7 +6,7 @@ import requests
 import urllib3
 from bs4 import BeautifulSoup as BSHTML
 
-from settings import get_settings
+from core.config import get_settings
 from uot_scraper.email_extract import get_emails
 from uot_scraper.schemas import UotTeacher, UotTeachers, UotRole, UotRoles
 

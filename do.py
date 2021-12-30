@@ -1,4 +1,4 @@
-from settings import *
+from core.config import *
 
 
 def set_hook():
