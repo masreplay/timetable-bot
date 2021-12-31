@@ -1,6 +1,7 @@
 from typing import List, Any, Dict, Optional, Type
 
 from pydantic import BaseModel, Field
+from pydantic.color import Color
 
 
 class AscCard(BaseModel):
@@ -77,7 +78,7 @@ class AscTeacher(BaseModel):
     short: str
     gender: str
     bell: str
-    color: str
+    color: Color
     fontcolorprint: str
     fontcolorprint2: str
     fontcolorscreen: str

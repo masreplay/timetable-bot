@@ -1,4 +1,5 @@
 venv
 .env
 asc_scrapper/generated_data
+**/[Tt]est*
 

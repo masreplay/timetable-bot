@@ -1,11 +1,14 @@
 import shutil
+from random import randint
 
 import requests
 
 from asc_scrapper.crud import *
 from asc_scrapper.schemas import *
 from asc_scrapper.view import teacher_schedule
+from core.colors.all import decide_text_color, primaries, random_primary
 from core.config import get_settings
+import colorsys
 
 
 def schedule_html(periods: list[AscPeriod], days: list[AscDay], cards: Schedule):
@@ -101,13 +104,18 @@ def generate_tab(days: list[AscDay], periods: list[AscPeriod], cards: Schedule):
         for period in periods:
             card = get_card(day=_day, period=period.period, cards=cards)
             if card:
+                # color = get_teacher_by_lesson_id(card.lessonid).color
+                color = random_primary()
+
+                font_color = decide_text_color(color)
+                print(f"{color} ,{font_color}")
                 row.append(
                     f'<td '
-                    f'style="background-color: {get_teacher_by_lesson_id(card.lessonid).color}">'
+                    f'style="background-color: {color}; color: {font_color}">'
                     f'{card_into_table(card)}</td>'
                 )
             else:
-                row.append(f"<td><br></td>")
+                row.append(f"<td></td>")
         card_tags += f"<tr><td>{day.short}</td>{''.join(row)}</tr>"
         row.clear()
 

@@ -12,15 +12,15 @@ def get_schedule_image(name: str, test: bool = True):
 
     data = schedule_html(periods=get_periods(), days=get_days(), cards=schedule)
 
-    response = requests.get(url, data={"html": data}, stream=True)
-    url = response.json()["url"]
-    img_data = requests.get(url).content
-
+    # response = requests.get(url, data={"html": data}, stream=True)
+    # url = response.json()["url"]
+    # img_data = requests.get(url).content
+    # with open(f'generated_data/{name}table.png', 'wb') as handler:
+    #     handler.write(img_data)
     if test:
         with open("generated_data/table.g.html", "w", encoding="utf-8") as file:
             file.write(data)
-        with open(f'generated_data/{name}table.png', 'wb') as handler:
-            handler.write(img_data)
+
     return url
 
 
