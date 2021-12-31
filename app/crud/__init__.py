@@ -1,4 +1,4 @@
-from .crud_teacher import teacher
+from .crud_user import user
 
 from app.schemas.role import RoleCreate, RoleUpdate, Role
 from .base import CRUDBase
