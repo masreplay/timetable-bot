@@ -1,28 +1,28 @@
-from typing import Any, List, Optional
+from typing import Any, Optional
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, Cookie, Header
+from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session
 
 from app import schemas, crud
+from app.schemas.paging import LimitSkipParams, Paging
 from app.db.db import get_db
+from app.schemas import Teacher
 
 router = APIRouter()
 
 
-@router.get("/", response_model=List[schemas.Teacher])
+@router.get("/", response_model=Paging[schemas.Teacher])
 def read_teachers(
         db: Session = Depends(get_db),
-        skip: int = 0,
-        limit: int = 100,
+        paging: LimitSkipParams = Depends(),
         query: Optional[str] = None,
         role_id: Optional[UUID] = None,
-
 ) -> Any:
     """
     Retrieve teachers.
     """
-    teachers = crud.teacher.get_filter(db, skip=skip, limit=limit, query=query,role_id=role_id)
+    teachers = crud.teacher.get_filter(db, skip=paging.skip, limit=paging.limit, query=query, role_id=role_id)
     return teachers
 
 
@@ -95,8 +95,8 @@ def delete_teachers(
     """
     Delete all a teachers.
     """
-    teachers = crud.teacher.get_multi(db=db)
-    for teacher in teachers:
+    teachers: Paging[Teacher] = crud.teacher.get_multi(db=db)
+    for teacher in teachers.results:
         db.delete(teacher)
 
     db.commit()

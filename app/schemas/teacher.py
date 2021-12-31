@@ -2,6 +2,7 @@ from uuid import UUID
 from enum import Enum
 from typing import Optional
 
+from pydantic import AnyHttpUrl
 from sqlmodel import SQLModel, Field
 
 from app.schemas.base_model import BaseSchema

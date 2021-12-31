@@ -1,24 +1,24 @@
-from typing import Any, List
+from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session
 
 from app import schemas, crud
 from app.db.db import get_db
+from app.schemas.paging import *
 
 router = APIRouter()
 
 
-@router.get("/", response_model=List[schemas.Role])
+@router.get("/", response_model=Paging[schemas.Role])
 def read_roles(
         db: Session = Depends(get_db),
-        skip: int = 0,
-        limit: int = 100,
+        paging: LimitSkipParams = Depends(),
 ) -> Any:
     """
     Retrieve roles.
     """
-    roles = crud.role.get_multi(db, skip=skip, limit=limit)
+    roles = crud.role.get_multi(db, skip=paging.skip, limit=paging.limit)
     return roles
 
 
@@ -93,8 +93,8 @@ def delete_roles(
     """
     Delete all a roles.
     """
-    roles = crud.role.get_multi(db=db)
-    for role in roles:
+    roles = crud.role.get_multi(db=db, skip=0, limit=100000)
+    for role in roles.results:
         db.delete(role)
 
     db.commit()

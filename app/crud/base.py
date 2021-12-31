@@ -1,9 +1,12 @@
 from dataclasses import dataclass
-from typing import Any, Dict, Generic, List, Optional, Type, TypeVar, Union
+from typing import Any, Dict, Generic, Optional, Type, TypeVar, Union
 
 from fastapi.encoders import jsonable_encoder
 from sqlmodel import SQLModel, select, Session
 from sqlmodel import and_
+
+from app.schemas import Role
+from app.schemas.paging import Paging
 
 ModelType = TypeVar("ModelType", bound=SQLModel)
 CreateSchemaType = TypeVar("CreateSchemaType", bound=SQLModel)
@@ -20,9 +23,12 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
 
     def get_multi(
             self, db: Session, *, skip: int = 0, limit: int = 100
-    ) -> List[ModelType]:
+    ) -> Paging[ModelType]:
         statement = select(self.model).where(self.model.deleted_at is not None).offset(skip).limit(limit)
-        return db.exec(statement).all()
+        return Paging[ModelType](
+            count=db.query(self.model).count(),
+            results=db.exec(statement).all()
+        )
 
     def create(self, db: Session, *, obj_in: CreateSchemaType) -> ModelType:
         obj_in_data = jsonable_encoder(obj_in)

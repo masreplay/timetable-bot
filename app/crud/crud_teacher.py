@@ -1,7 +1,6 @@
-from typing import List
-
 from sqlmodel import Session, select, col, and_
 
+from app.schemas.paging import Paging
 from app.crud.base import CRUDBase
 from app.schemas.teacher import *
 
@@ -18,7 +17,7 @@ class CRUDTeacher(CRUDBase[Teacher, TeacherCreate, TeacherCreate]):
 
     def get_filter(
             self, db: Session, *, skip: int = 0, limit: int = 100, query: str = None, role_id: str = None
-    ) -> List[Teacher]:
+    ) -> Paging[Teacher]:
         where = [Teacher.deleted_at is not None]
         if query:
             where.append(col(Teacher.ar_name).like('%' + query + '%'))
@@ -26,8 +25,11 @@ class CRUDTeacher(CRUDBase[Teacher, TeacherCreate, TeacherCreate]):
         if role_id:
             where.append(Teacher.role_id == role_id)
 
-        statement = select(Teacher).where(*where).offset(skip).limit(limit)
-        return db.exec(statement).all()
+        statement = select(Teacher)
+        return Paging[Teacher](
+            count=db.query(Teacher).count(),
+            results=db.exec(statement.where(*where).offset(skip).limit(limit)).all(),
+        )
 
 
 teacher = CRUDTeacher(Teacher)
