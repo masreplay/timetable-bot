@@ -78,7 +78,7 @@ def schedule_html(periods: list[AscPeriod], days: list[AscDay], cards: Schedule)
         <table>
             <thead>
                 <colgroup>
-                    <col span="4" width="{col_width}%">
+                    <col span="{len(periods) + 1}" width="{col_width}%">
                 </colgroup>
                 <tr>
                     <th></th>
@@ -93,7 +93,7 @@ def schedule_html(periods: list[AscPeriod], days: list[AscDay], cards: Schedule)
 </html>"""
 
 
-def generate_tab(days: list[Day], periods: list[Period], cards: Schedule):
+def generate_tab(days: list[AscDay], periods: list[AscPeriod], cards: Schedule):
     card_tags = ""
     for day in days:
         _day = day.vals[0]
@@ -107,18 +107,18 @@ def generate_tab(days: list[Day], periods: list[Period], cards: Schedule):
                     f'{card_into_table(card)}</td>'
                 )
             else:
-                row.append(f"<td></td>")
+                row.append(f"<td><br></td>")
         card_tags += f"<tr><td>{day.short}</td>{''.join(row)}</tr>"
         row.clear()
 
     return card_tags
 
 
-def card_into_table(card: Card):
+def card_into_table(card: AscCard):
     card_data = \
-        f"{get_subject_by_lesson_id(card.lessonid).short}\n" \
-        f"{get_teacher_by_lesson_id(card.lessonid).short}\n" \
-        f"{get_class_by_lesson_id(card.lessonid).short}\n"
+        f"{get_subject_by_lesson_id(card.lessonid).short}<br>" \
+        f"{get_teacher_by_lesson_id(card.lessonid).short}<br>" \
+        # f"{get_class_by_lesson_id(card.lessonid).short}<br>"
     if len(card.classroomids) > 0:
         card_data += f"{get_classroom(card.classroomids[0]).short}"
     return card_data

@@ -85,6 +85,10 @@ class AscTeacher(BaseModel):
 
     @property
     def get_name(self) -> Optional[str]:
+        """
+
+        :return: name without job title
+        """
         name = self.short.split(".")
         # remove where د.م.
         name = name[-1]
@@ -95,6 +99,10 @@ class AscTeacher(BaseModel):
                 if len(part) in [0, 1]:
                     separated_name.remove(part)
             return " ".join(separated_name)
+
+    @property
+    def job_title(self) -> Optional[str]:
+        return self.short.split(self.get_name)[0].replace(" ", "")
 
     @property
     def first_name(self):

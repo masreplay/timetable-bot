@@ -8,7 +8,7 @@ from core.config import get_settings
 
 def get_schedule_image(name: str, test: bool = True):
     schedule: Schedule = get_schedule_by_class_name(name)
-    url = get_settings().html_to_image_service
+    url = get_settings().HTML_TO_IMAGE_SERVICE + "image"
 
     data = schedule_html(periods=get_periods(), days=get_days(), cards=schedule)
 
@@ -17,9 +17,9 @@ def get_schedule_image(name: str, test: bool = True):
     img_data = requests.get(url).content
 
     if test:
-        with open("../generated_data/table.g.html", "w", encoding="utf-8") as file:
+        with open("generated_data/table.g.html", "w", encoding="utf-8") as file:
             file.write(data)
-        with open(f'../generated_data/{name}table.png', 'wb') as handler:
+        with open(f'generated_data/{name}table.png', 'wb') as handler:
             handler.write(img_data)
     return url
 
