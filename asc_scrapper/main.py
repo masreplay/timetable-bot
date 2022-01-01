@@ -10,13 +10,13 @@ def get_schedule_image(name: str, test: bool = True):
     schedule: Schedule = get_schedule_by_class_name(name)
     url = get_settings().HTML_TO_IMAGE_SERVICE + "image"
 
-    data = schedule_html(periods=get_periods(), days=get_days(), cards=schedule)
+    data = schedule_html(periods=get_periods(), days=get_days(), cards=schedule, title=name, is_dark=True)
 
-    # response = requests.get(url, data={"html": data}, stream=True)
-    # url = response.json()["url"]
-    # img_data = requests.get(url).content
-    # with open(f'generated_data/{name}table.png', 'wb') as handler:
-    #     handler.write(img_data)
+    response = requests.get(url, data={"html": data}, stream=True)
+    url = response.json()["url"]
+    img_data = requests.get(url).content
+    with open(f'generated_data/{name}table.png', 'wb') as handler:
+        handler.write(img_data)
     if test:
         with open("generated_data/table.g.html", "w", encoding="utf-8") as file:
             file.write(data)

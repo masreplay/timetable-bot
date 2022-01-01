@@ -6,12 +6,12 @@ import requests
 from asc_scrapper.crud import *
 from asc_scrapper.schemas import *
 from asc_scrapper.view import teacher_schedule
-from core.colors.all import decide_text_color, primaries, random_primary
+from core.colors.all import decide_text_color, primaries, random_primary, reduce_color_lightness
 from core.config import get_settings
 import colorsys
 
 
-def schedule_html(periods: list[AscPeriod], days: list[AscDay], cards: Schedule):
+def schedule_html(*, periods: list[AscPeriod], days: list[AscDay], cards: Schedule, title: str, is_dark: bool):
     col_width = 100 / (len(periods) + 1)
     row_height = 100 / (len(days) + 1)
     style = f"""<style>
@@ -24,7 +24,11 @@ def schedule_html(periods: list[AscPeriod], days: list[AscDay], cards: Schedule)
             width: 100%;
             height: 100%;
         }}
-
+        h2 {{
+           display:inline;
+           margin-top:40px;
+           text-align:center;
+        }}
         thead {{
             display: table-header-group;
             vertical-align: middle;
@@ -38,7 +42,6 @@ def schedule_html(periods: list[AscPeriod], days: list[AscDay], cards: Schedule)
 
         tr {{
             display: table-row;
-            height: {row_height}%;
             vertical-align: inherit;
             border-color: inherit;
         }}
@@ -46,6 +49,7 @@ def schedule_html(periods: list[AscPeriod], days: list[AscDay], cards: Schedule)
         th,
         td {{
             white-space:pre-wrap;
+            height: {row_height}%;
             word-wrap:break-word;
             text-align: middle;
             vertical-align: middle;
@@ -56,6 +60,10 @@ def schedule_html(periods: list[AscPeriod], days: list[AscDay], cards: Schedule)
             border-top: 1px solid #ddd;
             text-align: center;
         }}
+        
+        p {{
+            font-family: verdana;
+        }}        
 
         thead:first-child tr:first-child th:first-child,
         tbody:first-child tr:first-child td:first-child {{
@@ -77,7 +85,8 @@ def schedule_html(periods: list[AscPeriod], days: list[AscDay], cards: Schedule)
 </head>
 
 <body>
-    <div style="background-color: white; padding: 1%;">
+    <div style="background-color: {"#202b36" if is_dark else "white"}; padding: 1%;">
+        <h1 style="color: white; text-align: center;">{title}</h1>
         <table>
             <thead>
                 <colgroup>
@@ -85,7 +94,7 @@ def schedule_html(periods: list[AscPeriod], days: list[AscDay], cards: Schedule)
                 </colgroup>
                 <tr>
                     <th></th>
-                    {"".join([f"<th>{period.time}</th>" for period in periods])}
+                    {"".join([f'<th style="color: #ffffff">{period.time}</th>' for period in periods])}
                 </tr>
             </thead>
             <tbody>{generate_tab(days=days, periods=periods, cards=cards)}</tbody>
@@ -96,17 +105,17 @@ def schedule_html(periods: list[AscPeriod], days: list[AscDay], cards: Schedule)
 </html>"""
 
 
-def generate_tab(days: list[AscDay], periods: list[AscPeriod], cards: Schedule):
+def generate_tab(days: list[AscDay], periods: list[AscPeriod], cards: Schedule, is_dark: bool = True):
     card_tags = ""
+    on_background_color = "#ffffff" if is_dark else "#000000"
     for day in days:
         _day = day.vals[0]
         row = []
         for period in periods:
             card = get_card(day=_day, period=period.period, cards=cards)
             if card:
-                # color = get_teacher_by_lesson_id(card.lessonid).color
-                color = random_primary()
-
+                color = get_teacher_by_lesson_id(card.lessonid).color
+                color = reduce_color_lightness(color, 0.75)
                 font_color = decide_text_color(color)
                 print(f"{color} ,{font_color}")
                 row.append(
@@ -116,7 +125,7 @@ def generate_tab(days: list[AscDay], periods: list[AscPeriod], cards: Schedule):
                 )
             else:
                 row.append(f"<td></td>")
-        card_tags += f"<tr><td>{day.short}</td>{''.join(row)}</tr>"
+        card_tags += f'<tr><td style="color: {on_background_color}"><h2>{day.short}</h2></td>{"".join(row)}</tr>'
         row.clear()
 
     return card_tags
@@ -124,11 +133,11 @@ def generate_tab(days: list[AscDay], periods: list[AscPeriod], cards: Schedule):
 
 def card_into_table(card: AscCard):
     card_data = \
-        f"{get_subject_by_lesson_id(card.lessonid).short}<br>" \
-        f"{get_teacher_by_lesson_id(card.lessonid).short}<br>" \
+        f"<p>{get_subject_by_lesson_id(card.lessonid).short}</p>" \
+        f"<p>{get_teacher_by_lesson_id(card.lessonid).short}</p>" \
         # f"{get_class_by_lesson_id(card.lessonid).short}<br>"
     if len(card.classroomids) > 0:
-        card_data += f"{get_classroom(card.classroomids[0]).short}"
+        card_data += f"<p>{get_classroom(card.classroomids[0]).short}</p>"
     return card_data
 
 

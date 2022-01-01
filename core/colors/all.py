@@ -52,8 +52,21 @@ def decide_text_color(bg_color: Color):
     return "#000000" if ((255 - bg_delta) < n_threshold) else "#ffffff"
 
 
+def reduce_color_lightness(in_color: Color, in_amount: float):
+    """
+    reduce the lightness of color
+    """
+    color = in_color.as_rgb_tuple()
+    return Color((
+        min(255, int(color[0] * in_amount)),
+        min(255, int(color[1] * in_amount)),
+        min(255, int(color[2] * in_amount))
+    ))
+
+
 def random_primary():
     return primaries[randint(0, len(primaries) - 1)].shades[300]
 
 
 print(decide_text_color(Color('64b5f6')))
+print(reduce_color_lightness(Color('64b5f6'), 0.1))
