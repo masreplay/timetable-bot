@@ -1,14 +1,12 @@
 import shutil
-from random import randint
 
 import requests
 
 from asc_scrapper.crud import *
 from asc_scrapper.schemas import *
 from asc_scrapper.view import teacher_schedule
-from core.colors.all import decide_text_color, primaries, random_primary, reduce_color_lightness
+from core.colors.all import decide_text_color, reduce_color_lightness
 from core.config import get_settings
-import colorsys
 
 
 def schedule_html(*, periods: list[AscPeriod], days: list[AscDay], cards: Schedule, title: str, is_dark: bool):
@@ -139,17 +137,3 @@ def card_into_table(card: AscCard):
     if len(card.classroomids) > 0:
         card_data += f"<p>{get_classroom(card.classroomids[0]).short}</p>"
     return card_data
-
-
-def main():
-    schedule: Schedule = teacher_schedule("*15")
-    url = get_settings().html_to_image_service
-
-    with open("table.g.html", "r", encoding="utf-8") as file:
-        response = requests.get(url, data={"html": file.read()}, stream=True)
-    with open('table.png', 'wb') as out_file:
-        shutil.copyfileobj(response.raw, out_file)
-
-
-if __name__ == '__main__':
-    main()

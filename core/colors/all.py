@@ -68,5 +68,6 @@ def random_primary():
     return primaries[randint(0, len(primaries) - 1)].shades[300]
 
 
-print(decide_text_color(Color('64b5f6')))
-print(reduce_color_lightness(Color('64b5f6'), 0.1))
+if __name__ == '__main__':
+    print(decide_text_color(Color('64b5f6')))
+    print(reduce_color_lightness(Color('64b5f6'), 0.1))
