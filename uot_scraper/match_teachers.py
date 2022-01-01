@@ -3,7 +3,7 @@ from pydantic.color import Color
 from app import schemas
 from app.schemas.user import UserGender, UserScrapeFrom, UserType
 from asc_scrapper.asc_data import db
-from core.colors.all import random_primary, colored_text
+from core.colors.color_utils import random_primary, colored_text
 from uot_scraper.db import get_teachers
 
 TeachersName = list[str]
@@ -86,7 +86,7 @@ def get_acs_uot_teachers():
                 email=teacher.email,
                 uot_url=teacher.uot_url,
                 role_id=teacher.role_id,
-                color=Color(random_primary(400)),
+                color=random_primary(400).as_hex(),
                 asc_job_title=None,
                 asc_name=None,
                 scrape_from=UserScrapeFrom.uot,
@@ -104,5 +104,6 @@ def get_acs_uot_teachers():
 
 if __name__ == '__main__':
     print("\n".join(
-        [f"{colored_text(i + 1, teacher.color)} {teacher.dict()}" for i, teacher in enumerate(get_acs_uot_teachers())]
+        [f"{colored_text(i + 1, Color(teacher.color))} {teacher.dict()}" for i, teacher in
+         enumerate(get_acs_uot_teachers())]
     ))

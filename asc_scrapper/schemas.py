@@ -78,7 +78,7 @@ class AscTeacher(BaseModel):
     short: str
     gender: str
     bell: str
-    color: Color
+    color: str
     fontcolorprint: str
     fontcolorprint2: str
     fontcolorscreen: str

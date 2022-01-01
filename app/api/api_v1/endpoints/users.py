@@ -6,6 +6,8 @@ from sqlmodel import Session
 
 from app import schemas, crud
 from app.db.db import get_db
+from sqlalchemy.exc import IntegrityError
+from psycopg2.errors import UniqueViolation
 from app.schemas.paging import LimitSkipParams, Paging
 
 router = APIRouter()
@@ -34,6 +36,14 @@ def create_user(
     """
     Create new user.
     """
+    user = crud.user.get_by_email(db=db, email=user_in.email)
+    if user:
+        raise HTTPException(status_code=400, detail="user already exist")
+
+    role = crud.role.get(db=db, id=user_in.role_id)
+    if not role:
+        raise HTTPException(status_code=400, detail="role not found")
+
     user = crud.user.create(db=db, obj_in=user_in)
     return user
 

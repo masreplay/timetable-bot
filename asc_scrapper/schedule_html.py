@@ -5,7 +5,7 @@ import requests
 from asc_scrapper.crud import *
 from asc_scrapper.schemas import *
 from asc_scrapper.view import teacher_schedule
-from core.colors.all import decide_text_color, reduce_color_lightness
+from core.colors.color_utils import decide_text_color, reduce_color_lightness
 from core.config import get_settings
 
 

@@ -15,8 +15,12 @@ class CRUDUser(CRUDBase[User, UserCreate, UserCreate]):
         statement = select(self.model).where(and_(User.ar_name == name, User.deleted_at is not None))
         return db.exec(statement).first()
 
+    def get_by_email(self, db: Session, email: str) -> User:
+        statement = select(self.model).where(and_(User.email == email, User.deleted_at is not None))
+        return db.exec(statement).first()
+
     def get_filter(
-            self, db: Session, *, skip: int = 0, limit: int = 100, query: str = None, role_id: str = None
+            self, db: Session, *, skip: int = 0, limit: int = 100, query: str = None, role_id: UUID = None
     ) -> Paging[User]:
         where = [User.deleted_at is not None]
         if query:
@@ -27,7 +31,7 @@ class CRUDUser(CRUDBase[User, UserCreate, UserCreate]):
 
         statement = select(User)
         return Paging[User](
-            count=db.query(User).count(),
+            count=db.query(User).filter(*where).count(),
             results=db.exec(statement.where(*where).offset(skip).limit(limit)).all(),
         )
 

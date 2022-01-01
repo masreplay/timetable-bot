@@ -5,7 +5,6 @@ from fastapi.encoders import jsonable_encoder
 from sqlmodel import SQLModel, select, Session
 from sqlmodel import and_
 
-from app.schemas import Role
 from app.schemas.paging import Paging
 
 ModelType = TypeVar("ModelType", bound=SQLModel)
@@ -24,15 +23,16 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
     def get_multi(
             self, db: Session, *, skip: int = 0, limit: int = 100
     ) -> Paging[ModelType]:
-        statement = select(self.model).where(self.model.deleted_at is not None).offset(skip).limit(limit)
+        where = [self.model.deleted_at is not None]
+        statement = select(self.model).where(*where).offset(skip).limit(limit)
         return Paging[ModelType](
-            count=db.query(self.model).count(),
+            count=db.query(self.model).filter(*where).count(),
             results=db.exec(statement).all()
         )
 
     def create(self, db: Session, *, obj_in: CreateSchemaType) -> ModelType:
         obj_in_data = jsonable_encoder(obj_in)
-        db_obj = self.model(**obj_in_data)  # type: ignore
+        db_obj = self.model(**obj_in_data)
         db.add(db_obj)
         db.commit()
         db.refresh(db_obj)
