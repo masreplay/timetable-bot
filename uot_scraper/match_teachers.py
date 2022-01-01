@@ -1,8 +1,9 @@
 from pydantic.color import Color
 
 from app import schemas
-from app.schemas.user import UserGender, UserScrapeFrom
+from app.schemas.user import UserGender, UserScrapeFrom, UserType
 from asc_scrapper.asc_data import db
+from core.colors.all import random_primary, colored_text
 from uot_scraper.db import get_teachers
 
 TeachersName = list[str]
@@ -16,11 +17,10 @@ def formate_uot_teachers():
     return get_teachers()
 
 
-if __name__ == '__main__':
+def get_acs_uot_teachers():
     old_uot = formate_uot_teachers()
     old_asc = formate_asc_teachers()
-    print(f"old uot: {len(old_uot)}")
-    print(f"old asc: {len(old_asc)}")
+
     c = 0
     new_asc = []
     new_uot = []
@@ -37,6 +37,7 @@ if __name__ == '__main__':
                 teachers.append(
                     schemas.User(
                         id=uot_teacher.id,
+                        type=UserType.teacher,
                         ar_name=uot_teacher.ar_name,
                         en_name=uot_teacher.en_name,
                         image=uot_teacher.image,
@@ -58,6 +59,7 @@ if __name__ == '__main__':
         teachers.append(
             schemas.User(
                 id=teacher.id,
+                type=UserType.teacher,
                 ar_name=teacher.get_name,
                 en_name=None,
                 image=None,
@@ -67,7 +69,7 @@ if __name__ == '__main__':
                 color=teacher.color,
                 asc_job_title=teacher.job_title,
                 asc_name=teacher.get_name,
-                scrape_from=UserScrapeFrom.uot_asc,
+                scrape_from=UserScrapeFrom.asc,
                 gender=UserGender.male if teacher.gender.lower() == "m" else UserGender.female,
             )
 
@@ -77,23 +79,30 @@ if __name__ == '__main__':
         teachers.append(
             schemas.User(
                 id=teacher.id,
+                type=UserType.teacher,
                 ar_name=teacher.ar_name,
                 en_name=teacher.en_name,
                 image=teacher.image,
                 email=teacher.email,
                 uot_url=teacher.uot_url,
                 role_id=teacher.role_id,
-                color=teacher.color,
-                asc_job_title=teacher.job_title,
-                asc_name=teacher.get_name,
-                scrape_from=UserScrapeFrom.uot_asc,
-                gender=UserGender.male if teacher.gender.lower() == "m" else UserGender.female,
+                color=Color(random_primary(400)),
+                asc_job_title=None,
+                asc_name=None,
+                scrape_from=UserScrapeFrom.uot,
+                gender=None,
             )
 
         )
-    print(f"new asc: {len(new_asc)}")
-    print(f"new uot:{len(new_asc)}")
-    # new_uot = [teacher for teacher in teachers if teacher not in asc_teachers]
-    print("\n".join([f"{i + 1} {teacher.dict()}" for i, teacher in enumerate(teachers)]))
+    # remove nameless data
+    teachers = [
+        teacher for teacher in teachers
+        if (teacher.en_name is not None and teacher.ar_name is not None) or teacher.asc_name is not None
+    ]
+    return teachers
 
-    print(f"equal: {c}")
+
+if __name__ == '__main__':
+    print("\n".join(
+        [f"{colored_text(i + 1, teacher.color)} {teacher.dict()}" for i, teacher in enumerate(get_acs_uot_teachers())]
+    ))

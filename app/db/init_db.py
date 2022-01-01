@@ -7,14 +7,15 @@ from app.schemas import Role
 from core.config import get_settings
 
 # Seed data base
-from uot_scraper.db import get_teachers, get_roles
+from uot_scraper.db import get_roles
+from uot_scraper.match_teachers import get_acs_uot_teachers
 
 settings = get_settings()
 
 
 def init_db(db: Session) -> None:
-    teachers = crud.teacher.get_multi(db=db, limit=1000)
-    for teacher in teachers:
+    users = crud.user.get_multi(db=db, limit=1000)
+    for teacher in users:
         db.delete(teacher)
 
     roles = crud.role.get_multi(db=db, limit=1000)
@@ -32,11 +33,6 @@ def init_db(db: Session) -> None:
         db.add(role_in)
         db.commit()
 
-    teachers = get_teachers()
+    teachers = get_acs_uot_teachers()
     for teacher in teachers:
-        teacher_in = schemas.TeacherCreate(
-            en_name=teacher.en_name,
-            ar_name=teacher.ar_name,
-            role_id=UUID(teacher.role_id),
-        )
-        crud.teacher.create(db, obj_in=teacher_in)
+        crud.user.create(db, obj_in=teacher)

@@ -103,7 +103,10 @@ class AscTeacher(BaseModel):
 
     @property
     def job_title(self) -> Optional[str]:
-        return self.short.split(self.get_name)[0].replace(" ", "")
+        try:
+            job_title: str = self.short.split(self.get_name)[0].replace(" ", "")
+        except IndexError:
+            return ""
 
     @property
     def first_name(self):

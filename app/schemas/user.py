@@ -35,6 +35,8 @@ class UserScrapeFrom(str, Enum):
 
 
 class UserBase(SQLModel):
+    type: UserType
+
     # uot
     en_name: Optional[str] = Field(index=True)
     ar_name: Optional[str] = Field(index=True)
@@ -49,6 +51,7 @@ class UserBase(SQLModel):
     scrape_from: Optional[UserScrapeFrom] = Field(default=None)
     gender: UserGender = Field()
 
+    # relations
     role_id: Optional[UUID] = Field(foreign_key="role.id")
 
 

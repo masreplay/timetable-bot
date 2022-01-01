@@ -1,5 +1,5 @@
 from random import randint
-from typing import List
+from typing import List, Any
 
 from core.colors.primaries import *
 from core.colors.accent import *
@@ -64,10 +64,30 @@ def reduce_color_lightness(in_color: Color, in_amount: float):
     ))
 
 
-def random_primary():
-    return primaries[randint(0, len(primaries) - 1)].shades[300]
+def random_primary(shade: int = 300):
+    assert shade in [50, 100, 200, 300, 400, 500, 600, 700, 800, 900], "Choose shade from range"
+    return primaries[randint(0, len(primaries) - 1)].shades[shade]
+
+
+def get_color_escape(color: Color, background=False):
+    color = color.as_rgb_tuple()
+    return '\033[{};2;{};{};{}m'.format(48 if background else 38, color[0], color[1], color[2])
+
+
+def colored_text(value: Any, bg_color: Color):
+    """ Color console color to be printed  """
+    reset = '\033[0m'
+
+    return f"{get_color_escape(Color(decide_text_color(bg_color)))}{get_color_escape(bg_color, True)}{value}" \
+           f"{reset}"
+
+
+def cprint(value: Any, bg_color: Color):
+    print(colored_text(value, bg_color=bg_color))
 
 
 if __name__ == '__main__':
-    print(decide_text_color(Color('64b5f6')))
+    bg = Color('64b5f6')
+    text_color = decide_text_color(Color('64b5f6'))
     print(reduce_color_lightness(Color('64b5f6'), 0.1))
+    cprint("test", bg_color=bg)
