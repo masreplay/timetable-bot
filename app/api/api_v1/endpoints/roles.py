@@ -1,5 +1,5 @@
 from typing import Any
-
+from uuid import UUID
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session
 
@@ -39,7 +39,7 @@ def create_role(
 def update_role(
         *,
         db: Session = Depends(get_db),
-        id: int,
+        id: UUID,
         role_in: schemas.RoleUpdate,
 ) -> Any:
     """
@@ -56,7 +56,7 @@ def update_role(
 def read_role(
         *,
         db: Session = Depends(get_db),
-        id: int,
+        id: UUID,
 ) -> Any:
     """
     Get role by ID.
@@ -71,7 +71,7 @@ def read_role(
 def delete_role(
         *,
         db: Session = Depends(get_db),
-        id: int,
+        id: UUID,
 ) -> Any:
     """
     Delete a role.
@@ -81,20 +81,3 @@ def delete_role(
         raise HTTPException(status_code=404, detail="role not found")
     role = crud.role.remove(db=db, id=id)
     return role
-
-
-# DELETEME
-
-@router.delete("/", response_model=schemas.Role)
-def delete_roles(
-        *,
-        db: Session = Depends(get_db),
-) -> Any:
-    """
-    Delete all a roles.
-    """
-    roles = crud.role.get_multi(db=db, skip=0, limit=100000)
-    for role in roles.results:
-        db.delete(role)
-
-    db.commit()

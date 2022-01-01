@@ -6,8 +6,6 @@ from sqlmodel import Session
 
 from app import schemas, crud
 from app.db.db import get_db
-from sqlalchemy.exc import IntegrityError
-from psycopg2.errors import UniqueViolation
 from app.schemas.paging import LimitSkipParams, Paging
 
 router = APIRouter()
@@ -52,7 +50,7 @@ def create_user(
 def update_user(
         *,
         db: Session = Depends(get_db),
-        id: int,
+        id: UUID,
         user_in: schemas.UserUpdate,
 ) -> Any:
     """
@@ -69,7 +67,7 @@ def update_user(
 def read_user(
         *,
         db: Session = Depends(get_db),
-        id: int,
+        id: UUID,
 ) -> Any:
     """
     Get user by ID.
@@ -84,7 +82,7 @@ def read_user(
 def delete_user(
         *,
         db: Session = Depends(get_db),
-        id: int,
+        id: UUID,
 ) -> Any:
     """
     Delete a user.
