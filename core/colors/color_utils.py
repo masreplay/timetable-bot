@@ -79,16 +79,16 @@ def get_color_escape(color: Color, background=False) -> str:
     return '\033[{};2;{};{};{}m'.format(48 if background else 38, color[0], color[1], color[2])
 
 
-def colored_text(value: Any, bg_color: Color) -> str:
+def colored_text(*values: object, bg_color: Color) -> str:
     """ Color console color to be printed  """
     reset = '\033[0m'
-
-    return f"{get_color_escape(Color(decide_text_color(bg_color)))}{get_color_escape(bg_color, True)}{value}" \
+    values = ' '.join([str(value) for value in values])
+    return f"{get_color_escape(Color(decide_text_color(bg_color)))}{get_color_escape(bg_color, True)}{values}" \
            f"{reset}"
 
 
-def cprint(value: Any, bg_color: Color) -> Any:
-    print(colored_text(value, bg_color=bg_color))
+def cprint(*values: object, bg_color: Color) -> Any:
+    print(colored_text(values, bg_color=bg_color))
 
 
 if __name__ == '__main__':

@@ -9,6 +9,7 @@ class UserScrapeFrom(str, Enum):
     # both of them
     uot_asc = "uot_asc"
 
+
 class UserType(str, Enum):
     employee = "employee"
     teacher = "teacher"

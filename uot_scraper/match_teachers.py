@@ -38,7 +38,7 @@ def get_acs_uot_teachers():
                     schemas.User(
                         id=uot_teacher.id,
                         type=UserType.teacher,
-                        ar_name=uot_teacher.ar_name,
+                        name=uot_teacher.ar_name,
                         en_name=uot_teacher.en_name,
                         image=uot_teacher.image,
                         email=uot_teacher.email,
@@ -60,7 +60,7 @@ def get_acs_uot_teachers():
             schemas.User(
                 id=teacher.id,
                 type=UserType.teacher,
-                ar_name=teacher.get_name,
+                name=teacher.get_name,
                 en_name=None,
                 image=None,
                 email=None,
@@ -80,7 +80,7 @@ def get_acs_uot_teachers():
             schemas.User(
                 id=teacher.id,
                 type=UserType.teacher,
-                ar_name=teacher.ar_name,
+                name=teacher.ar_name,
                 en_name=teacher.en_name,
                 image=teacher.image,
                 email=teacher.email,
@@ -97,13 +97,13 @@ def get_acs_uot_teachers():
     # remove nameless data
     teachers = [
         teacher for teacher in teachers
-        if (teacher.en_name is not None and teacher.ar_name is not None) or teacher.asc_name is not None
+        if (teacher.en_name is not None and teacher.name is not None) or teacher.asc_name is not None
     ]
     return teachers
 
 
 if __name__ == '__main__':
     print("\n".join(
-        [f"{colored_text(i + 1, Color(teacher.color))} {teacher.dict()}" for i, teacher in
+        [f"{colored_text(i + 1, bg_color=Color(teacher.color))}{teacher.dict(),}" for i, teacher in
          enumerate(get_acs_uot_teachers())]
     ))

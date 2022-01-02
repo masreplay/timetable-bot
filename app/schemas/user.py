@@ -1,42 +1,33 @@
 from typing import Optional
 from uuid import UUID
 
-from pydantic import EmailStr, BaseModel, constr
-from sqlalchemy import Column, Enum, UniqueConstraint
+from pydantic import EmailStr, constr
+from sqlalchemy import Column, Enum
 from sqlmodel import SQLModel, Field
 
-from app.schemas.base_model import BaseSchema
+from app.schemas.base import BaseSchema
+from app.schemas.card_item import CardContent
 from app.schemas.enums import UserType, UserGender, UserScrapeFrom
-
-url_regex = r'https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)'
-color_regex = r'^#(?:[0-9a-fA-F]{3}){1,2}$'
-
-
-class Short(SQLModel):
-    pass
+from app.utils.regex import url_regex
+from app.utils.sql_alchemy_utils import sa_column_kwargs
 
 
-class SaColumnKwargs(BaseModel):
-    unique: bool
-
-
-class UserBase(SQLModel):
+class UserBase(CardContent):
     type: UserType = Field(default=None, sa_column=Column(Enum(UserType)))
 
     en_name: Optional[str] = Field(index=True)
-    ar_name: str = Field(index=True)
-    email: Optional[EmailStr] = Field(default=None, sa_column_kwargs=SaColumnKwargs(unique=True).dict())
+    name: str = Field(index=True)
+    email: Optional[EmailStr] = Field(default=None, sa_column_kwargs=sa_column_kwargs(unique=True))
     uot_url: Optional[constr(regex=url_regex)] = Field(default=None)
     image: Optional[constr(regex=url_regex)] = Field(default=None)
 
-    color: constr(regex=color_regex)
     gender: Optional[UserGender] = Field(sa_column=Column(Enum(UserGender)))
 
     # relations
     role_id: Optional[UUID] = Field(foreign_key="role.id")
 
 
-class User(BaseSchema, UserBase, Short, table=True):
+class User(BaseSchema, UserBase, table=True):
     asc_job_title: Optional[str] = Field()
     asc_name: Optional[str] = Field()
     scrape_from: Optional[UserScrapeFrom] = Field(default=None, sa_column=Column(Enum(UserScrapeFrom)))

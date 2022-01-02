@@ -3,7 +3,7 @@ from typing import Optional
 from pydantic import Field
 from sqlmodel import SQLModel
 
-from app.schemas.base_model import BaseSchema
+from app.schemas.base import BaseSchema
 from app.utils.utils import Permission
 
 

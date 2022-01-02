@@ -1,12 +1,6 @@
-import shutil
-
-import requests
-
 from asc_scrapper.crud import *
 from asc_scrapper.schemas import *
-from asc_scrapper.view import teacher_schedule
 from core.colors.color_utils import decide_text_color, reduce_color_lightness
-from core.config import get_settings
 
 
 def schedule_html(*, periods: list[AscPeriod], days: list[AscDay], cards: Schedule, title: str, is_dark: bool):
@@ -113,7 +107,7 @@ def generate_tab(days: list[AscDay], periods: list[AscPeriod], cards: Schedule, 
             card = get_card(day=_day, period=period.period, cards=cards)
             if card:
                 color = get_teacher_by_lesson_id(card.lessonid).color
-                color = reduce_color_lightness(color, 0.75)
+                color = reduce_color_lightness(Color(color), 0.75)
                 font_color = decide_text_color(color)
                 print(f"{color} ,{font_color}")
                 row.append(
