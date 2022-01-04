@@ -3,7 +3,7 @@ from functools import lru_cache
 from typing import List, Union
 
 from dotenv import load_dotenv
-from pydantic import BaseSettings, AnyHttpUrl, validator
+from pydantic import BaseSettings, AnyHttpUrl, validator, EmailStr
 
 load_dotenv()
 
@@ -17,6 +17,10 @@ class Settings(BaseSettings):
     DATABASE_URL: str
     PORT: int
     TRANSLATION_KEY: str
+
+    FIRST_SUPERUSER: EmailStr
+    FIRST_SUPERUSER_PASSWORD: str
+
     # 60 minutes * 24 hours * 8 days = 8 days
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8
     BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = []

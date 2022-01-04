@@ -49,7 +49,6 @@ def get_acs_uot_teachers():
                         scrape_from=UserScrapeFrom.uot_asc,
                         gender=UserGender.male if asc_teacher.gender.lower() == "m" else UserGender.female,
                     )
-
                 )
                 c += 1
                 break

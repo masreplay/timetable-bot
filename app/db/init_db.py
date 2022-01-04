@@ -2,7 +2,8 @@ from sqlmodel import Session
 
 import asc_scrapper.crud as asc_crud
 from app import crud, schemas
-from app.schemas.permission import new_user_permission
+from app.core.config import settings
+from app.schemas.permissions import default_permissions, Permissions, full_crud_permission
 from uot_scraper.db import get_roles
 from uot_scraper.match_teachers import get_acs_uot_teachers
 
@@ -28,7 +29,7 @@ def init_roles(db: Session):
             id=role.id,
             ar_name=role.ar_name,
             en_name=role.en_name,
-            permission=new_user_permission.dict()
+            permissions=default_permissions
         )
         db.add(role_in)
         db.commit()
@@ -49,7 +50,33 @@ def init_periods(db: Session):
         db.commit()
 
 
+def init_super_admin(db: Session):
+    user = crud.user.get_by_email(db, email=settings().FIRST_SUPERUSER)
+    if not user:
+        role: schemas.Role = crud.role.create(
+            db, obj_in=schemas.RoleCreate(
+                ar_name="مسؤول",
+                en_name="SUPER ADMIN",
+                permissions=Permissions(
+                    users=full_crud_permission,
+                    roles=full_crud_permission,
+                ),
+            )
+        )
+        crud.user.create(
+            db, obj_in=schemas.UserCreate(
+                email=settings().FIRST_SUPERUSER,
+                password=settings().FIRST_SUPERUSER_PASSWORD,
+                color='#000000',
+                gender=None,
+                en_name="SUPER ADMIN",
+                role_id=role.id
+            )
+        )
+
+
 def init_db(db: Session):
     init_periods(db)
     init_roles(db)
     init_users(db)
+    init_super_admin(db)

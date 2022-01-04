@@ -22,7 +22,6 @@ class UserBase(CardContent):
     image: Optional[constr(regex=url_regex)] = Field(default=None)
 
     is_active: Optional[bool] = True
-    is_superuser: Optional[bool] = True
 
     gender: Optional[UserGender] = Field(sa_column=Column(Enum(UserGender)))
 

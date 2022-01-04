@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session
 
 from app import schemas, crud
+from app.api import deps
 from app.db.db import get_db
 from app.schemas.paging import *
 
@@ -31,6 +32,7 @@ def create_role(
     """
     Create new role.
     """
+
     role = crud.role.create(db=db, obj_in=role_in)
     return role
 

@@ -1,20 +1,33 @@
+from typing import Union
+
+from pydantic import validator
 from sqlmodel import Field, SQLModel, Column, JSON
-from pydantic import json
+
 from app.schemas.base import BaseSchema
-from app.schemas.permission import new_user_permission, PermissionCrud
+from app.schemas.permissions import Permissions, default_permissions
 
 
 class RoleBase(SQLModel):
     ar_name: str
     en_name: str
-    permissions: PermissionCrud = Field(sa_column=Column(JSON), default=new_user_permission.json())
+    permissions: Permissions
 
 
 class Role(BaseSchema, RoleBase, table=True):
-    pass
+    permissions: dict = Field(sa_column=Column(JSON), default_factory=default_permissions.dict)
 
-    class Config:
-        orm_mode = True
+    @validator('permissions', pre=True, always=True)
+    def permissions_validate(cls, v: Union[dict, Permissions]):
+        if isinstance(v, Permissions):
+            return v.dict()
+        elif isinstance(v, dict):
+            v = Permissions(**v)
+            return v.dict()
+        raise ValueError(v)
+
+    @property
+    def permissions_(self):
+        return Permissions(**self.permissions)
 
 
 class RoleCreate(RoleBase):

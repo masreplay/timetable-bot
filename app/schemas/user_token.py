@@ -1,13 +1,13 @@
 from typing import Optional
 from uuid import UUID
 
-from sqlmodel import SQLModel
+from pydantic import BaseModel
 
 
-class Token(SQLModel):
+class Token(BaseModel):
     access_token: str
     token_type: str
 
 
-class TokenPayload(SQLModel):
+class TokenPayload(BaseModel):
     sub: Optional[UUID] = None
