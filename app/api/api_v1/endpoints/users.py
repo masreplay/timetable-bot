@@ -89,18 +89,3 @@ def delete_user(
         raise HTTPException(status_code=404, detail="user not found")
     user = crud.user.remove(db=db, id=id)
     return user
-
-
-@router.delete("/", response_model=schemas.User)
-def delete_users(
-        *,
-        db: Session = Depends(get_db),
-) -> Any:
-    """
-    Delete all a users.
-    """
-    users: Paging[schemas.User] = crud.user.get_multi(db=db)
-    for user in users.results:
-        db.delete(user)
-
-    db.commit()
