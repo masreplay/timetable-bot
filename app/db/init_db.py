@@ -1,13 +1,10 @@
 from sqlmodel import Session
 
-from app import crud, schemas
 import asc_scrapper.crud as asc_crud
-from core.config import get_settings
-
+from app import crud, schemas
+from app.schemas.permission import new_user_permission
 from uot_scraper.db import get_roles
 from uot_scraper.match_teachers import get_acs_uot_teachers
-
-settings = get_settings()
 
 
 def init_users(db: Session):
@@ -30,7 +27,8 @@ def init_roles(db: Session):
         role_in = schemas.Role(
             id=role.id,
             ar_name=role.ar_name,
-            en_name=role.en_name
+            en_name=role.en_name,
+            permission=new_user_permission.dict()
         )
         db.add(role_in)
         db.commit()

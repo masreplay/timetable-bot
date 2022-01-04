@@ -1,11 +1,8 @@
-from sqlalchemy.orm import sessionmaker
 from sqlmodel import create_engine, SQLModel, Session
 
-from core.config import get_settings, Settings
+from app.core.config import settings
 
-settings: Settings = get_settings()
-
-DATABASE_URL = settings.DATABASE_URL
+DATABASE_URL = settings().DATABASE_URL
 if DATABASE_URL.startswith("postgres://"):
     DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 

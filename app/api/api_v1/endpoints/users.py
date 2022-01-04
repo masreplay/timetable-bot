@@ -36,11 +36,7 @@ def create_user(
     """
     user = crud.user.get_by_email(db=db, email=user_in.email)
     if user:
-        raise HTTPException(status_code=400, detail="user already exist")
-
-    role = crud.role.get(db=db, id=user_in.role_id)
-    if not role:
-        raise HTTPException(status_code=400, detail="role not found")
+        raise HTTPException(status_code=400, detail="User already exist")
 
     user = crud.user.create(db=db, obj_in=user_in)
     return user

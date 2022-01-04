@@ -1,19 +1,20 @@
-from typing import Optional
-
-from pydantic import Field
-from sqlmodel import SQLModel
-
+from sqlmodel import Field, SQLModel, Column, JSON
+from pydantic import json
 from app.schemas.base import BaseSchema
-from app.utils.utils import Permission
+from app.schemas.permission import new_user_permission, PermissionCrud
 
 
 class RoleBase(SQLModel):
     ar_name: str
     en_name: str
+    permissions: PermissionCrud = Field(sa_column=Column(JSON), default=new_user_permission.json())
 
 
 class Role(BaseSchema, RoleBase, table=True):
-    permission: Optional[str] = Field(None)
+    pass
+
+    class Config:
+        orm_mode = True
 
 
 class RoleCreate(RoleBase):

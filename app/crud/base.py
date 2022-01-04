@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from typing import Any, Dict, Generic, Optional, Type, TypeVar, Union
+from uuid import UUID
 
 from fastapi.encoders import jsonable_encoder
 from sqlmodel import SQLModel, select, Session
@@ -16,7 +17,7 @@ UpdateSchemaType = TypeVar("UpdateSchemaType", bound=SQLModel)
 class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
     model: Type[ModelType]
 
-    def get(self, db: Session, id: Any) -> Optional[ModelType]:
+    def get(self, db: Session, id: UUID) -> Optional[ModelType]:
         statement = select(self.model).where(and_(self.model.id == id, self.model.deleted_at is not None))
         return db.exec(statement).first()
 

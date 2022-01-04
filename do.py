@@ -1,13 +1,13 @@
-from core.config import *
+from app.core.config import settings, WEBHOOK_URL
 
 
 def set_hook():
     import asyncio
     from aiogram import Bot
-    bot = Bot(token=get_settings().telegram_bot_api_token)
+    bot = Bot(token=settings().telegram_bot_api_token)
 
     async def hook_set():
-        if not get_settings().heroku_app_name:
+        if not settings().heroku_app_name:
             print('You have forgot to set HEROKU_APP_NAME')
             quit()
         await bot.set_webhook(WEBHOOK_URL)

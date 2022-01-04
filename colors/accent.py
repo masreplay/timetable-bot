@@ -1,6 +1,6 @@
 from pydantic.color import Color
 
-from core.colors.primaries import MaterialAccentColor
+from colors.primaries import MaterialAccentColor
 
 
 _pink_accent_primary_value = 'FF4081'

@@ -7,18 +7,17 @@ from fastapi.openapi.docs import get_swagger_ui_html, get_swagger_ui_oauth2_redi
 from starlette.middleware.cors import CORSMiddleware
 
 from app.api.api_v1 import api
+from app.core.config import settings
 from app.open_api_to_files.main import get_models_zip
-from core.config import get_settings
-from fastapi.staticfiles import StaticFiles
 
-settings = get_settings()
+from fastapi.staticfiles import StaticFiles
 
 app = FastAPI(
     title="CS UOT App",
     version="1",
-    openapi_url=f"{settings.API_V1_STR}/openapi.json",
-    docs_url=f"{settings.API_V1_STR}/docs",
-    redoc_url=f"{settings.API_V1_STR}/redoc",
+    openapi_url=f"{settings().API_V1_STR}/openapi.json",
+    docs_url=f"{settings().API_V1_STR}/docs",
+    redoc_url=f"{settings().API_V1_STR}/redoc",
 )
 # self-hosting docs
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -50,7 +49,7 @@ async def redoc_html():
 
 
 # Routers
-app.include_router(api.api_router, prefix=settings.API_V1_STR)
+app.include_router(api.api_router, prefix=settings().API_V1_STR)
 
 
 # Process time
@@ -64,7 +63,7 @@ async def add_process_time_header(request: Request, call_next):
 
 
 # Models to files
-@app.get(f"{settings.API_V1_STR}/models", tags=["models"])
+@app.get(f"{settings().API_V1_STR}/models", tags=["models"])
 def get_all_models():
     return get_models_zip(app.routes)
 
@@ -72,7 +71,7 @@ def get_all_models():
 # CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[str(origin) for origin in settings.BACKEND_CORS_ORIGINS],
+    allow_origins=[str(origin) for origin in settings().BACKEND_CORS_ORIGINS],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

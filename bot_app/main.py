@@ -11,12 +11,11 @@ from aiogram.types import ParseMode, CallbackQuery
 from aiogram.utils.executor import start_webhook
 
 from asc_scrapper.main import get_schedule_image
-from core.config import *
 from i18n import translate
 
 logging.basicConfig(level=logging.INFO)
 
-bot = Bot(token=get_settings().telegram_bot_api_token)
+bot = Bot(token=settings().telegram_bot_api_token)
 
 storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)

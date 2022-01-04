@@ -1,9 +1,11 @@
-from pydantic import constr
-from sqlmodel import SQLModel
+from typing import Optional
 
-from app.utils.regex import color_regex
+from pydantic import constr
+from sqlmodel import SQLModel, Field
+
+from app.core.utils.regex import color_regex
 
 
 class CardContent(SQLModel):
-    name: str
+    name: Optional[str] = Field(index=True)
     color: constr(regex=color_regex)

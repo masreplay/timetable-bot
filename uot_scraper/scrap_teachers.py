@@ -6,7 +6,7 @@ import requests
 import urllib3
 from bs4 import BeautifulSoup as BSHTML
 
-from core.config import get_settings
+from app.core import settings
 from uot_scraper.email_extract import get_emails
 from uot_scraper.schemas import UotTeacher, UotTeachers, UotRole, UotRoles
 
@@ -16,7 +16,7 @@ def main():
 
 
 def translate_list(untranslated: List[str], source: str = "en", target: str = "ar") -> List[str]:
-    translations = requests.get(get_settings().translation_key, params={
+    translations = requests.get(settings().translation_key, params={
         "q": untranslated,
         "source": source,
         "target": target,

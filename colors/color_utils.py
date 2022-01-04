@@ -1,8 +1,8 @@
 from random import randint
 from typing import List, Any
 
-from core.colors.primaries import *
-from core.colors.accent import *
+from colors.primaries import *
+from colors.accent import *
 
 primaries: List[MaterialColor] = [
     red,

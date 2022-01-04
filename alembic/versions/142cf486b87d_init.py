@@ -1,8 +1,8 @@
 """init
 
-Revision ID: d5e0b7873810
+Revision ID: 142cf486b87d
 Revises: 
-Create Date: 2022-01-02 22:58:41.551852
+Create Date: 2022-01-04 12:21:24.155876
 
 """
 from alembic import op
@@ -11,7 +11,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'd5e0b7873810'
+revision = '142cf486b87d'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -29,30 +29,33 @@ def upgrade():
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('role',
+    sa.Column('permissions', sa.JSON(), nullable=True),
     sa.Column('ar_name', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
     sa.Column('en_name', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
     sa.Column('id', sqlmodel.sql.sqltypes.GUID(), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.Column('deleted_at', sa.DateTime(), nullable=True),
-    sa.Column('permission', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('user',
     sa.Column('type', sa.Enum('employee', 'teacher', 'teacher_employee', 'student', 'other', name='usertype'), nullable=True),
     sa.Column('gender', sa.Enum('male', 'female', name='usergender'), nullable=True),
     sa.Column('scrape_from', sa.Enum('uot', 'asc', 'uot_asc', name='userscrapefrom'), nullable=True),
-    sa.Column('name', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+    sa.Column('id', sqlmodel.sql.sqltypes.GUID(), nullable=True),
+    sa.Column('created_at', sa.DateTime(), nullable=True),
+    sa.Column('deleted_at', sa.DateTime(), nullable=True),
+    sa.Column('name', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
     sa.Column('color', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
     sa.Column('en_name', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
     sa.Column('email', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
     sa.Column('uot_url', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
     sa.Column('image', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
-    sa.Column('role_id', sqlmodel.sql.sqltypes.GUID(), nullable=True),
-    sa.Column('id', sqlmodel.sql.sqltypes.GUID(), nullable=True),
-    sa.Column('created_at', sa.DateTime(), nullable=True),
-    sa.Column('deleted_at', sa.DateTime(), nullable=True),
+    sa.Column('is_active', sa.Boolean(), nullable=True),
+    sa.Column('is_superuser', sa.Boolean(), nullable=True),
     sa.Column('asc_job_title', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
     sa.Column('asc_name', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
+    sa.Column('role_id', sqlmodel.sql.sqltypes.GUID(), nullable=True),
+    sa.Column('hashed_password', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
     sa.ForeignKeyConstraint(['role_id'], ['role.id'], ),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('email')
