@@ -53,7 +53,7 @@ def init_periods(db: Session):
 def init_super_admin(db: Session):
     user = crud.user.get_by_email(db, email=settings().FIRST_SUPERUSER)
     if not user:
-        full_crud_permission = schemas.PermissionCRUD(
+        full_crud_permission = schemas.PermissionGroup(
             create=True,
             read=True,
             update=True,
@@ -66,6 +66,7 @@ def init_super_admin(db: Session):
                 permissions=Permissions(
                     users=full_crud_permission,
                     roles=full_crud_permission,
+                    periods=full_crud_permission,
                 ),
             )
         )

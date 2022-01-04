@@ -1,17 +1,19 @@
 from pydantic import BaseModel
 from pydantic.utils import GetterDict
+from sqlmodel import Field
 
 
-class PermissionCRUD(BaseModel):
-    read: bool
-    create: bool
-    update: bool
-    delete: bool
+class PermissionGroup(BaseModel):
+    read: bool = Field(True)
+    create: bool = Field(False)
+    update: bool = Field(False)
+    delete: bool = Field(False)
 
 
 class Permissions(BaseModel):
-    users: PermissionCRUD
-    roles: PermissionCRUD
+    users: PermissionGroup
+    roles: PermissionGroup
+    periods: PermissionGroup
 
     class Config:
         getter_dict = GetterDict
@@ -19,18 +21,12 @@ class Permissions(BaseModel):
 
 # default permissions for new role
 default_permissions: Permissions = Permissions(
-    users=PermissionCRUD(
-        read=True,
-        create=False,
-        update=False,
-        delete=False,
-    ),
-    roles=PermissionCRUD(
+    users=PermissionGroup(),
+    roles=PermissionGroup(
         read=False,
         create=False,
         update=False,
         delete=False,
     ),
+    periods=PermissionGroup()
 )
-
-

@@ -11,6 +11,7 @@ from app import crud, schemas
 from app.core import security
 from app.core.config import settings
 from app.db.db import get_db
+from app.schemas import Role
 
 reusable_oauth2 = OAuth2PasswordBearer(
     tokenUrl=f"{settings().API_V1_STR}/auth/login/access-token"
@@ -78,6 +79,7 @@ def method_to_permission_name(method: str):
 
 
 class PermissionHandler:
+
     """
     Check if user have permission to preform this actions
     """
@@ -94,30 +96,35 @@ class PermissionHandler:
             request: Request,
             current_user: schemas.UserSchema = Depends(get_current_user),
             db: Session = Depends(get_db)
-    ):
+    ) -> Role:
         method = self.method.value if self.method else request.method
 
         print(f"METHOD: {method}")
 
         # user permission
-        permissions = crud.role.get(db, id=current_user.role_id).permissions
+        role: schemas.Role = crud.role.get(db, id=current_user.role_id)
 
-        # Permissions for current router
-        router_permission: dict = permissions[self.router]
+        try:
+            # Permissions for current router
+            router_permission: Optional[dict] = role.permissions[self.router]
 
-        # Permission name
-        current_permission: str = method_to_permission_name(method)
+            # Permission name
+            current_permission: str = method_to_permission_name(method)
 
-        # Does user have this permission
-        have_permission: bool = router_permission[current_permission]
+            # Does user have this permission
+            have_permission: bool = router_permission[current_permission]
 
-        if not have_permission:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="User don't have permission to preform this action",
-            )
+            if not have_permission:
+                raise HTTPException(
+                    status_code=status.HTTP_403_FORBIDDEN,
+                    detail="You don't have permission to preform this action",
+                )
 
-        return permissions
+            return role
+
+        except KeyError:
+            print("Permission group not found")
+            raise HTTPException(400, "Some error occurred")
 
 
 users_permission_handler = PermissionHandler(router="users")

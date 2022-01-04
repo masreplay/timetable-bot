@@ -5,10 +5,11 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session
 
 from app import schemas, crud
+from app.api import deps
 from app.db.db import get_db
 from app.schemas.paging import *
 
-router = APIRouter()
+router = APIRouter(dependencies=[Depends(deps.PermissionHandler("periods"))])
 
 
 @router.get("/", response_model=Paging[schemas.Period])
