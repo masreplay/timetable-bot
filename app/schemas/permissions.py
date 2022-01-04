@@ -33,9 +33,4 @@ default_permissions: Permissions = Permissions(
     ),
 )
 
-full_crud_permission: PermissionCRUD = PermissionCRUD(
-    create=True,
-    read=True,
-    update=True,
-    delete=True,
-)
+

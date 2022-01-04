@@ -121,3 +121,4 @@ class PermissionHandler:
 
 
 users_permission_handler = PermissionHandler(router="users")
+roles_permission_handler = PermissionHandler(router="roles")

@@ -3,7 +3,7 @@ from sqlmodel import Session
 import asc_scrapper.crud as asc_crud
 from app import crud, schemas
 from app.core.config import settings
-from app.schemas.permissions import default_permissions, Permissions, full_crud_permission
+from app.schemas.permissions import default_permissions, Permissions
 from uot_scraper.db import get_roles
 from uot_scraper.match_teachers import get_acs_uot_teachers
 
@@ -53,6 +53,12 @@ def init_periods(db: Session):
 def init_super_admin(db: Session):
     user = crud.user.get_by_email(db, email=settings().FIRST_SUPERUSER)
     if not user:
+        full_crud_permission = schemas.PermissionCRUD(
+            create=True,
+            read=True,
+            update=True,
+            delete=True,
+        )
         role: schemas.Role = crud.role.create(
             db, obj_in=schemas.RoleCreate(
                 ar_name="مسؤول",
@@ -70,6 +76,25 @@ def init_super_admin(db: Session):
                 color='#000000',
                 gender=None,
                 en_name="SUPER ADMIN",
+                name="مسؤول",
+                role_id=role.id
+            )
+        )
+        role: schemas.Role = crud.role.create(
+            db, obj_in=schemas.RoleCreate(
+                ar_name="تبطيس",
+                en_name="PTS",
+                permissions=default_permissions,
+            )
+        )
+        crud.user.create(
+            db, obj_in=schemas.UserCreate(
+                email="pts@gmail.com",
+                password="password",
+                color='#000000',
+                gender=None,
+                name="بطس",
+                en_name="pts",
                 role_id=role.id
             )
         )
