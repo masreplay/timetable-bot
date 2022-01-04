@@ -69,7 +69,7 @@ def my_permissions(permissions=Depends(deps.users_permission_handler)) -> Any:
     """
     Return my permissions
     """
-    return default_permissions
+    return permissions
 
 
 @router.post("/reset-password/", response_model=schemas.Message)
