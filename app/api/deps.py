@@ -62,6 +62,9 @@ class PermissionMethod(str, Enum):
 
 
 def method_to_permission_name(method: str):
+    """
+    Request method name to permission CRUD name
+    """
     if method == "GET":
         return "read"
     elif method == "POST":
@@ -75,6 +78,10 @@ def method_to_permission_name(method: str):
 
 
 class PermissionHandler:
+    """
+    Check if user have permission to preform this actions
+    """
+
     def __init__(self, router: str, method: Optional[PermissionMethod] = None):
         self.method = method
         self.router = router

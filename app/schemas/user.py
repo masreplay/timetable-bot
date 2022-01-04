@@ -5,11 +5,11 @@ from pydantic import EmailStr, constr
 from sqlalchemy import Column, Enum
 from sqlmodel import Field
 
+from app.core.utils.regex import url_regex
+from app.core.utils.sql_alchemy_utils import sa_column_kwargs
 from app.schemas.base import BaseSchema
 from app.schemas.card_item import CardContent
 from app.schemas.enums import UserType, UserGender, UserScrapeFrom
-from app.core.utils.regex import url_regex
-from app.core.utils.sql_alchemy_utils import sa_column_kwargs
 
 
 # Shared properties

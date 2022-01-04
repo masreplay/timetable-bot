@@ -5,10 +5,11 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session
 
 from app import schemas, crud
+from app.api import deps
 from app.db.db import get_db
 from app.schemas.paging import LimitSkipParams, Paging
 
-router = APIRouter()
+router = APIRouter(dependencies=[Depends(deps.users_permission_handler)])
 
 
 @router.get("/", response_model=Paging[schemas.User])

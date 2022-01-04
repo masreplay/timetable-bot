@@ -1,6 +1,6 @@
-from uuid import UUID, uuid4
 from datetime import datetime
 from typing import Optional
+from uuid import UUID, uuid4
 
 from sqlmodel import SQLModel, Field
 

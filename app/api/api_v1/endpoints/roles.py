@@ -1,10 +1,10 @@
 from typing import Any
 from uuid import UUID
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session
 
 from app import schemas, crud
-from app.api import deps
 from app.db.db import get_db
 from app.schemas.paging import *
 

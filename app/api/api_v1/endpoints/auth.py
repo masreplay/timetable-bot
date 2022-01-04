@@ -7,15 +7,12 @@ from sqlalchemy.orm import Session
 
 from app import crud, schemas
 from app.api import deps
-from app.api.deps import get_current_user, PermissionHandler
 from app.core import security
 from app.core.security import get_password_hash
 from app.db.db import get_db, settings
-from app.schemas.permissions import Permissions, default_permissions
 from app.utils import (verify_password_reset_token)
 
-router = APIRouter(
-)
+router = APIRouter()
 
 
 @router.post("/login/access-token", response_model=schemas.Token)
@@ -64,7 +61,7 @@ def test_token(current_user: schemas.UserSchema = Depends(deps.get_current_user)
     return current_user
 
 
-@router.get("/permissions/", response_model=Permissions)
+@router.get("/permissions/", response_model=schemas.Permissions)
 def my_permissions(permissions=Depends(deps.users_permission_handler)) -> Any:
     """
     Return my permissions

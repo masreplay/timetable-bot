@@ -1,6 +1,5 @@
 from pydantic import BaseModel
 from pydantic.utils import GetterDict
-from sqlmodel import Field
 
 
 class PermissionCRUD(BaseModel):

@@ -4,13 +4,12 @@ import time
 from fastapi import FastAPI, Request
 from fastapi.logger import logger
 from fastapi.openapi.docs import get_swagger_ui_html, get_swagger_ui_oauth2_redirect_html, get_redoc_html
+from fastapi.staticfiles import StaticFiles
 from starlette.middleware.cors import CORSMiddleware
 
 from app.api.api_v1 import api
 from app.core.config import settings
 from app.open_api_to_files.main import get_models_zip
-
-from fastapi.staticfiles import StaticFiles
 
 app = FastAPI(
     title="CS UOT App",

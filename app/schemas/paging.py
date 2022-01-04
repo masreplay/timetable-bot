@@ -1,7 +1,6 @@
 from typing import TypeVar, List, Generic
 
 from fastapi import Query
-from pydantic import BaseModel
 from pydantic.generics import GenericModel
 from sqlmodel import SQLModel
 
