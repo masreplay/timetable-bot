@@ -102,7 +102,9 @@ def init_super_admin(db: Session):
 
 
 def init_db(db: Session):
-    init_periods(db)
-    init_roles(db)
-    init_users(db)
-    init_super_admin(db)
+    user = crud.user.get_by_email(db, email=settings().FIRST_SUPERUSER)
+    if not user:
+        init_periods(db)
+        init_roles(db)
+        init_users(db)
+        init_super_admin(db)

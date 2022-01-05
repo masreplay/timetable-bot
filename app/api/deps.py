@@ -100,30 +100,33 @@ class PermissionHandler:
 
         print(f"METHOD: {method}")
 
-        # user permission
-        role = crud.role.get(db, id=current_user.role_id)
+        # Current user role
+        role: schemas.RoleSchema = crud.role.get(db, id=current_user.role_id)
 
-        try:
-            # Permissions for current router
-            router_permission: Optional[dict] = role.permissions[self.router]
+        # Permissions group for current router
+        router_permissions_group: Optional[dict] = role.permissions.get(self.router)
 
-            # Permission name
-            current_permission: str = method_to_permission_name(method)
-
-            # Does user have this permission
-            have_permission: bool = router_permission[current_permission]
-
-            if not have_permission:
-                raise HTTPException(
-                    status_code=status.HTTP_403_FORBIDDEN,
-                    detail="You don't have permission to preform this action",
-                )
-
-            return role
-
-        except KeyError:
+        if router_permissions_group is None:
             print("Permission group not found")
             raise HTTPException(400, "Some error occurred")
+
+        # Current requested permission
+        current_permission: str = method_to_permission_name(method)
+
+        # Does user have this permission
+        have_permission: bool = router_permissions_group.get(current_permission)
+
+        if have_permission is None:
+            print("Permission not found")
+            raise HTTPException(400, "Some error occurred")
+
+        if not have_permission:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="You don't have permission to preform this action",
+            )
+
+        return role
 
 
 users_permission_handler = PermissionHandler(router="users")
