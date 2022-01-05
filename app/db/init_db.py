@@ -25,7 +25,7 @@ def init_roles(db: Session):
 
     roles = get_roles()
     for role in roles:
-        role_in = schemas.Role(
+        role_in = schemas.RoleSchema(
             id=role.id,
             ar_name=role.ar_name,
             en_name=role.en_name,
@@ -59,7 +59,7 @@ def init_super_admin(db: Session):
             update=True,
             delete=True,
         )
-        role: schemas.Role = crud.role.create(
+        role: schemas.RoleSchema = crud.role.create(
             db, obj_in=schemas.RoleCreate(
                 ar_name="مسؤول",
                 en_name="SUPER ADMIN",
@@ -81,7 +81,7 @@ def init_super_admin(db: Session):
                 role_id=role.id
             )
         )
-        role: schemas.Role = crud.role.create(
+        role: schemas.RoleSchema = crud.role.create(
             db, obj_in=schemas.RoleCreate(
                 ar_name="تبطيس",
                 en_name="PTS",

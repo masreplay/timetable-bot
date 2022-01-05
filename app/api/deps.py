@@ -11,7 +11,7 @@ from app import crud, schemas
 from app.core import security
 from app.core.config import settings
 from app.db.db import get_db
-from app.schemas import Role
+from app.schemas import RoleSchema
 
 reusable_oauth2 = OAuth2PasswordBearer(
     tokenUrl=f"{settings().API_V1_STR}/auth/login/access-token"
@@ -79,7 +79,6 @@ def method_to_permission_name(method: str):
 
 
 class PermissionHandler:
-
     """
     Check if user have permission to preform this actions
     """
@@ -96,13 +95,13 @@ class PermissionHandler:
             request: Request,
             current_user: schemas.UserSchema = Depends(get_current_user),
             db: Session = Depends(get_db)
-    ) -> Role:
+    ) -> RoleSchema:
         method = self.method.value if self.method else request.method
 
         print(f"METHOD: {method}")
 
         # user permission
-        role: schemas.Role = crud.role.get(db, id=current_user.role_id)
+        role = crud.role.get(db, id=current_user.role_id)
 
         try:
             # Permissions for current router

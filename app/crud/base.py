@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from datetime import datetime
 from typing import Any, Dict, Generic, Optional, Type, TypeVar, Union
 from uuid import UUID
 
@@ -18,13 +19,13 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
     model: Type[ModelType]
 
     def get(self, db: Session, id: UUID) -> Optional[ModelType]:
-        statement = select(self.model).where(and_(self.model.id == id, self.model.deleted_at is not None))
+        statement = select(self.model).where(self.model.id == id)
         return db.exec(statement).first()
 
     def get_multi(
-            self, db: Session, *, skip: int = 0, limit: int = 100
+            self, db: Session, *, skip: UUID = 0, limit: UUID = 100
     ) -> Paging[ModelType]:
-        where = [self.model.deleted_at is not None]
+        where = []
         statement = select(self.model).where(*where).offset(skip).limit(limit)
         return Paging[ModelType](
             count=db.query(self.model).filter(*where).count(),
@@ -59,7 +60,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         db.refresh(db_obj)
         return db_obj
 
-    def remove(self, db: Session, *, id: int) -> ModelType:
+    def remove(self, db: Session, *, id: UUID) -> ModelType:
         obj = self.get(db, id)
         db.delete(obj)
         db.commit()

@@ -1,5 +1,5 @@
 from typing import Optional
-from uuid import UUID, uuid4
+from uuid import UUID
 
 from pydantic import EmailStr, constr
 from sqlalchemy import Column, Enum
@@ -43,19 +43,12 @@ class UserUpdate(UserBase):
     password: Optional[str] = Field(None, min_length=8, max_length=16)
 
 
-class UserInDBBase(UserBase):
-    id: UUID = Field(default_factory=uuid4, primary_key=True)
-
-    class Config:
-        orm_mode = True
-
-
 # Properties to return via API
-class User(UserInDBBase):
-    pass
+class User(UserBase):
+    id: UUID
 
 
 # Additional properties stored in DB
-class UserSchema(UserInDBBase, BaseSchema, table=True):
+class UserSchema(UserBase, BaseSchema, table=True):
     __tablename__ = "user"
     hashed_password: Optional[str]

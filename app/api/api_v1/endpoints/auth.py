@@ -61,7 +61,7 @@ def test_token(current_user: schemas.UserSchema = Depends(deps.get_current_user)
     return current_user
 
 
-@router.get("/permissions/", response_model=schemas.Permissions)
+@router.get("/permissions/", response_model=schemas.Role)
 def my_permissions(permissions=Depends(deps.users_permission_handler)) -> Any:
     """
     Return my permissions
