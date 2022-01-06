@@ -1,32 +1,31 @@
 from typing import Optional
 from uuid import UUID
 
-from sqlalchemy import or_
-from sqlmodel import Session, select, col, and_, not_
+from sqlmodel import Session, select, col
 
 from app.core.security import verify_password, get_password_hash
 from app.crud.base import CRUDBase
+from app.models import User
 from app.schemas.paging import Paging
-from app.schemas.user import (UserSchema, UserCreate)
-from sqlalchemy.sql import column
+from app.schemas.user import UserCreate, UserUpdate
 
 
-class CRUDUser(CRUDBase[UserSchema, UserCreate, UserCreate]):
+class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
 
-    def get(self, db: Session, id: UUID) -> UserSchema:
-        statement = select(self.model).where(UserSchema.id == id)
+    def get(self, db: Session, id: UUID) -> User:
+        statement = select(self.model).where(User.id == id)
         return db.exec(statement).first()
 
-    def get_by_name(self, db: Session, name: str) -> Optional[UserSchema]:
-        statement = select(self.model).where(UserSchema.name == name)
+    def get_by_name(self, db: Session, name: str) -> Optional[User]:
+        statement = select(self.model).where(User.name == name)
         return db.exec(statement).first()
 
-    def get_by_email(self, db: Session, email: str) -> Optional[UserSchema]:
-        statement = select(self.model).where(UserSchema.email == email)
+    def get_by_email(self, db: Session, email: str) -> Optional[User]:
+        statement = select(self.model).where(User.email == email)
         return db.exec(statement).first()
 
-    def create(self, db: Session, *, obj_in: UserCreate) -> UserSchema:
-        db_obj = UserSchema(
+    def create(self, db: Session, *, obj_in: UserCreate) -> User:
+        db_obj = User(
             hashed_password=get_password_hash(obj_in.password) if obj_in.password is not None else None,
             **obj_in.dict()
         )
@@ -37,21 +36,21 @@ class CRUDUser(CRUDBase[UserSchema, UserCreate, UserCreate]):
 
     def get_filter(
             self, db: Session, *, skip: int = 0, limit: int = 100, query: str = None, role_id: UUID = None
-    ) -> Paging[UserSchema]:
+    ) -> Paging[User]:
         where = []
         if query:
-            where.append(col(UserSchema.name).like('%' + query + '%'))
+            where.append(col(User.name).like('%' + query + '%'))
 
         if role_id:
-            where.append(UserSchema.role_id == role_id)
+            where.append(User.role_id == role_id)
 
-        statement = select(UserSchema)
-        return Paging[UserSchema](
-            count=db.query(UserSchema).filter(*where).count(),
-            results=db.exec(statement.where(*where).offset(skip).limit(limit)).all(),
+        statement = select(User)
+        return Paging[User](
+            count=db.query(User).filter(*where).count(),
+            results=db.exec(statement.where(*where).offset(skip).limit(limit)).fetchmany(),
         )
 
-    def authenticate(self, db: Session, *, email: str, password: str) -> Optional[UserSchema]:
+    def authenticate(self, db: Session, *, email: str, password: str) -> Optional[User]:
         user = self.get_by_email(db, email=email)
         if not user:
             return None
@@ -59,8 +58,8 @@ class CRUDUser(CRUDBase[UserSchema, UserCreate, UserCreate]):
             return None
         return user
 
-    def is_active(self, user: UserSchema) -> bool:
+    def is_active(self, user: User) -> bool:
         return user.is_active
 
 
-user = CRUDUser(UserSchema)
+user = CRUDUser(User)

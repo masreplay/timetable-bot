@@ -10,13 +10,14 @@ class UserScrapeFrom(str, Enum):
     uot_asc = "uot_asc"
 
 
-class UserType(str, Enum):
+class StaffType(str, Enum):
     employee = "employee"
     teacher = "teacher"
 
-    # teacher and employee
-    teacher_employee = "teacher_employee"
 
+class UserType(str, Enum):
+    employee = "employee"
+    teacher = "teacher"
     student = "student"
     other = "other"
 

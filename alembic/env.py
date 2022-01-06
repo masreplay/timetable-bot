@@ -1,9 +1,9 @@
 from app.schemas import *
+from app.models import *
 from logging.config import fileConfig
 
 from alembic import context
 from sqlalchemy import create_engine
-
 from sqlmodel import SQLModel
 
 from app.db.db import DATABASE_URL

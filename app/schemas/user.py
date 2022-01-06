@@ -1,21 +1,24 @@
-from typing import Optional
+from typing import Optional, List
+from typing import TYPE_CHECKING
 from uuid import UUID
 
-from pydantic import EmailStr, constr
+from pydantic import EmailStr, constr, validator
+from pydantic.main import BaseModel
 from sqlalchemy import Column, Enum
+from sqlalchemy.orm import Query
 from sqlmodel import Field
 
 from app.core.utils.regex import url_regex
 from app.core.utils.sql_alchemy_utils import sa_column_kwargs
-from app.schemas.base import BaseSchema
 from app.schemas.card_item import CardContent
-from app.schemas.enums import UserType, UserGender, UserScrapeFrom
+from app.schemas.enums import UserGender, UserScrapeFrom
+
+if TYPE_CHECKING:
+    pass
 
 
 # Shared properties
 class UserBase(CardContent):
-    type: UserType = Field(default=None, sa_column=Column(Enum(UserType)))
-
     en_name: Optional[str] = Field(index=True)
     email: Optional[EmailStr] = Field(default=None, sa_column_kwargs=sa_column_kwargs(unique=True))
     uot_url: Optional[constr(regex=url_regex)] = Field(default=None)
@@ -43,12 +46,29 @@ class UserUpdate(UserBase):
     password: Optional[str] = Field(None, min_length=8, max_length=16)
 
 
-# Properties to return via API
-class User(UserBase):
+class JobTitle(BaseModel):
     id: UUID
+    name: str
 
 
-# Additional properties stored in DB
-class UserSchema(UserBase, BaseSchema, table=True):
-    __tablename__ = "user"
-    hashed_password: Optional[str]
+class OrmBase(BaseModel):
+    # Common properties across orm models
+    id: int
+
+    # Pre-processing validator that evaluates lazy relationships before any other validation
+    # NOTE: If high throughput/performance is a concern, you can/should probably apply
+    #       this validator in a more targeted fashion instead of a wildcard in a base class.
+    #       This approach is by no means slow, but adds a minor amount of overhead for every field
+    @validator("*", pre=True)
+    def evaluate_lazy_columns(cls, v):
+        if isinstance(v, Query):
+            return v.all()
+        return v
+
+    class Config:
+        orm_mode = True
+
+
+class User(UserBase, OrmBase):
+    id: UUID
+    job_titles: List[JobTitle]

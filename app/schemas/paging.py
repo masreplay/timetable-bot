@@ -16,3 +16,6 @@ ModelType = TypeVar('ModelType')
 class Paging(GenericModel, Generic[ModelType]):
     count: int
     results: List[ModelType]
+
+    class Config:
+        orm_mode = True

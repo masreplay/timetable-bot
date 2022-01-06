@@ -2,4 +2,5 @@ venv
 .env
 asc_scrapper/generated_data
 **/[Tt]est*
+**/__pycache__
 

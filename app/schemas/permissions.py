@@ -1,4 +1,4 @@
-from pydantic.utils import GetterDict
+from pydantic.main import BaseModel
 from sqlmodel import Field, SQLModel
 
 
@@ -9,10 +9,11 @@ class PermissionGroup(SQLModel):
     delete: bool = Field(False)
 
 
-class Permissions(SQLModel):
+class Permissions(BaseModel):
     users: PermissionGroup
     roles: PermissionGroup
     periods: PermissionGroup
+    job_titles: PermissionGroup
 
 
 # default permissions for new role
@@ -24,5 +25,6 @@ default_permissions: Permissions = Permissions(
         update=False,
         delete=False,
     ),
-    periods=PermissionGroup()
+    periods=PermissionGroup(),
+    job_titles=PermissionGroup()
 )

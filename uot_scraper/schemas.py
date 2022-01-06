@@ -1,15 +1,3 @@
-# {
-#       "id": "f7a00054-31b9-4c6b-a241-f2a4aa8e008a",
-#       "ar_name": "علاء نوري مظهر",
-#       "en_name": "Alaa Noori Mazhar",
-#       "image": "https://cs.uotechnology.edu.iq/media/k2/items/cache/07758ee08f7e16a0b15b0d98a56d204a_XS.jpg",
-#       "stage_id": [
-#         ""
-#       ],
-#       "email": "110027@uotechnology.edu.iq",
-#       "uot_url": "https://cs.uotechnology.edu.iq/index.php/s/cv/1252-alaa-noori-mazhar",
-#       "role_id": "2e104deb-042e-426d-ad78-a557c73f45d2"
-#     }
 from typing import Optional, Type
 
 from pydantic import Field, BaseModel

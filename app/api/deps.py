@@ -7,11 +7,10 @@ from jose import jwt
 from pydantic import ValidationError
 from sqlalchemy.orm import Session
 
-from app import crud, schemas
+from app import crud, schemas, models
 from app.core import security
 from app.core.config import settings
 from app.db.db import get_db
-from app.schemas import RoleSchema
 
 reusable_oauth2 = OAuth2PasswordBearer(
     tokenUrl=f"{settings().API_V1_STR}/auth/login/access-token"
@@ -20,7 +19,7 @@ reusable_oauth2 = OAuth2PasswordBearer(
 
 def get_current_user(
         db: Session = Depends(get_db), token: str = Depends(reusable_oauth2)
-) -> schemas.UserSchema:
+) -> models.User:
     try:
         payload = jwt.decode(
             token, settings().SECRET_KEY, algorithms=[security.ALGORITHM]
@@ -38,16 +37,16 @@ def get_current_user(
 
 
 def get_current_active_user(
-        current_user: schemas.UserSchema = Depends(get_current_user),
-) -> schemas.UserSchema:
+        current_user: models.User = Depends(get_current_user),
+) -> models.User:
     if not crud.user.is_active(current_user):
         raise HTTPException(status_code=400, detail="Inactive user")
     return current_user
 
 
 def get_current_active_superuser(
-        current_user: schemas.UserSchema = Depends(get_current_user),
-) -> schemas.UserSchema:
+        current_user: models.User = Depends(get_current_user),
+) -> models.User:
     if not crud.user.is_superuser(current_user):
         raise HTTPException(
             status_code=400, detail="The user doesn't have enough privileges"
@@ -93,15 +92,15 @@ class PermissionHandler:
     async def __call__(
             self,
             request: Request,
-            current_user: schemas.UserSchema = Depends(get_current_user),
+            current_user: models.User = Depends(get_current_user),
             db: Session = Depends(get_db)
-    ) -> RoleSchema:
+    ) -> models.Role:
         method = self.method.value if self.method else request.method
 
         print(f"METHOD: {method}")
 
         # Current user role
-        role: schemas.RoleSchema = crud.role.get(db, id=current_user.role_id)
+        role: models.Role = crud.role.get(db, id=current_user.role_id)
 
         # Permissions group for current router
         router_permissions_group: Optional[dict] = role.permissions.get(self.router)

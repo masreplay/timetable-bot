@@ -1,7 +1,9 @@
+from typing import List
+
 from pydantic.color import Color
 
 from app import schemas
-from app.schemas.user import UserGender, UserScrapeFrom, UserType
+from app.schemas.user import UserGender, UserScrapeFrom
 from asc_scrapper.asc_data import db
 from colors.color_utils import random_primary, colored_text
 from uot_scraper.db import get_teachers
@@ -9,17 +11,9 @@ from uot_scraper.db import get_teachers
 TeachersName = list[str]
 
 
-def formate_asc_teachers():
-    return db.get_teachers()
-
-
-def formate_uot_teachers():
-    return get_teachers()
-
-
-def get_acs_uot_teachers():
-    old_uot = formate_uot_teachers()
-    old_asc = formate_asc_teachers()
+def get_acs_uot_teachers() -> List[schemas.UserCreate]:
+    old_uot = get_teachers()
+    old_asc = db.get_teachers()
 
     c = 0
     new_asc = []
@@ -36,7 +30,7 @@ def get_acs_uot_teachers():
                 new_uot.append(uot_teacher)
                 teachers.append(
                     schemas.UserCreate(
-                        type=UserType.teacher,
+                        job_titles=[],
                         name=uot_teacher.ar_name,
                         en_name=uot_teacher.en_name,
                         image=uot_teacher.image,
@@ -56,7 +50,7 @@ def get_acs_uot_teachers():
     for teacher in new_asc:
         teachers.append(
             schemas.UserCreate(
-                type=UserType.teacher,
+                job_titles=[],
                 name=teacher.get_name,
                 en_name=None,
                 image=None,
@@ -75,7 +69,7 @@ def get_acs_uot_teachers():
     for teacher in new_uot:
         teachers.append(
             schemas.UserCreate(
-                type=UserType.teacher,
+                job_titles=[],
                 name=teacher.ar_name,
                 en_name=teacher.en_name,
                 image=teacher.image,

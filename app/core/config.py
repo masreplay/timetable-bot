@@ -18,6 +18,16 @@ class Settings(BaseSettings):
     PORT: int
     TRANSLATION_KEY: str
 
+    RESPONSIBLE_USERS: List[EmailStr] = []
+
+    @validator("RESPONSIBLE_USERS", pre=True)
+    def assemble_emails(cls, v: Union[str, List[str]]) -> Union[List[str], str]:
+        if isinstance(v, str) and not v.startswith("["):
+            return [i.strip() for i in v.split(",")]
+        elif isinstance(v, (list, str)):
+            return v
+        raise ValueError(v)
+
     FIRST_SUPERUSER: EmailStr
     FIRST_SUPERUSER_PASSWORD: str
 

@@ -1,9 +1,6 @@
 from datetime import time
 from typing import Optional
-
-from sqlmodel import SQLModel
-
-from app.schemas.base import BaseSchema
+from uuid import UUID
 
 from sqlmodel import SQLModel
 
@@ -15,10 +12,6 @@ class PeriodBase(SQLModel):
     end_time: time
 
 
-class Period(BaseSchema, PeriodBase, table=True):
-    pass
-
-
 # Properties to receive via API on creation
 class PeriodCreate(PeriodBase):
     pass
@@ -27,3 +20,7 @@ class PeriodCreate(PeriodBase):
 # Properties to receive via API on update
 class PeriodUpdate(PeriodBase):
     pass
+
+
+class Period(PeriodBase):
+    id: UUID
