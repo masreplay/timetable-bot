@@ -47,7 +47,7 @@ def update_job_title(
     """
     job_title = crud.job_title.get(db=db, id=id)
     if not job_title:
-        raise HTTPException(status_code=404, detail="job_title not found")
+        raise HTTPException(status_code=404, detail="Job title not found")
     job_title = crud.job_title.update(db=db, db_obj=job_title, obj_in=job_title_in)
     return job_title
 
@@ -63,7 +63,7 @@ def read_job_title(
     """
     job_title = crud.job_title.get(db=db, id=id)
     if not job_title:
-        raise HTTPException(status_code=404, detail="job_title not found")
+        raise HTTPException(status_code=404, detail="Job title not found")
     return job_title
 
 
@@ -78,6 +78,6 @@ def delete_job_title(
     """
     job_title = crud.job_title.get(db=db, id=id)
     if not job_title:
-        raise HTTPException(status_code=404, detail="job_title not found")
+        raise HTTPException(status_code=404, detail="Job title not found")
     job_title = crud.job_title.remove(db=db, id=id)
     return job_title

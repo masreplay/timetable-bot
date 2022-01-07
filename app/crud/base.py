@@ -1,22 +1,22 @@
 from dataclasses import dataclass
-from datetime import datetime
 from typing import Any, Dict, Generic, Optional, Type, TypeVar, Union
 from uuid import UUID
 
 from fastapi.encoders import jsonable_encoder
 from sqlmodel import SQLModel, select, Session
-from sqlmodel import and_
 
 from app.schemas.paging import Paging
 
 ModelType = TypeVar("ModelType", bound=SQLModel)
 CreateSchemaType = TypeVar("CreateSchemaType", bound=SQLModel)
 UpdateSchemaType = TypeVar("UpdateSchemaType", bound=SQLModel)
+Schema = TypeVar("Schema", bound=SQLModel)
 
 
 @dataclass
-class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
+class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType, Schema]):
     model: Type[ModelType]
+    schema: Type[Schema]
 
     def get(self, db: Session, id: UUID) -> Optional[ModelType]:
         statement = select(self.model).where(self.model.id == id)
@@ -24,12 +24,10 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
 
     def get_multi(
             self, db: Session, *, skip: UUID = 0, limit: UUID = 100
-    ) -> Paging[ModelType]:
-        where = []
-        statement = select(self.model).where(*where).offset(skip).limit(limit)
-        return Paging[ModelType](
-            count=db.query(self.model).filter(*where).count(),
-            results=db.exec(statement).all()
+    ) -> Paging[Schema]:
+        return Paging[self.schema](
+            count=db.query(self.model).filter().count(),
+            results=db.exec(select(self.model).offset(skip).limit(limit)).all()
         )
 
     def create(self, db: Session, *, obj_in: CreateSchemaType) -> ModelType:

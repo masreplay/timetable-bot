@@ -49,7 +49,7 @@ def update_period(
     """
     period = crud.period.get(db=db, id=id)
     if not period:
-        raise HTTPException(status_code=404, detail="period not found")
+        raise HTTPException(status_code=404, detail="Period not found")
     period = crud.period.update(db=db, db_obj=period, obj_in=period_in)
     return period
 
@@ -65,7 +65,7 @@ def read_period(
     """
     period = crud.period.get(db=db, id=id)
     if not period:
-        raise HTTPException(status_code=404, detail="period not found")
+        raise HTTPException(status_code=404, detail="Period not found")
     return period
 
 
@@ -80,6 +80,6 @@ def delete_period(
     """
     period = crud.period.get(db=db, id=id)
     if not period:
-        raise HTTPException(status_code=404, detail="period not found")
+        raise HTTPException(status_code=404, detail="Period not found")
     period = crud.period.remove(db=db, id=id)
     return period

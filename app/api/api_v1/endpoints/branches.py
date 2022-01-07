@@ -48,7 +48,7 @@ def update_branch(
     """
     branch = crud.branch.get(db=db, id=id)
     if not branch:
-        raise HTTPException(status_code=404, detail="branch not found")
+        raise HTTPException(status_code=404, detail="Branch not found")
     branch = crud.branch.update(db=db, db_obj=branch, obj_in=branch_in)
     return branch
 
@@ -64,7 +64,7 @@ def read_branch(
     """
     branch = crud.branch.get(db=db, id=id)
     if not branch:
-        raise HTTPException(status_code=404, detail="branch not found")
+        raise HTTPException(status_code=404, detail="Branch not found")
     return branch
 
 
@@ -79,6 +79,6 @@ def delete_branch(
     """
     branch = crud.branch.get(db=db, id=id)
     if not branch:
-        raise HTTPException(status_code=404, detail="branch not found")
+        raise HTTPException(status_code=404, detail="Branch not found")
     branch = crud.branch.remove(db=db, id=id)
     return branch

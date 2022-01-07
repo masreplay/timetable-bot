@@ -1,7 +1,7 @@
 from typing import Optional
 from uuid import UUID
 
-from sqlmodel import Field
+from sqlmodel import Field, Relationship
 
 from app.schemas.department import ClassBase
 from app.schemas.base import BaseSchema

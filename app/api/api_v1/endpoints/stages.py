@@ -32,7 +32,14 @@ def create_stage(
     """
     Create new stage.
     """
-    stage = crud.stage.get_multi(db)
+    branch = crud.branch.get(db=db, id=stage_in.branch_id)
+    if not branch:
+        raise HTTPException(status_code=404, detail="Branch not found")
+
+    stage = crud.stage.get_by_object(db, stage=stage_in)
+    if stage:
+        raise HTTPException(status_code=400, detail="Stage already exist")
+
     stage = crud.stage.create(db=db, obj_in=stage_in)
     return stage
 
@@ -47,9 +54,19 @@ def update_stage(
     """
     Update a stage.
     """
+
+    branch = crud.branch.get(db=db, id=stage_in.branch_id)
+    if not branch:
+        raise HTTPException(status_code=404, detail="Branch not found")
+
+    stage = crud.stage.get_by_object(db, stage=stage_in)
+    if stage:
+        raise HTTPException(status_code=400, detail="Stage already exist")
+
     stage = crud.stage.get(db=db, id=id)
     if not stage:
-        raise HTTPException(status_code=404, detail="stage not found")
+        raise HTTPException(status_code=404, detail="Stage not found")
+
     stage = crud.stage.update(db=db, db_obj=stage, obj_in=stage_in)
     return stage
 
@@ -65,7 +82,7 @@ def read_stage(
     """
     stage = crud.stage.get(db=db, id=id)
     if not stage:
-        raise HTTPException(status_code=404, detail="stage not found")
+        raise HTTPException(status_code=404, detail="Stage not found")
     return stage
 
 
@@ -80,6 +97,6 @@ def delete_stage(
     """
     stage = crud.stage.get(db=db, id=id)
     if not stage:
-        raise HTTPException(status_code=404, detail="stage not found")
+        raise HTTPException(status_code=404, detail="Stage not found")
     stage = crud.stage.remove(db=db, id=id)
     return stage

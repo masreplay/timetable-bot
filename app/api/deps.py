@@ -122,7 +122,7 @@ class PermissionHandler:
         if not have_permission:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
-                detail="You don't have permission to preform this action",
+                detail="The user doesn't have enough permissions",
             )
 
         return role

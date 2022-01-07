@@ -4,7 +4,7 @@ from uuid import UUID
 from sqlalchemy import Column, Enum, UniqueConstraint
 from sqlmodel import Field, SQLModel
 
-from app.schemas.base import BaseSchema
+from app.core.utils.utils import NamedObject
 from app.schemas.enums import CollageShifts
 
 
@@ -12,13 +12,18 @@ from app.schemas.enums import CollageShifts
 class StageBase(SQLModel):
     __table_args__ = (UniqueConstraint('shift', 'level', 'branch_id', name='branch_stage'),)
 
-    shift: Optional[CollageShifts] = Field(sa_column=Column(Enum(CollageShifts)))
-    level: int = Field(ge=1, le=10)
+    shift: Optional[CollageShifts] = Field(index=True, sa_column=Column(Enum(CollageShifts)))
+    level: int = Field(index=True, ge=1, le=10)
     branch_id: Optional[UUID] = Field(default=None, foreign_key="branch.id")
 
 
-class Stage(BaseSchema, StageBase):
+class Branch(NamedObject):
+    department: NamedObject
+
+
+class Stage(StageBase):
     id: UUID
+    branch: Branch
 
 
 # Properties to receive via API on creation

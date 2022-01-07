@@ -59,7 +59,7 @@ def update_user(
     """
     user = crud.user.get(db=db, id=id)
     if not user:
-        raise HTTPException(status_code=404, detail="user not found")
+        raise HTTPException(status_code=404, detail="User not found")
     user = crud.user.update(db=db, db_obj=user, obj_in=user_in)
     return user
 
@@ -75,7 +75,7 @@ def read_user(
     """
     user = crud.user.get(db=db, id=id)
     if not user:
-        raise HTTPException(status_code=404, detail="user not found")
+        raise HTTPException(status_code=404, detail="User not found")
     return user
 
 
@@ -90,6 +90,6 @@ def delete_user(
     """
     user = crud.user.get(db=db, id=id)
     if not user:
-        raise HTTPException(status_code=404, detail="user not found")
+        raise HTTPException(status_code=404, detail="User not found")
     user = crud.user.remove(db=db, id=id)
     return user

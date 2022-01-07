@@ -48,7 +48,7 @@ def update_department(
     """
     department = crud.department.get(db=db, id=id)
     if not department:
-        raise HTTPException(status_code=404, detail="department not found")
+        raise HTTPException(status_code=404, detail="Department not found")
     department = crud.department.update(db=db, db_obj=department, obj_in=department_in)
     return department
 
@@ -64,7 +64,7 @@ def read_department(
     """
     department = crud.department.get(db=db, id=id)
     if not department:
-        raise HTTPException(status_code=404, detail="department not found")
+        raise HTTPException(status_code=404, detail="Department not found")
     return department
 
 
@@ -79,6 +79,6 @@ def delete_department(
     """
     department = crud.department.get(db=db, id=id)
     if not department:
-        raise HTTPException(status_code=404, detail="department not found")
+        raise HTTPException(status_code=404, detail="Department not found")
     department = crud.department.remove(db=db, id=id)
     return department

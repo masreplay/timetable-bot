@@ -62,12 +62,14 @@ class Period(BaseSchema, PeriodBase, table=True):
 
 
 class Department(BaseSchema, DepartmentBase, table=True):
+    branches: List["Branch"] = Relationship(back_populates="department")
     pass
 
 
 class Branch(BaseSchema, BranchBase, table=True):
-    pass
+    department: "Department" = Relationship(back_populates="branches")
+    stages: List["Stage"] = Relationship(back_populates="branch")
 
 
 class Stage(BaseSchema, StageBase, table=True):
-    pass
+    branch: "Branch" = Relationship(back_populates="stages")

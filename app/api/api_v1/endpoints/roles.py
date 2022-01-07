@@ -49,7 +49,7 @@ def update_role(
     """
     role = crud.role.get(db=db, id=id)
     if not role:
-        raise HTTPException(status_code=404, detail="role not found")
+        raise HTTPException(status_code=404, detail="Role not found")
     role = crud.role.update(db=db, db_obj=role, obj_in=role_in)
     return role
 
@@ -65,7 +65,7 @@ def read_role(
     """
     role = crud.role.get(db=db, id=id)
     if not role:
-        raise HTTPException(status_code=404, detail="role not found")
+        raise HTTPException(status_code=404, detail="Role not found")
     return role
 
 
@@ -80,6 +80,6 @@ def delete_role(
     """
     role = crud.role.get(db=db, id=id)
     if not role:
-        raise HTTPException(status_code=404, detail="role not found")
+        raise HTTPException(status_code=404, detail="Role not found")
     role = crud.role.remove(db=db, id=id)
     return role

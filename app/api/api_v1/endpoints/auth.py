@@ -93,4 +93,4 @@ def reset_password(
     user.hashed_password = hashed_password
     db.add(user)
     db.commit()
-    return {"msg": "Password updated successfully"}
+    return schemas.Message(message="Password updated successfully")

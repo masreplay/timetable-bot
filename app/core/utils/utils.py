@@ -7,6 +7,7 @@ from typing import (
     Type,
     Union,
 )
+from uuid import UUID
 
 from fastapi import APIRouter
 from fastapi import params
@@ -16,6 +17,11 @@ from starlette.responses import JSONResponse, Response
 from starlette.routing import BaseRoute
 
 from app.api.deps import PermissionHandler
+
+
+class NamedObject(SQLModel):
+    id: UUID
+    name: str
 
 
 def get_operation_from_method(method: str) -> str:

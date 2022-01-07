@@ -13,7 +13,7 @@ from app.schemas.paging import Paging
 from app.schemas.user import UserCreate, UserUpdate
 
 
-class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
+class CRUDUser(CRUDBase[User, UserCreate, UserUpdate, schemas.User]):
 
     def get(self, db: Session, id: UUID) -> User:
         statement = select(self.model).where(User.id == id)
@@ -83,4 +83,4 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
         return user.is_active
 
 
-user = CRUDUser(User)
+user = CRUDUser(User, schemas.User)
