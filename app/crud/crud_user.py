@@ -1,9 +1,10 @@
-from typing import Optional, List, Any
+from typing import Optional, List
 from uuid import UUID
 
+from pydantic import EmailStr
 from sqlmodel import Session, select, col
 
-from app import schemas
+from app import schemas, models
 from app.core.security import verify_password, get_password_hash
 from app.crud.base import CRUDBase
 from app.models import User
@@ -21,14 +22,24 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
         statement = select(self.model).where(User.name == name)
         return db.exec(statement).first()
 
-    def get_by_email(self, db: Session, email: str) -> Optional[User]:
+    def get_by_email(self, db: Session, email: EmailStr) -> Optional[User]:
         statement = select(self.model).where(User.email == email)
         return db.exec(statement).first()
 
+    def update_job_titles_by_email(self, db: Session, email: EmailStr, job_titles: List[models.JobTitle]) -> User:
+        user = self.get_by_email(db, email=email)
+        for jt in job_titles:
+            user.job_titles.append(jt)
+            db.add(user)
+
+        db.commit()
+        db.refresh(user)
+        return user
+
     def create(self, db: Session, *, obj_in: UserCreate) -> User:
         db_obj = User(
-            hashed_password=get_password_hash(obj_in.password) if obj_in.password is not None else None,
-            **obj_in.dict()
+            **obj_in.dict(),
+            hashed_password=get_password_hash(obj_in.password) if obj_in.password else None,
         )
         db.add(db_obj)
         db.commit()

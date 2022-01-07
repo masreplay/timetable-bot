@@ -10,7 +10,7 @@ from app.db.db import get_db
 from app.schemas.paging import LimitSkipParams, Paging
 
 router = APIRouter(
-    dependencies=[Depends(deps.users_permission_handler)]
+    # dependencies=[Depends(deps.users_permission_handler)]
 )
 
 

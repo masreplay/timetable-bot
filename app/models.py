@@ -31,7 +31,7 @@ class JobTitle(BaseSchema, JobTitleBase, table=True):
 
 class User(UserBase, BaseSchema, table=True):
     job_titles: List["JobTitle"] = Relationship(back_populates="users", link_model=UserJobTitle)
-    hashed_password: Optional[str]
+    hashed_password: Optional[str] = Field(None)
 
     class Config:
         orm_mode = True

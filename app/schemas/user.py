@@ -1,18 +1,15 @@
 from typing import Optional, List
-from typing import TYPE_CHECKING
 from uuid import UUID
 
-from pydantic import EmailStr, constr, validator
+from pydantic import EmailStr, constr
 from pydantic.main import BaseModel
 from sqlalchemy import Column, Enum
-from sqlalchemy.orm import Query
 from sqlmodel import Field
 
 from app.core.utils.regex import url_regex
 from app.core.utils.sql_alchemy_utils import sa_column_kwargs
 from app.schemas.card_item import CardContent
 from app.schemas.enums import UserGender, UserScrapeFrom
-
 
 
 # Shared properties
@@ -49,24 +46,6 @@ class JobTitle(BaseModel):
     name: str
 
 
-class OrmBase(BaseModel):
-    # Common properties across orm models
-    id: int
-
-    # Pre-processing validator that evaluates lazy relationships before any other validation
-    # NOTE: If high throughput/performance is a concern, you can/should probably apply
-    #       this validator in a more targeted fashion instead of a wildcard in a base class.
-    #       This approach is by no means slow, but adds a minor amount of overhead for every field
-    @validator("*", pre=True)
-    def evaluate_lazy_columns(cls, v):
-        if isinstance(v, Query):
-            return v.all()
-        return v
-
-    class Config:
-        orm_mode = True
-
-
-class User(UserBase, OrmBase):
+class User(UserBase):
     id: UUID
     job_titles: List[JobTitle]
