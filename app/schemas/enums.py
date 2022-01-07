@@ -30,3 +30,9 @@ class UserGender(str, Enum):
 class CollageShifts(str, Enum):
     morning = "morning"
     evening = "evening"
+
+
+class RoomType(str, Enum):
+    classroom = "classroom"
+    employee = "employee"
+    other = "other"

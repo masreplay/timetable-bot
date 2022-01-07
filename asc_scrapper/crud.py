@@ -46,6 +46,10 @@ def get_classroom(classroom_id: str, classrooms=db.get_classrooms()) -> schemas.
             return classroom
 
 
+def get_classrooms():
+    return db.get_classrooms()
+
+
 def get_teacher(teacher_id: str, teachers=db.get_teachers()) -> schemas.Teacher:
     for teacher in teachers:
         if teacher.id == teacher_id:
@@ -88,6 +92,10 @@ def get_teacher_by_lesson_id(lesson_id: str) -> schemas.Teacher:
 
 def get_periods() -> list[schemas.Period]:
     return db.get_periods()
+
+
+def get_buildings() -> list[schemas.Building]:
+    return db.get_buildings()
 
 
 def get_days() -> list[schemas.Day]:

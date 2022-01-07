@@ -33,6 +33,11 @@ def get_periods():
 
 
 @lru_cache()
+def get_buildings():
+    return load_data(os.path.join(BASE_DIR, 'buildings.json'), schemas.Building)
+
+
+@lru_cache()
 def get_days_def():
     return load_data(os.path.join(BASE_DIR, 'daysdefs.json'), schemas.Day)
 

@@ -1,11 +1,51 @@
+from typing import Dict
+from uuid import UUID, uuid4
+
 from sqlmodel import Session
 
 import asc_scrapper.crud as asc_crud
 from app import crud, schemas, models
 from app.core.config import settings
+from app.schemas import enums
 from app.schemas.enums import UserType, CollageShifts
 from app.schemas.permissions import default_permissions, Permissions
 from uot_scraper.match_teachers import get_acs_uot_teachers
+
+
+def init_building(db: Session):
+    building_ids: Dict[str, UUID] = {}
+    rooms_ids: Dict[str, UUID] = {}
+
+    buildings = asc_crud.get_buildings()
+    rooms = asc_crud.get_classrooms()
+
+    for building in buildings:
+        id = uuid4()
+        building_ids[building.id] = id
+
+        crud.building.create(
+            db=db,
+            obj_in=schemas.Building(
+                id=id,
+                name=building.name,
+                color=building.color,
+            )
+        )
+
+    for room in rooms:
+        id = uuid4()
+        rooms_ids[room.id] = id
+
+        crud.room.create(
+            db=db,
+            obj_in=schemas.Room(
+                id=id,
+                name=room.name,
+                color=room.color,
+                building_id=building_ids.get(room.buildingid),
+                type=enums.RoomType.classroom
+            )
+        )
 
 
 def init_classes(db: Session):
@@ -47,6 +87,7 @@ def init_periods(db: Session):
 def init_db(db: Session):
     user = crud.user.get_by_email(db, email=settings().FIRST_SUPERUSER)
     if not user:
+        init_building(db)
         init_classes(db)
         # define user job titles
         student_jt = models.JobTitle(

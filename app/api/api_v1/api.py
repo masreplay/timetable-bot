@@ -1,4 +1,5 @@
-from app.api.api_v1.endpoints import (users, roles, periods, auth, job_title, stages, departments, branches)
+from app.api.api_v1.endpoints import (users, roles, periods, auth, job_titles, stages, departments, branches, buildings,
+                                      rooms)
 from app.core.utils.utils import APIPermissionsRouter
 
 api_router = APIPermissionsRouter()
@@ -11,3 +12,5 @@ api_router.include_router(job_title.router, prefix="/job_titles", tags=["job tit
 api_router.include_permissions_router(departments.router, prefix_permissions="departments", tags=["departments"])
 api_router.include_permissions_router(branches.router, prefix_permissions="branches", tags=["branches"])
 api_router.include_router(stages.router, prefix="/stages", tags=["stages"])
+api_router.include_router(buildings.router, prefix="/buildings", tags=["buildings"])
+api_router.include_router(rooms.router, prefix="/rooms", tags=["rooms"])

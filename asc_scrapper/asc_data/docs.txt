@@ -7,7 +7,6 @@ classroom prolog القاعة الدراسية
       "sharedroom": false,
       "needssupervision": false,
       "color": "#99FF66",
-      "nearbyclassroomids": []
 },
 
 

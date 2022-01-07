@@ -141,3 +141,10 @@ class Classroom(BaseModel):
     needssupervision: bool
     color: str
     nearbyclassroomids: List
+
+
+class Building(BaseModel):
+    id: str
+    name: str
+    short: str
+    color: str
