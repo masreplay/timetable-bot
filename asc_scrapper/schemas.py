@@ -4,7 +4,7 @@ from pydantic import BaseModel, Field
 from pydantic.color import Color
 
 
-class AscCard(BaseModel):
+class Card(BaseModel):
     id: str
     lessonid: str
     period: str
@@ -13,10 +13,10 @@ class AscCard(BaseModel):
     classroomids: List[str]
 
 
-Schedule: Type = list[AscCard]
+Schedule: Type = list[Card]
 
 
-class AscDay(BaseModel):
+class Day(BaseModel):
     id: str
     name: str
     short: str
@@ -25,7 +25,7 @@ class AscDay(BaseModel):
     val: Optional[int]
 
 
-class AscSubject(BaseModel):
+class Subject(BaseModel):
     id: str
     name: str
     short: str
@@ -35,7 +35,7 @@ class AscSubject(BaseModel):
     contract_weight: int
 
 
-class AscLesson(BaseModel):
+class Lesson(BaseModel):
     id: str
     subjectid: str
     teacherids: List[str]
@@ -54,7 +54,7 @@ class AscLesson(BaseModel):
     groupnames: List[str]
 
 
-class AscPeriod(BaseModel):
+class Period(BaseModel):
     id: str
     period: str
     name: str
@@ -73,7 +73,7 @@ class AscPeriod(BaseModel):
         return f"{self.starttime} - {self.endtime}"
 
 
-class AscTeacher(BaseModel):
+class Teacher(BaseModel):
     id: str
     short: str
     gender: str
@@ -119,7 +119,7 @@ class AscTeacher(BaseModel):
             return self.get_name.split()[1]
 
 
-class AscClass(BaseModel):
+class Class(BaseModel):
     id: str
     name: str
     short: str
@@ -132,7 +132,7 @@ class AscClass(BaseModel):
     classroomid: str
 
 
-class AscClassroom(BaseModel):
+class Classroom(BaseModel):
     id: str
     name: str
     short: str

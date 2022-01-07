@@ -6,9 +6,9 @@ import requests
 import urllib3
 from bs4 import BeautifulSoup as BSHTML
 
-from app.core import settings
+from app.core.config import settings
 from uot_scraper.email_extract import get_emails
-from uot_scraper.schemas import UotTeacher, UotTeachers, UotRole, UotRoles
+from uot_scraper.schemas import Teacher, Teachers, Role, Roles
 
 
 def main():
@@ -39,7 +39,7 @@ def extract_department_teachers(department_abbr: str):
     print("Getting teachers urls, image and en_name...")
     names = []
     teachers_urls = []
-    teachers: UotTeachers = []
+    teachers: Teachers = []
 
     for link in soup.findAll('a'):
         href = link['href']
@@ -54,7 +54,7 @@ def extract_department_teachers(department_abbr: str):
                 teachers_urls.append(teacher_url)
                 names.append(teacher_name)
 
-                teacher: UotTeacher = UotTeacher(
+                teacher: Teacher = Teacher(
                     id=uuid.uuid4().__str__(),
                     ar_name=None,
                     en_name=teacher_name,
@@ -78,7 +78,7 @@ def extract_department_teachers(department_abbr: str):
     # Get teacher role
     print("Getting teacher role...")
     roles = []
-    roles_objects: UotRoles = []
+    roles_objects: Roles = []
     for (i, link) in enumerate(teachers_urls):
 
         response = http.request('GET', link)
@@ -95,7 +95,7 @@ def extract_department_teachers(department_abbr: str):
         if role not in roles:
             role_id = uuid.uuid4().__str__()
             roles_objects.append(
-                UotRole(
+                Role(
                     id=role_id,
                     en_name=role
                 )

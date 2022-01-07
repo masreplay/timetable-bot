@@ -1,9 +1,11 @@
+from asc_scrapper import schemas
 from asc_scrapper.crud import *
 from asc_scrapper.schemas import *
 from colors.color_utils import decide_text_color, reduce_color_lightness
 
 
-def schedule_html(*, periods: list[AscPeriod], days: list[AscDay], cards: Schedule, title: str, is_dark: bool):
+def schedule_html(*, periods: list[schemas.Period], days: list[schemas.Day], cards: Schedule, title: str,
+                  is_dark: bool):
     col_width = 100 / (len(periods) + 1)
     row_height = 100 / (len(days) + 1)
     style = f"""<style>
@@ -97,7 +99,7 @@ def schedule_html(*, periods: list[AscPeriod], days: list[AscDay], cards: Schedu
 </html>"""
 
 
-def generate_tab(days: list[AscDay], periods: list[AscPeriod], cards: Schedule, is_dark: bool = True):
+def generate_tab(days: list[schemas.Day], periods: list[schemas.Period], cards: Schedule, is_dark: bool = True):
     card_tags = ""
     on_background_color = "#ffffff" if is_dark else "#000000"
     for day in days:
@@ -123,7 +125,7 @@ def generate_tab(days: list[AscDay], periods: list[AscPeriod], cards: Schedule, 
     return card_tags
 
 
-def card_into_table(card: AscCard):
+def card_into_table(card: schemas.Card):
     card_data = \
         f"<p>{get_subject_by_lesson_id(card.lessonid).short}</p>" \
         f"<p>{get_teacher_by_lesson_id(card.lessonid).short}</p>" \

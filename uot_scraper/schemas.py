@@ -3,7 +3,7 @@ from typing import Optional, Type
 from pydantic import Field, BaseModel
 
 
-class UotTeacher(BaseModel):
+class Teacher(BaseModel):
     id: str
     ar_name: Optional[str]
     en_name: str
@@ -22,19 +22,19 @@ class UotTeacher(BaseModel):
         return self.ar_name.split()[1]
 
 
-class UotRole(BaseModel):
+class Role(BaseModel):
     id: str
     en_name: str
     ar_name: Optional[str]
 
 
-UotTeachers: Type = list[UotTeacher]
-UotRoles: Type = list[UotRole]
+Teachers: Type = list[Teacher]
+Roles: Type = list[Role]
 
 
-class UotTeacherCreate(UotTeacher):
+class TeacherCreate(Teacher):
     pass
 
 
-class UotTeacherEdit(UotTeacher):
+class TeacherEdit(Teacher):
     pass
