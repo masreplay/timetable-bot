@@ -16,7 +16,7 @@ Schema = TypeVar("Schema", bound=SQLModel)
 @dataclass
 class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType, Schema]):
     model: Type[ModelType]
-    schema: Type[Schema]
+    schema: Schema
 
     def get(self, db: Session, id: UUID) -> Optional[ModelType]:
         statement = select(self.model).where(self.model.id == id)
@@ -29,14 +29,6 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType, Schema]):
             count=db.query(self.model).filter().count(),
             results=db.exec(select(self.model).offset(skip).limit(limit)).all()
         )
-
-    def create(self, db: Session, *, obj_in: CreateSchemaType) -> ModelType:
-        obj_in_data = jsonable_encoder(obj_in)
-        db_obj = self.model(**obj_in_data)
-        db.add(db_obj)
-        db.commit()
-        db.refresh(db_obj)
-        return db_obj
 
     def update(
             self,
@@ -53,6 +45,14 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType, Schema]):
         for field in obj_data:
             if field in update_data:
                 setattr(db_obj, field, update_data[field])
+        db.add(db_obj)
+        db.commit()
+        db.refresh(db_obj)
+        return db_obj
+
+    def create(self, db: Session, *, obj_in: CreateSchemaType) -> ModelType:
+        obj_in_data = jsonable_encoder(obj_in)
+        db_obj = self.model(**obj_in_data)
         db.add(db_obj)
         db.commit()
         db.refresh(db_obj)

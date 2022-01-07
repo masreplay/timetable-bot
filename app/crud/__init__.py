@@ -1,21 +1,21 @@
 from app.models import Branch
-from app.models import Department
-from app.models import JobTitle, Period, Role
-from app.schemas import (BranchCreate, BranchUpdate, DepartmentCreate, DepartmentUpdate, JobTitleCreate, JobTitleUpdate,
-                         PeriodUpdate, PeriodCreate, )
-from app.schemas.role import RoleCreate, RoleUpdate
+from app.schemas import BranchCreate, BranchUpdate
 from .base import CRUDBase
 from .crud_stage import stage
 from .crud_user import user
-from .. import schemas
+from .. import schemas, models
+from ..models import Role, Period, JobTitle, Department
+from ..schemas import RoleCreate, RoleUpdate, PeriodCreate, PeriodUpdate, JobTitleCreate, JobTitleUpdate, \
+    DepartmentCreate, DepartmentUpdate
 
-role = CRUDBase[Role, RoleCreate, RoleUpdate, schemas.Role](Role, schemas.Role)
+role = CRUDBase[models.Role, RoleCreate, RoleUpdate, schemas.Role](models.Role, schemas.Role)
 
-period = CRUDBase[Period, PeriodCreate, PeriodUpdate, schemas.Period](Period, schemas.Period)
+period = CRUDBase[models.Period, PeriodCreate, PeriodUpdate, schemas.Period](models.Period, schemas.Period)
 
-job_title = CRUDBase[JobTitle, JobTitleCreate, JobTitleUpdate, schemas.Period](Period, schemas.Period)
+job_title = CRUDBase[models.JobTitle, JobTitleCreate, JobTitleUpdate, schemas.JobTitle](models.JobTitle,
+                                                                                        schemas.JobTitle)
 
-department = CRUDBase[Department, DepartmentCreate, DepartmentUpdate, schemas.Department](Department,
-                                                                                          schemas.Department)
+department = CRUDBase[models.Department, DepartmentCreate, DepartmentUpdate, schemas.Department](models.Department,
+                                                                                                 schemas.Department)
 
-branch = CRUDBase[Branch, BranchCreate, BranchUpdate, schemas.Branch](Branch, schemas.Branch)
+branch = CRUDBase[models.Branch, BranchCreate, BranchUpdate, schemas.Branch](models.Branch, schemas.Branch)

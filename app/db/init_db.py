@@ -3,28 +3,14 @@ from sqlmodel import Session
 import asc_scrapper.crud as asc_crud
 from app import crud, schemas, models
 from app.core.config import settings
-from app.schemas.enums import UserType
+from app.schemas.enums import UserType, CollageShifts
 from app.schemas.permissions import default_permissions, Permissions
-from uot_scraper.db import get_roles
 from uot_scraper.match_teachers import get_acs_uot_teachers
-
-
-def init_roles(db: Session):
-    roles = get_roles()
-    for role in roles:
-        role_in = models.Role(
-            id=role.id,
-            ar_name=role.ar_name,
-            en_name=role.en_name,
-            permissions=default_permissions
-        )
-        db.add(role_in)
-        db.commit()
 
 
 def init_classes(db: Session):
     computer_science_department = crud.department.create(
-        db, obj_in=schemas.DepartmentCreate(
+        db=db, obj_in=schemas.DepartmentCreate(
             name="علوم الحاسوب",
             en_name="Computer Science",
             abbr="CS",
@@ -32,7 +18,7 @@ def init_classes(db: Session):
         )
     )
     software_branch = crud.branch.create(
-        db, obj_in=schemas.BranchCreate(
+        db=db, obj_in=schemas.BranchCreate(
             name="برمجيات",
             en_name="Software",
             abbr="SW",
@@ -40,28 +26,28 @@ def init_classes(db: Session):
             department_id=computer_science_department.id
         )
     )
+    stage = crud.stage.create(
+        db=db, obj_in=schemas.StageCreate(
+            shift=CollageShifts.morning,
+            level=3,
+            branch_id=software_branch.id,
+        )
+    )
 
 
 def init_periods(db: Session):
-    periods = crud.period.get_multi(db=db, limit=1000).results
-    for period in periods:
-        crud.period.remove(db=db, id=period.id)
-
     periods = asc_crud.get_periods()
     for period in periods:
-        period = models.Period(
+        crud.period.create(db=db, obj_in=schemas.PeriodCreate(
             start_time=period.starttime,
             end_time=period.endtime,
-        )
-        db.add(period)
-        db.commit()
+        ))
 
 
 def init_db(db: Session):
     user = crud.user.get_by_email(db, email=settings().FIRST_SUPERUSER)
     if not user:
         init_classes(db)
-        init_roles(db)
         # define user job titles
         student_jt = models.JobTitle(
             name="طالب",
@@ -106,24 +92,6 @@ def init_db(db: Session):
         for job_title in [employee_jt, assistant_teacher_jt, representative_jt]:
             crud.job_title.create(db, obj_in=job_title)
 
-        # teachers
-        for teacher in get_acs_uot_teachers():
-            db.add(models.User(
-                job_titles=[teacher_jt],
-                name=teacher.name,
-                en_name=teacher.en_name,
-                image=teacher.image,
-                email=teacher.email,
-                uot_url=teacher.uot_url,
-                role_id=teacher.role_id,
-                color=teacher.color,
-                asc_job=teacher.asc_job_title,
-                asc_name=teacher.asc_name,
-                scrape_from=teacher.scrape_from,
-                gender=teacher.gender,
-            ))
-        db.commit()
-
         # Predefines users
         full_crud_permission = schemas.PermissionGroup(
             create=True,
@@ -132,7 +100,7 @@ def init_db(db: Session):
             delete=True,
         )
         super_admin_role = crud.role.create(
-            db, obj_in=schemas.RoleCreate(
+            db=db, obj_in=schemas.RoleCreate(
                 ar_name="مسؤول",
                 en_name="SUPER ADMIN",
                 permissions=Permissions(
@@ -147,7 +115,7 @@ def init_db(db: Session):
             )
         )
         user = crud.user.create(
-            db, obj_in=schemas.UserCreate(
+            db=db, obj_in=schemas.UserCreate(
                 email=settings().FIRST_SUPERUSER,
                 password=settings().FIRST_SUPERUSER_PASSWORD,
                 color='#000000',
@@ -160,14 +128,14 @@ def init_db(db: Session):
         crud.user.update_job_titles_by_email(db, email=user.email, job_titles=[creator_jt])
 
         default_role = crud.role.create(
-            db, obj_in=schemas.RoleCreate(
+            db=db, obj_in=schemas.RoleCreate(
                 ar_name="مستخدم جديد",
                 en_name="default",
                 permissions=default_permissions,
             )
         )
         user = crud.user.create(
-            db, obj_in=schemas.UserCreate(
+            db=db, obj_in=schemas.UserCreate(
                 email="pts@gmail.com",
                 password="password",
                 color='#000000',
@@ -178,6 +146,24 @@ def init_db(db: Session):
             )
         )
         crud.user.update_job_titles_by_email(db, email=user.email, job_titles=[student_jt, creator_jt])
+
+        # teachers
+        for teacher in get_acs_uot_teachers():
+            db.add(models.User(
+                job_titles=[teacher_jt],
+                name=teacher.name,
+                en_name=teacher.en_name,
+                image=teacher.image,
+                email=teacher.email,
+                uot_url=teacher.uot_url,
+                role_id=default_role.id,
+                color=teacher.color,
+                asc_job=teacher.asc_job_title,
+                asc_name=teacher.asc_name,
+                scrape_from=teacher.scrape_from,
+                gender=teacher.gender,
+            ))
+        db.commit()
 
         # Update Mr. osama job titles
         for teacher_email in settings().RESPONSIBLE_USERS:

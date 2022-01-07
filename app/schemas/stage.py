@@ -4,8 +4,8 @@ from uuid import UUID
 from sqlalchemy import Column, Enum, UniqueConstraint
 from sqlmodel import Field, SQLModel
 
-from app.core.utils.utils import NamedObject
 from app.schemas.enums import CollageShifts
+from app.schemas.named_object import NamedObject
 
 
 # Shared properties
@@ -19,6 +19,9 @@ class StageBase(SQLModel):
 
 class Branch(NamedObject):
     department: NamedObject
+
+    class Config:
+        orm_mode = True
 
 
 class Stage(StageBase):

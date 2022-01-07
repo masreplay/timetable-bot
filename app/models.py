@@ -63,7 +63,6 @@ class Period(BaseSchema, PeriodBase, table=True):
 
 class Department(BaseSchema, DepartmentBase, table=True):
     branches: List["Branch"] = Relationship(back_populates="department")
-    pass
 
 
 class Branch(BaseSchema, BranchBase, table=True):
