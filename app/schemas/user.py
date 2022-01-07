@@ -13,8 +13,6 @@ from app.core.utils.sql_alchemy_utils import sa_column_kwargs
 from app.schemas.card_item import CardContent
 from app.schemas.enums import UserGender, UserScrapeFrom
 
-if TYPE_CHECKING:
-    pass
 
 
 # Shared properties

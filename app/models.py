@@ -30,10 +30,11 @@ class JobTitle(BaseSchema, JobTitleBase, table=True):
 
 
 class User(UserBase, BaseSchema, table=True):
-    __tablename__ = "user"
-    __name__ = "user"
     job_titles: List["JobTitle"] = Relationship(back_populates="users", link_model=UserJobTitle)
     hashed_password: Optional[str]
+
+    class Config:
+        orm_mode = True
 
 
 class Role(BaseSchema, RoleBase, table=True):

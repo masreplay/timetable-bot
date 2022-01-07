@@ -9,10 +9,10 @@ from app.api import deps
 from app.db.db import get_db
 from app.schemas.paging import LimitSkipParams, Paging
 
-router = APIRouter(dependencies=[])
+router = APIRouter(
+    dependencies=[Depends(deps.users_permission_handler)]
+)
 
-
-# Depends(deps.users_permission_handler)
 
 @router.get("/", response_model=Paging[schemas.User])
 def read_users(

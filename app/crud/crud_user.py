@@ -1,8 +1,9 @@
-from typing import Optional
+from typing import Optional, List, Any
 from uuid import UUID
 
 from sqlmodel import Session, select, col
 
+from app import schemas
 from app.core.security import verify_password, get_password_hash
 from app.crud.base import CRUDBase
 from app.models import User
@@ -36,18 +37,16 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
 
     def get_filter(
             self, db: Session, *, skip: int = 0, limit: int = 100, query: str = None, role_id: UUID = None
-    ) -> Paging[User]:
+    ) -> Paging[schemas.User]:
         where = []
         if query:
             where.append(col(User.name).like('%' + query + '%'))
 
         if role_id:
             where.append(User.role_id == role_id)
-
-        statement = select(User)
-        return Paging[User](
+        return Paging[schemas.User](
             count=db.query(User).filter(*where).count(),
-            results=db.exec(statement.where(*where).offset(skip).limit(limit)).fetchmany(),
+            results=db.exec(select(User).where(*where).offset(skip).limit(limit)).all()
         )
 
     def authenticate(self, db: Session, *, email: str, password: str) -> Optional[User]:
