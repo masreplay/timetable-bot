@@ -8,6 +8,7 @@ from app import schemas, models
 from app.core.security import verify_password, get_password_hash
 from app.crud.base import CRUDBase
 from app.models import User
+from app.schemas.enums import UserType
 from app.schemas.paging import Paging
 from app.schemas.user import UserCreate, UserUpdate
 
@@ -47,20 +48,30 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
         return db_obj
 
     def get_filter(
-            self, db: Session, *, skip: int = 0, limit: int = 100, query: str = None, role_id: UUID = None
+            self, db: Session, *, skip: int = 0, limit: int = 100, query: Optional[str], role_id: Optional[UUID],
+            user_type: Optional[UserType]
     ) -> Paging[schemas.User]:
         where = []
         if query:
             where.append(col(User.name).like('%' + query + '%'))
-
         if role_id:
             where.append(User.role_id == role_id)
+
+        if user_type:
+            where.append(User.job_titles.any(models.JobTitle.type == user_type))
+        else:
+            where.append(
+                User.job_titles.any(
+                    models.JobTitle.type == UserType.teacher and models.JobTitle.type == UserType.employee
+                )
+            )
+
         return Paging[schemas.User](
             count=db.query(User).filter(*where).count(),
             results=db.exec(select(User).where(*where).offset(skip).limit(limit)).all()
         )
 
-    def authenticate(self, db: Session, *, email: str, password: str) -> Optional[User]:
+    def authenticate(self, db: Session, *, email: EmailStr, password: str) -> Optional[User]:
         user = self.get_by_email(db, email=email)
         if not user:
             return None

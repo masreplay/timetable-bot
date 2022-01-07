@@ -5,8 +5,8 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session
 
 from app import schemas, crud
-from app.api import deps
 from app.db.db import get_db
+from app.schemas.enums import StaffType, UserType
 from app.schemas.paging import LimitSkipParams, Paging
 
 router = APIRouter(
@@ -20,11 +20,13 @@ def read_users(
         paging: LimitSkipParams = Depends(),
         query: Optional[str] = None,
         role_id: Optional[UUID] = None,
+        user_type: Optional[StaffType] = None
 ) -> Any:
     """
     Retrieve users.
     """
-    users = crud.user.get_filter(db, skip=paging.skip, limit=paging.limit, query=query, role_id=role_id)
+    users = crud.user.get_filter(db, skip=paging.skip, limit=paging.limit, query=query, role_id=role_id,
+                                 user_type=user_type)
     return users
 
 
