@@ -1,4 +1,3 @@
-from app.schemas import *
 from app.models import *
 from logging.config import fileConfig
 

@@ -14,6 +14,9 @@ class Permissions(BaseModel):
     roles: PermissionGroup
     periods: PermissionGroup
     job_titles: PermissionGroup
+    departments: PermissionGroup
+    branches: PermissionGroup
+    stages: PermissionGroup
 
 
 # default permissions for new role
@@ -26,5 +29,8 @@ default_permissions: Permissions = Permissions(
         delete=False,
     ),
     periods=PermissionGroup(),
-    job_titles=PermissionGroup()
+    job_titles=PermissionGroup(),
+    departments=PermissionGroup(),
+    branches=PermissionGroup(),
+    stages=PermissionGroup(),
 )

@@ -5,10 +5,13 @@ from pydantic import validator
 from sqlmodel import Relationship, SQLModel, Field, Column, JSON
 
 from app.schemas.base import BaseSchema
+from app.schemas.branch import BranchBase
+from app.schemas.department import DepartmentBase
 from app.schemas.job_title import JobTitleBase
 from app.schemas.period import PeriodBase
 from app.schemas.permissions import default_permissions, Permissions
 from app.schemas.role import RoleBase
+from app.schemas.stage import StageBase
 from app.schemas.user import UserBase
 
 
@@ -55,4 +58,16 @@ class Role(BaseSchema, RoleBase, table=True):
 
 
 class Period(BaseSchema, PeriodBase, table=True):
+    pass
+
+
+class Department(BaseSchema, DepartmentBase, table=True):
+    pass
+
+
+class Branch(BaseSchema, BranchBase, table=True):
+    pass
+
+
+class Stage(BaseSchema, StageBase, table=True):
     pass

@@ -8,9 +8,7 @@ from app import schemas, crud
 from app.db.db import get_db
 from app.schemas.paging import *
 
-router = APIRouter(
-
-)
+router = APIRouter()
 
 
 @router.get("/", response_model=Paging[schemas.Role])

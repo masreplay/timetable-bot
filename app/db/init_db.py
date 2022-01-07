@@ -22,6 +22,26 @@ def init_roles(db: Session):
         db.commit()
 
 
+def init_classes(db: Session):
+    computer_science_department = crud.department.create(
+        db, obj_in=schemas.DepartmentCreate(
+            name="علوم الحاسوب",
+            en_name="Computer Science",
+            abbr="CS",
+            vision=None,
+        )
+    )
+    software_branch = crud.branch.create(
+        db, obj_in=schemas.BranchCreate(
+            name="برمجيات",
+            en_name="Software",
+            abbr="SW",
+            vision=None,
+            department_id=computer_science_department.id
+        )
+    )
+
+
 def init_periods(db: Session):
     periods = crud.period.get_multi(db=db, limit=1000).results
     for period in periods:
@@ -40,6 +60,7 @@ def init_periods(db: Session):
 def init_db(db: Session):
     user = crud.user.get_by_email(db, email=settings().FIRST_SUPERUSER)
     if not user:
+        init_classes(db)
         init_roles(db)
         # define user job titles
         student_jt = models.JobTitle(
@@ -119,6 +140,9 @@ def init_db(db: Session):
                     roles=full_crud_permission,
                     periods=full_crud_permission,
                     job_titles=full_crud_permission,
+                    departments=full_crud_permission,
+                    branches=full_crud_permission,
+                    stages=full_crud_permission,
                 ),
             )
         )

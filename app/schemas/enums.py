@@ -25,3 +25,8 @@ class UserType(str, Enum):
 class UserGender(str, Enum):
     male = "male"
     female = "female"
+
+
+class CollageShifts(str, Enum):
+    morning = "morning"
+    evening = "evening"
