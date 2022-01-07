@@ -6,5 +6,3 @@ from pydantic import BaseModel
 class NamedObject(BaseModel):
     id: UUID
     name: str
-
-
