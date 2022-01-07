@@ -87,4 +87,4 @@ class Room(BaseSchema, RoomBase, table=True):
 
 
 class Floor(BaseSchema, FloorBase, table=True):
-    rooms: "Room" = Relationship(back_populates="floor")
+    rooms: List["Room"] = Relationship(back_populates="floor")

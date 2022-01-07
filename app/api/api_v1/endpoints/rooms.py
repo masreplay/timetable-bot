@@ -31,6 +31,13 @@ def create_room(
     """
     Create new room.
     """
+    building = crud.building.get(db=db, id=room_in.building_id)
+    if not building:
+        raise HTTPException(status_code=404, detail="Building not found")
+    floor = crud.floor.get(db=db, id=room_in.floor_id)
+    if not floor:
+        raise HTTPException(status_code=404, detail="Floor not found")
+
     room = crud.room.create(db=db, obj_in=room_in)
     return room
 
@@ -48,6 +55,14 @@ def update_room(
     room = crud.room.get(db=db, id=id)
     if not room:
         raise HTTPException(status_code=404, detail="room not found")
+
+    building = crud.building.get(db=db, id=room_in.building_id)
+    if not building:
+        raise HTTPException(status_code=404, detail="Building not found")
+    floor = crud.floor.get(db=db, id=room_in.floor_id)
+    if not floor:
+        raise HTTPException(status_code=404, detail="Floor not found")
+
     room = crud.room.update(db=db, db_obj=room, obj_in=room_in)
     return room
 

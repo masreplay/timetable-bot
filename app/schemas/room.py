@@ -13,7 +13,7 @@ class RoomBase(CardContent):
     building_id: Optional[UUID] = Field(default=None, foreign_key="building.id")
     floor_id: Optional[UUID] = Field(default=None, foreign_key="floor.id")
     type: Optional[RoomType] = Field(sa_column=Column(Enum(RoomType)))
-
+    
 
 class Room(RoomBase):
     id: UUID

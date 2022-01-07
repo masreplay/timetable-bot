@@ -1,8 +1,8 @@
 """init
 
-Revision ID: acfc97ab3571
+Revision ID: 888317e7c470
 Revises: 
-Create Date: 2022-01-08 00:01:12.389099
+Create Date: 2022-01-08 00:30:19.082532
 
 """
 from alembic import op
@@ -11,7 +11,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'acfc97ab3571'
+revision = '888317e7c470'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -34,6 +34,11 @@ def upgrade():
     sa.Column('en_name', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
     sa.Column('abbr', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
     sa.Column('vision', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
+    sa.Column('id', sqlmodel.sql.sqltypes.GUID(), nullable=True),
+    sa.Column('created_at', sa.DateTime(), nullable=True),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('floor',
     sa.Column('id', sqlmodel.sql.sqltypes.GUID(), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.PrimaryKeyConstraint('id')
@@ -78,9 +83,11 @@ def upgrade():
     sa.Column('name', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
     sa.Column('color', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
     sa.Column('building_id', sqlmodel.sql.sqltypes.GUID(), nullable=True),
+    sa.Column('floor_id', sqlmodel.sql.sqltypes.GUID(), nullable=True),
     sa.Column('id', sqlmodel.sql.sqltypes.GUID(), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.ForeignKeyConstraint(['building_id'], ['building.id'], ),
+    sa.ForeignKeyConstraint(['floor_id'], ['floor.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_room_name'), 'room', ['name'], unique=False)
@@ -141,6 +148,7 @@ def downgrade():
     op.drop_table('role')
     op.drop_table('period')
     op.drop_table('job_title')
+    op.drop_table('floor')
     op.drop_table('department')
     op.drop_index(op.f('ix_building_name'), table_name='building')
     op.drop_table('building')
