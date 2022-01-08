@@ -15,7 +15,7 @@ def main():
     extract_department_teachers("ae")
 
 
-def translate_list(untranslated: List[str], source: str = "en", target: str = "ar") -> List[str]:
+def translate_list(untranslated: list[str], source: str = "en", target: str = "ar") -> list[str]:
     translations = requests.get(settings().translation_key, params={
         "q": untranslated,
         "source": source,
@@ -69,7 +69,7 @@ def extract_department_teachers(department_abbr: str):
     # translate en_name to ar_name
     print("Translating teachers name...")
     print(names)
-    t_name: List[str] = translate_list(names)
+    t_name: list[str] = translate_list(names)
 
     for (i, teacher) in enumerate(teachers):
         ar_name = t_name[i]

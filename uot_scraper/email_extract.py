@@ -5,8 +5,8 @@ from extract_emails.browsers.chrome_browser import ChromeBrowser
 from extract_emails.workers import DefaultWorker
 
 
-def get_emails(links: List[str]) -> List[str]:
-    emails: List[str] = []
+def get_emails(links: list[str]) -> list[str]:
+    emails: list[str] = []
     with ChromeBrowser(executable_path="chromedriver.exe") as browser:
         for link in links:
             factory = DefaultFilterAndEmailFactory(

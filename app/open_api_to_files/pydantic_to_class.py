@@ -2,7 +2,6 @@ import typing
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
-from typing import Dict, Type
 
 import humps
 
@@ -28,7 +27,7 @@ class DartConvertor:
         return ClassFile(file_name, enum_class)
 
     @staticmethod
-    def __datatype__() -> Dict[Type, str]:
+    def __datatype__() -> dict[typing.Type, str]:
         return {
             str: "String",
             int: "Int",

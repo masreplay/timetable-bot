@@ -1,4 +1,4 @@
-from typing import Any, Optional
+from typing import Any
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException
@@ -6,7 +6,7 @@ from sqlmodel import Session
 
 from app import schemas, crud
 from app.db.db import get_db
-from app.schemas.enums import StaffType, UserType
+from app.schemas.enums import StaffType
 from app.schemas.paging import LimitSkipParams, Paging
 
 router = APIRouter(
@@ -18,9 +18,9 @@ router = APIRouter(
 def read_users(
         db: Session = Depends(get_db),
         paging: LimitSkipParams = Depends(),
-        query: Optional[str] = None,
-        role_id: Optional[UUID] = None,
-        user_type: Optional[StaffType] = None
+        query: str | None = None,
+        role_id: UUID | None = None,
+        user_type: StaffType | None = None
 ) -> Any:
     """
     Retrieve users.

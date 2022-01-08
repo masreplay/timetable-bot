@@ -1,4 +1,3 @@
-from typing import Dict
 from uuid import UUID, uuid4
 
 from sqlmodel import Session
@@ -12,9 +11,9 @@ from app.schemas.permissions import default_permissions, Permissions
 from uot_scraper.match_teachers import get_acs_uot_teachers
 
 # asc ids to uuid
-building_ids: Dict[str, UUID] = {}
-rooms_ids: Dict[str, UUID] = {}
-periods_ids: Dict[str, UUID] = {}
+building_ids: dict[str, UUID] = {}
+rooms_ids: dict[str, UUID] = {}
+periods_ids: dict[str, UUID] = {}
 
 
 def init_building(db: Session):

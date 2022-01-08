@@ -1,4 +1,4 @@
-from typing import TypeVar, List, Generic
+from typing import TypeVar, list, Generic
 
 from fastapi import Query
 from pydantic import BaseModel
@@ -15,7 +15,7 @@ ModelType = TypeVar('ModelType')
 
 class Paging(GenericModel, Generic[ModelType]):
     count: int
-    results: List[ModelType]
+    results: list[ModelType]
 
     class Config:
         orm_mode = True

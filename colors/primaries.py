@@ -1,12 +1,10 @@
-from typing import Dict
-
 from pydantic import BaseModel
 from pydantic.color import Color
 
 
 class MaterialColor(BaseModel):
     primary_color: str
-    shades: Dict[int, Color]
+    shades: dict[int, Color]
 
 
 class MaterialAccentColor(MaterialColor):

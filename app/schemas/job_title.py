@@ -1,4 +1,4 @@
-from typing import Optional
+
 from uuid import UUID
 
 from sqlmodel import SQLModel
@@ -9,7 +9,7 @@ from app.schemas.enums import UserType
 
 class JobTitleBase(SQLModel):
     name: str
-    en_name: Optional[str]
+    en_name: str | None
     type: UserType
 
 

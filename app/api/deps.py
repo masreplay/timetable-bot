@@ -1,5 +1,4 @@
 from enum import Enum
-from typing import Optional
 
 from fastapi import Depends, HTTPException, status, Request
 from fastapi.security import OAuth2PasswordBearer
@@ -82,7 +81,7 @@ class PermissionHandler:
     Check if user have permission to preform this actions
     """
 
-    def __init__(self, router: str, method: Optional[PermissionMethod] = None):
+    def __init__(self, router: str, method: PermissionMethod | None = None):
         self.method = method
         self.router = router
 
@@ -103,7 +102,7 @@ class PermissionHandler:
         role: models.Role = crud.role.get(db, id=current_user.role_id)
 
         # Permissions group for current router
-        router_permissions_group: Optional[dict] = role.permissions.get(self.router)
+        router_permissions_group: dict | None = role.permissions.get(self.router)
 
         if router_permissions_group is None:
             print("Permission group not found")

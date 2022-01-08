@@ -1,4 +1,3 @@
-from typing import Optional
 from uuid import UUID
 
 from sqlalchemy import Column, Enum, UniqueConstraint
@@ -12,9 +11,9 @@ from app.schemas.named_object import NamedObject
 class StageBase(SQLModel):
     __table_args__ = (UniqueConstraint('shift', 'level', 'branch_id', name='branch_stage'),)
 
-    shift: Optional[CollageShifts] = Field(index=True, sa_column=Column(Enum(CollageShifts)))
+    shift: CollageShifts | None = Field(index=True, sa_column=Column(Enum(CollageShifts)))
     level: int = Field(index=True, ge=1, le=10)
-    branch_id: Optional[UUID] = Field(default=None, foreign_key="branch.id")
+    branch_id: UUID | None = Field(default=None, foreign_key="branch.id")
 
 
 class Branch(NamedObject):

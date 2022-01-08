@@ -56,7 +56,7 @@ def get_teacher(teacher_id: str, teachers=db.get_teachers()) -> schemas.Teacher:
             return teacher
 
 
-def get_card(day: str, period: str, cards: db.get_cards()) -> Optional[schemas.Card]:
+def get_card(day: str, period: str, cards: db.get_cards()) -> schemas.Card | None:
     for card in cards:
         if card.period == period and card.days == day:
             return card

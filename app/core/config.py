@@ -1,6 +1,5 @@
 import secrets
 from functools import lru_cache
-from typing import List, Union
 
 from dotenv import load_dotenv
 from pydantic import BaseSettings, AnyHttpUrl, validator, EmailStr
@@ -18,10 +17,10 @@ class Settings(BaseSettings):
     PORT: int
     TRANSLATION_KEY: str
 
-    RESPONSIBLE_USERS: List[EmailStr] = []
+    RESPONSIBLE_USERS: list[EmailStr] = []
 
     @validator("RESPONSIBLE_USERS", pre=True)
-    def assemble_emails(cls, v: Union[str, List[str]]) -> Union[List[str], str]:
+    def assemble_emails(cls, v: str | list[str]) -> list[str] | str:
         if isinstance(v, str) and not v.startswith("["):
             return [i.strip() for i in v.split(",")]
         elif isinstance(v, (list, str)):
@@ -33,10 +32,10 @@ class Settings(BaseSettings):
 
     # 60 minutes * 24 hours * 8 days = 8 days
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8
-    BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = []
+    BACKEND_CORS_ORIGINS: list[AnyHttpUrl] = []
 
     @validator("BACKEND_CORS_ORIGINS", pre=True)
-    def assemble_cors_origins(cls, v: Union[str, List[str]]) -> Union[List[str], str]:
+    def assemble_cors_origins(cls, v: str | list[str]) -> list[str] | str:
         if isinstance(v, str) and not v.startswith("["):
             return [i.strip() for i in v.split(",")]
         elif isinstance(v, (list, str)):

@@ -1,4 +1,3 @@
-from typing import Optional, List
 from uuid import UUID
 
 from pydantic import EmailStr
@@ -19,15 +18,15 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate, schemas.User]):
         statement = select(self.model).where(User.id == id)
         return db.exec(statement).first()
 
-    def get_by_name(self, db: Session, name: str) -> Optional[User]:
+    def get_by_name(self, db: Session, name: str) -> User | None:
         statement = select(self.model).where(User.name == name)
         return db.exec(statement).first()
 
-    def get_by_email(self, db: Session, email: EmailStr) -> Optional[User]:
+    def get_by_email(self, db: Session, email: EmailStr) -> User | None:
         statement = select(self.model).where(User.email == email)
         return db.exec(statement).first()
 
-    def update_job_titles_by_email(self, db: Session, email: EmailStr, job_titles: List[models.JobTitle]) -> User:
+    def update_job_titles_by_email(self, db: Session, email: EmailStr, job_titles: list[models.JobTitle]) -> User:
         user = self.get_by_email(db, email=email)
         for jt in job_titles:
             user.job_titles.append(jt)
@@ -48,8 +47,8 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate, schemas.User]):
         return db_obj
 
     def get_filter(
-            self, db: Session, *, skip: int = 0, limit: int = 100, query: Optional[str], role_id: Optional[UUID],
-            user_type: Optional[UserType]
+            self, db: Session, *, skip: int = 0, limit: int = 100, query: str | None, role_id: UUID | None,
+            user_type: UserType | None,
     ) -> Paging[schemas.User]:
         where = []
         if query:
@@ -71,7 +70,7 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate, schemas.User]):
             results=db.exec(select(User).where(*where).offset(skip).limit(limit)).all()
         )
 
-    def authenticate(self, db: Session, *, email: EmailStr, password: str) -> Optional[User]:
+    def authenticate(self, db: Session, *, email: EmailStr, password: str) -> User | None:
         user = self.get_by_email(db, email=email)
         if not user:
             return None

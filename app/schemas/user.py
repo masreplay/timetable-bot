@@ -1,4 +1,3 @@
-from typing import Optional, List
 from uuid import UUID
 
 from pydantic import EmailStr, constr
@@ -14,31 +13,31 @@ from app.schemas.enums import UserGender, UserScrapeFrom
 
 # Shared properties
 class UserBase(CardContent):
-    en_name: Optional[str] = Field(index=True)
-    email: Optional[EmailStr] = Field(default=None, sa_column_kwargs=sa_column_kwargs(unique=True))
-    uot_url: Optional[constr(regex=url_regex)] = Field(default=None)
-    image: Optional[constr(regex=url_regex)] = Field(default=None)
+    en_name: str | None = Field(index=True)
+    email: EmailStr | None = Field(default=None, sa_column_kwargs=sa_column_kwargs(unique=True))
+    uot_url: constr(regex=url_regex) | None = Field(default=None)
+    image: constr(regex=url_regex) | None = Field(default=None)
 
-    is_active: Optional[bool] = True
+    is_active: bool | None = True
 
-    gender: Optional[UserGender] = Field(sa_column=Column(Enum(UserGender)))
+    gender: UserGender | None = Field(sa_column=Column(Enum(UserGender)))
 
-    asc_job_title: Optional[str] = Field()
-    asc_name: Optional[str] = Field()
-    scrape_from: Optional[UserScrapeFrom] = Field(default=None, sa_column=Column(Enum(UserScrapeFrom)))
+    asc_job_title: str | None = Field()
+    asc_name: str | None = Field()
+    scrape_from: UserScrapeFrom | None = Field(default=None, sa_column=Column(Enum(UserScrapeFrom)))
 
     # relations
-    role_id: Optional[UUID] = Field(foreign_key="role.id")
+    role_id: UUID | None = Field(foreign_key="role.id")
 
 
 # Properties to receive via API on creation
 class UserCreate(UserBase):
-    password: Optional[str] = Field(None, min_length=8, max_length=16)
+    password: str | None = Field(None, min_length=8, max_length=16)
 
 
 # Properties to receive via API on update
 class UserUpdate(UserBase):
-    password: Optional[str] = Field(None, min_length=8, max_length=16)
+    password: str | None = Field(None, min_length=8, max_length=16)
 
 
 class JobTitle(BaseModel):
@@ -48,4 +47,4 @@ class JobTitle(BaseModel):
 
 class User(UserBase):
     id: UUID
-    job_titles: List[JobTitle]
+    job_titles: list[JobTitle]

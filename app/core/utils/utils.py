@@ -1,11 +1,7 @@
 from typing import (
     Any,
-    Dict,
-    List,
-    Optional,
     Sequence,
     Type,
-    Union,
 )
 
 from fastapi import APIRouter
@@ -44,12 +40,12 @@ class APIPermissionsRouter(APIRouter):
             self: APIRouter,
             router: "APIRouter" = None,
             prefix_permissions: str = "",
-            tags: Optional[List[str]] = None,
-            dependencies: Optional[Sequence[params.Depends]] = None,
+            tags: list[str] = None,
+            dependencies: Sequence[params.Depends] | None = None,
             default_response_class: Type[Response] = Default(JSONResponse),
-            responses: Optional[Dict[Union[int, str], Dict[str, Any]]] = None,
-            callbacks: Optional[List[BaseRoute]] = None,
-            deprecated: Optional[bool] = None,
+            responses: dict[int | str, dict[str, Any]] | None = None,
+            callbacks: list[BaseRoute] | None = None,
+            deprecated: bool | None = None,
             include_in_schema: bool = True,
     ):
         """

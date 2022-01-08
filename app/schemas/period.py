@@ -1,5 +1,5 @@
 from datetime import time
-from typing import Optional
+
 from uuid import UUID
 
 from sqlmodel import SQLModel
@@ -7,7 +7,7 @@ from sqlmodel import SQLModel
 
 # Shared properties
 class PeriodBase(SQLModel):
-    name: Optional[str]
+    name: str | None
     start_time: time
     end_time: time
 

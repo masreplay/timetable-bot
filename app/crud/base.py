@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, Dict, Generic, Optional, Type, TypeVar, Union
+from typing import Any, Dict, Generic, Type, TypeVar
 from uuid import UUID
 
 from fastapi.encoders import jsonable_encoder
@@ -18,7 +18,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType, Schema]):
     model: Type[ModelType]
     schema: Schema
 
-    def get(self, db: Session, id: UUID) -> Optional[ModelType]:
+    def get(self, db: Session, id: UUID) -> ModelType | None:
         statement = select(self.model).where(self.model.id == id)
         return db.exec(statement).first()
 
@@ -35,7 +35,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType, Schema]):
             db: Session,
             *,
             db_obj: ModelType,
-            obj_in: UpdateSchemaType | Dict[str, Any]
+            obj_in: UpdateSchemaType | dict[str, Any]
     ) -> ModelType:
         obj_data = jsonable_encoder(db_obj)
         if isinstance(obj_in, dict):

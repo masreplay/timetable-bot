@@ -1,4 +1,4 @@
-from typing import Optional
+
 from uuid import UUID
 
 from pydantic import BaseModel
@@ -10,4 +10,4 @@ class Token(BaseModel):
 
 
 class TokenPayload(BaseModel):
-    sub: Optional[UUID] = None
+    sub: UUID | None = None

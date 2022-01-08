@@ -1,17 +1,15 @@
-from typing import Optional, Type
-
 from pydantic import Field, BaseModel
 
 
 class Teacher(BaseModel):
     id: str
-    ar_name: Optional[str]
+    ar_name: str | None
     en_name: str
     image: str
     stages_id: list[str] = Field([])
-    email: Optional[str]
+    email: str | None
     uot_url: str
-    role_id: Optional[str]
+    role_id: str | None
 
     @property
     def first_name(self):
@@ -25,11 +23,11 @@ class Teacher(BaseModel):
 class Role(BaseModel):
     id: str
     en_name: str
-    ar_name: Optional[str]
+    ar_name: str | None
 
 
-Teachers: Type = list[Teacher]
-Roles: Type = list[Role]
+Teachers = list[Teacher]
+Roles = list[Role]
 
 
 class TeacherCreate(Teacher):

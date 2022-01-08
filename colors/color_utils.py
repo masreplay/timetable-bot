@@ -4,7 +4,7 @@ from typing import List, Any
 from colors.primaries import *
 from colors.accent import *
 
-primaries: List[MaterialColor] = [
+primaries: list[MaterialColor] = [
     red,
     pink,
     purple,
@@ -24,7 +24,7 @@ primaries: List[MaterialColor] = [
     brown,
 ]
 
-accents: List[MaterialAccentColor] = [
+accents: list[MaterialAccentColor] = [
     red_accent,
     pink_accent,
     purple_accent,

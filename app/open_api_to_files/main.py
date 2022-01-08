@@ -1,7 +1,8 @@
 import zipfile
-from collections import Sequence
+
 from enum import Enum
 from io import BytesIO
+from typing import Sequence
 
 from fastapi.openapi.utils import get_flat_models_from_routes
 from fastapi.responses import StreamingResponse

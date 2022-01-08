@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional
+
 from uuid import UUID, uuid4
 
 from pydantic import constr
@@ -12,10 +12,10 @@ class BaseSchema(SQLModel):
     id: UUID = Field(default_factory=uuid4, primary_key=True)
     created_at: datetime = Field(default_factory=datetime.utcnow)
     # TODO: Add
-    # updated_at: Optional[datetime] = Field(None)
-    # updated_by: Optional[UUID] = Field(None)
+    # updated_at: datetime | None = Field(None)
+    # updated_by: UUID | None = Field(None)
 
 
 class CardContent(SQLModel):
-    name: Optional[str] = Field(index=True)
+    name: str | None = Field(index=True)
     color: constr(regex=color_regex)

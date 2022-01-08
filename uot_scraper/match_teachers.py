@@ -11,7 +11,7 @@ from uot_scraper.db import get_teachers
 TeachersName = list[str]
 
 
-def get_acs_uot_teachers() -> List[schemas.UserCreate]:
+def get_acs_uot_teachers() -> list[schemas.UserCreate]:
     old_uot = get_teachers()
     old_asc = db.get_teachers()
 

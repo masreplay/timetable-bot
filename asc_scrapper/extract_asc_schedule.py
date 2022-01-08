@@ -9,7 +9,7 @@ T = TypeVar('T')
 
 def load_data(file_name: str, data_type: Type[T], data_rows: str = "data_rows") -> list[T]:
     with open(file_name, 'r', encoding="utf-8") as file:
-        return parse_obj_as(List[data_type], json.load(file)[data_rows])
+        return parse_obj_as(list[data_type], json.load(file)[data_rows])
 
 
 def main():

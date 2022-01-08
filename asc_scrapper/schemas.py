@@ -1,7 +1,6 @@
-from typing import List, Any, Dict, Optional, Type
+from typing import Any
 
-from pydantic import BaseModel, Field
-from pydantic.color import Color
+from pydantic import BaseModel
 
 
 class Card(BaseModel):
@@ -10,10 +9,10 @@ class Card(BaseModel):
     period: str
     days: str
     weeks: str
-    classroomids: List[str]
+    classroomids: list[str]
 
 
-Schedule: Type = list[Card]
+Schedule = list[Card]
 
 
 class Day(BaseModel):
@@ -21,8 +20,8 @@ class Day(BaseModel):
     name: str
     short: str
     typ: str
-    vals: List[str]
-    val: Optional[int]
+    vals: list[str]
+    val: int | None
 
 
 class Subject(BaseModel):
@@ -31,27 +30,27 @@ class Subject(BaseModel):
     short: str
     color: str
     picture_url: str
-    timeoff: List[List[List[str]]]
+    timeoff: list[list[list[str]]]
     contract_weight: int
 
 
 class Lesson(BaseModel):
     id: str
     subjectid: str
-    teacherids: List[str]
-    groupids: List[str]
-    classids: List[str]
+    teacherids: list[str]
+    groupids: list[str]
+    classids: list[str]
     count: int
     durationperiods: int
-    classroomidss: List[List[str]]
+    classroomidss: list[list[str]]
     termsdefid: str
     weeksdefid: str
     daysdefid: str
     terms: str
     seminargroup: Any
     bell: str
-    studentids: List
-    groupnames: List[str]
+    studentids: list
+    groupnames: list[str]
 
 
 class Period(BaseModel):
@@ -61,7 +60,7 @@ class Period(BaseModel):
     short: str
     starttime: str
     endtime: str
-    daydata: Dict[str, Any]
+    daydata: dict[str, Any]
     printinsummary: bool
     printinteacher: bool
     printinclass: bool
@@ -82,10 +81,10 @@ class Teacher(BaseModel):
     fontcolorprint: str
     fontcolorprint2: str
     fontcolorscreen: str
-    timeoff: List[List[List[str]]]
+    timeoff: list[list[list[str]]]
 
     @property
-    def get_name(self) -> Optional[str]:
+    def get_name(self) -> str | None:
         """
 
         :return: name without job title
@@ -102,7 +101,7 @@ class Teacher(BaseModel):
             return " ".join(separated_name)
 
     @property
-    def job_title(self) -> Optional[str]:
+    def job_title(self) -> str | None:
         try:
             job_title: str = self.short.split(self.get_name)[0].replace(" ", "")
         except IndexError:
@@ -124,10 +123,10 @@ class Class(BaseModel):
     name: str
     short: str
     teacherid: str
-    classroomids: List[str]
+    classroomids: list[str]
     bell: str
     color: str
-    timeoff: List[List[List[str]]]
+    timeoff: list[list[list[str]]]
     printsubjectpictures: bool
     classroomid: str
 
@@ -140,7 +139,7 @@ class Classroom(BaseModel):
     sharedroom: bool
     needssupervision: bool
     color: str
-    nearbyclassroomids: List
+    nearbyclassroomids: list
 
 
 class Building(BaseModel):

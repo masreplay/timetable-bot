@@ -1,4 +1,4 @@
-from typing import Optional
+
 from uuid import UUID
 
 from sqlmodel import SQLModel
@@ -9,8 +9,8 @@ from app.schemas.base import BaseSchema
 class ClassBase(SQLModel):
     name: str
     en_name: str
-    abbr: Optional[str]
-    vision: Optional[str]
+    abbr: str | None
+    vision: str | None
 
 
 # Shared properties
