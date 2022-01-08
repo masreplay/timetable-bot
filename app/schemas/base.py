@@ -2,7 +2,10 @@ from datetime import datetime
 from typing import Optional
 from uuid import UUID, uuid4
 
+from pydantic import constr
 from sqlmodel import SQLModel, Field
+
+from app.core.utils.regex import color_regex
 
 
 class BaseSchema(SQLModel):
@@ -11,3 +14,8 @@ class BaseSchema(SQLModel):
     # TODO: Add
     # updated_at: Optional[datetime] = Field(None)
     # updated_by: Optional[UUID] = Field(None)
+
+
+class CardContent(SQLModel):
+    name: Optional[str] = Field(index=True)
+    color: constr(regex=color_regex)

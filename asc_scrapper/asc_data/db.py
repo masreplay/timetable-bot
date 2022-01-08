@@ -28,6 +28,11 @@ def get_classrooms():
 
 
 @lru_cache()
+def get_classes():
+    return load_data(os.path.join(BASE_DIR, 'classes.json.json'), schemas.Class)
+
+
+@lru_cache()
 def get_periods():
     return load_data(os.path.join(BASE_DIR, 'periods.json'), schemas.Period)
 
@@ -47,6 +52,4 @@ def get_subjects():
     return load_data(os.path.join(BASE_DIR, 'subjects.json'), schemas.Subject)
 
 
-@lru_cache()
-def get_classes():
-    return load_data(os.path.join(BASE_DIR, 'classes.json'), schemas.Class)
+

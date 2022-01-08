@@ -11,13 +11,14 @@ from app.schemas.enums import UserType, CollageShifts
 from app.schemas.permissions import default_permissions, Permissions
 from uot_scraper.match_teachers import get_acs_uot_teachers
 
+# asc ids to uuid
+building_ids: Dict[str, UUID] = {}
+rooms_ids: Dict[str, UUID] = {}
+periods_ids: Dict[str, UUID] = {}
+
 
 def init_building(db: Session):
-    building_ids: Dict[str, UUID] = {}
-    rooms_ids: Dict[str, UUID] = {}
-
     buildings = asc_crud.get_buildings()
-    rooms = asc_crud.get_classrooms()
 
     for building in buildings:
         id = uuid4()
@@ -32,6 +33,9 @@ def init_building(db: Session):
             )
         )
 
+
+def init_rooms(db: Session):
+    rooms = asc_crud.get_classrooms()
     for room in rooms:
         id = uuid4()
         rooms_ids[room.id] = id
@@ -57,6 +61,8 @@ def init_classes(db: Session):
             vision=None,
         )
     )
+    asc_crud.get_classes()
+
     software_branch = crud.branch.create(
         db=db, obj_in=schemas.BranchCreate(
             name="برمجيات",
@@ -78,7 +84,10 @@ def init_classes(db: Session):
 def init_periods(db: Session):
     periods = asc_crud.get_periods()
     for period in periods:
-        crud.period.create(db=db, obj_in=schemas.PeriodCreate(
+        id = uuid4()
+        periods_ids[period.id] = id
+        crud.period.create(db=db, obj_in=schemas.Period(
+            id=id,
             start_time=period.starttime,
             end_time=period.endtime,
         ))
@@ -89,6 +98,7 @@ def init_db(db: Session):
     if not user:
         init_building(db)
         init_classes(db)
+
         # define user job titles
         student_jt = models.JobTitle(
             name="طالب",
