@@ -1,0 +1,691 @@
+{
+  "id": "classes",
+  "data_rows": [
+    {
+      "id": "*1",
+      "name": "أول برمجيات صباحي",
+      "teacherid": "",
+      "classroomids": [
+        "-1"
+      ],
+      "bell": "0",
+      "color": "#33CC33",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "printsubjectpictures": true,
+      "classroomid": "-1"
+    },
+    {
+      "id": "*2",
+      "name": "أول نظم صباحي",
+      "teacherid": "",
+      "classroomids": [
+        "-2"
+      ],
+      "bell": "0",
+      "color": "#FF5050",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "printsubjectpictures": true,
+      "classroomid": "-2"
+    },
+    {
+      "id": "*3",
+      "name": "أول ذكاء صباحي",
+      "teacherid": "",
+      "classroomids": [
+        "-3"
+      ],
+      "bell": "0",
+      "color": "#33CCFF",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "printsubjectpictures": true,
+      "classroomid": "-3"
+    },
+    {
+      "id": "*4",
+      "name": "أول امنية صباحي",
+      "teacherid": "",
+      "classroomids": [
+        "-4"
+      ],
+      "bell": "0",
+      "color": "#FF00FF",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "printsubjectpictures": true,
+      "classroomid": "-4"
+    },
+    {
+      "id": "*5",
+      "name": "أول شبكات صباحي",
+      "teacherid": "",
+      "classroomids": [
+        "-5"
+      ],
+      "bell": "0",
+      "color": "#99FF99",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "printsubjectpictures": true,
+      "classroomid": "-5"
+    },
+    {
+      "id": "*6",
+      "name": "أول وسائط صباحي",
+      "teacherid": "",
+      "classroomids": [],
+      "bell": "0",
+      "color": "#00CCFF",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "printsubjectpictures": true,
+      "classroomid": ""
+    },
+    {
+      "id": "*7",
+      "name": "ثاني برمجيات صباحي",
+      "teacherid": "",
+      "classroomids": [
+        "-1"
+      ],
+      "bell": "0",
+      "color": "#3333CC",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "printsubjectpictures": true,
+      "classroomid": "-1"
+    },
+    {
+      "id": "*8",
+      "name": "ثاني نظم صباحي",
+      "teacherid": "",
+      "classroomids": [
+        "-2"
+      ],
+      "bell": "0",
+      "color": "#C0C000",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "printsubjectpictures": true,
+      "classroomid": "-2"
+    },
+    {
+      "id": "*9",
+      "name": "ثاني ذكاء صباحي",
+      "teacherid": "",
+      "classroomids": [
+        "-3"
+      ],
+      "bell": "0",
+      "color": "#0000FF",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "printsubjectpictures": true,
+      "classroomid": "-3"
+    },
+    {
+      "id": "*10",
+      "name": "ثاني امنية صباحي",
+      "teacherid": "",
+      "classroomids": [
+        "-4"
+      ],
+      "bell": "0",
+      "color": "#0066CC",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "printsubjectpictures": true,
+      "classroomid": "-4"
+    },
+    {
+      "id": "*11",
+      "name": "ثاني شبكات صباحي",
+      "teacherid": "",
+      "classroomids": [
+        "-5"
+      ],
+      "bell": "0",
+      "color": "#FFFF99",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "printsubjectpictures": true,
+      "classroomid": "-5"
+    },
+    {
+      "id": "*12",
+      "name": "ثاني وسائط صباحي",
+      "teacherid": "",
+      "classroomids": [],
+      "bell": "0",
+      "color": "#003399",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "printsubjectpictures": true,
+      "classroomid": ""
+    },
+    {
+      "id": "*13",
+      "name": "ثالث برمجيات صباحي",
+      "teacherid": "",
+      "classroomids": [
+        "-1"
+      ],
+      "bell": "0",
+      "color": "#80C014",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "printsubjectpictures": true,
+      "classroomid": "-1"
+    },
+    {
+      "id": "*14",
+      "name": "ثالث نظم صباحي",
+      "teacherid": "",
+      "classroomids": [
+        "-2"
+      ],
+      "bell": "0",
+      "color": "#99FF99",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "printsubjectpictures": true,
+      "classroomid": "-2"
+    },
+    {
+      "id": "*15",
+      "name": "ثالث ذكاء صباحي",
+      "teacherid": "",
+      "classroomids": [
+        "-3"
+      ],
+      "bell": "0",
+      "color": "#6600FF",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "printsubjectpictures": true,
+      "classroomid": "-3"
+    },
+    {
+      "id": "*16",
+      "name": "ثالث امنية صباحي",
+      "teacherid": "",
+      "classroomids": [
+        "-4"
+      ],
+      "bell": "0",
+      "color": "#FF8080",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "printsubjectpictures": true,
+      "classroomid": "-4"
+    },
+    {
+      "id": "*17",
+      "name": "ثالث شبكات صباحي",
+      "teacherid": "",
+      "classroomids": [
+        "-5"
+      ],
+      "bell": "0",
+      "color": "#003399",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "printsubjectpictures": true,
+      "classroomid": "-5"
+    },
+    {
+      "id": "*18",
+      "name": "رابع برمجيات صباحي",
+      "teacherid": "",
+      "classroomids": [
+        "-1"
+      ],
+      "bell": "0",
+      "color": "#80FF80",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "printsubjectpictures": true,
+      "classroomid": "-1"
+    },
+    {
+      "id": "*19",
+      "name": "رابع نظم صباحي",
+      "teacherid": "",
+      "classroomids": [
+        "-2"
+      ],
+      "bell": "0",
+      "color": "#0000FF",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "printsubjectpictures": true,
+      "classroomid": "-2"
+    },
+    {
+      "id": "*20",
+      "name": "رابع ذكاء صباحي",
+      "teacherid": "",
+      "classroomids": [
+        "-3"
+      ],
+      "bell": "0",
+      "color": "#003300",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "printsubjectpictures": true,
+      "classroomid": "-3"
+    },
+    {
+      "id": "*21",
+      "name": "رابع امنية صباحي",
+      "teacherid": "",
+      "classroomids": [
+        "-4"
+      ],
+      "bell": "0",
+      "color": "#00CC99",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "printsubjectpictures": true,
+      "classroomid": "-4"
+    },
+    {
+      "id": "*22",
+      "name": "رابع شبكات صباحي",
+      "teacherid": "",
+      "classroomids": [
+        "-5"
+      ],
+      "bell": "0",
+      "color": "#CC0000",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "printsubjectpictures": true,
+      "classroomid": "-5"
+    },
+    {
+      "id": "*23",
+      "name": "دراسات عليا",
+      "teacherid": "",
+      "classroomids": [],
+      "bell": "0",
+      "color": "#993300",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "printsubjectpictures": true,
+      "classroomid": ""
+    },
+    {
+      "id": "*24",
+      "name": "اجتماعات",
+      "teacherid": "",
+      "classroomids": [],
+      "bell": "0",
+      "color": "#00CC00",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "printsubjectpictures": true,
+      "classroomid": ""
+    },
+    {
+      "id": "*25",
+      "name": "",
+      "teacherid": "",
+      "classroomids": [],
+      "bell": "0",
+      "color": "#993399",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "printsubjectpictures": true,
+      "classroomid": ""
+    },
+    {
+      "id": "*26",
+      "name": "ثالث وسائط صباحي",
+      "teacherid": "",
+      "classroomids": [],
+      "bell": "0",
+      "color": "#A7EE10",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "printsubjectpictures": true,
+      "classroomid": ""
+    },
+    {
+      "id": "*27",
+      "name": "ثالث وسائط صباحي",
+      "teacherid": "",
+      "classroomids": [],
+      "bell": "0",
+      "color": "#FFCCCC",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "printsubjectpictures": true,
+      "classroomid": ""
+    },
+    {
+      "id": "*28",
+      "name": "ثاني نظم مسائي",
+      "teacherid": "",
+      "classroomids": [],
+      "bell": "0",
+      "color": "#9900FF",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "printsubjectpictures": true,
+      "classroomid": ""
+    },
+    {
+      "id": "*29",
+      "name": "ثاني ذكاء مسائي",
+      "teacherid": "",
+      "classroomids": [],
+      "bell": "0",
+      "color": "#9900CC",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "printsubjectpictures": true,
+      "classroomid": ""
+    },
+    {
+      "id": "*30",
+      "name": "ثاني امنية مسائي",
+      "teacherid": "",
+      "classroomids": [],
+      "bell": "0",
+      "color": "#003399",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "printsubjectpictures": true,
+      "classroomid": ""
+    },
+    {
+      "id": "*31",
+      "name": "ثاني وسائط مسائي",
+      "teacherid": "",
+      "classroomids": [],
+      "bell": "0",
+      "color": "#FF9900",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "printsubjectpictures": true,
+      "classroomid": ""
+    },
+    {
+      "id": "*32",
+      "name": "ثالث  برمجيات مسائي",
+      "teacherid": "",
+      "classroomids": [],
+      "bell": "0",
+      "color": "#80C014",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "printsubjectpictures": true,
+      "classroomid": ""
+    },
+    {
+      "id": "*33",
+      "name": "ثالث شبكات مسائي",
+      "teacherid": "",
+      "classroomids": [],
+      "bell": "0",
+      "color": "#66FFFF",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "printsubjectpictures": true,
+      "classroomid": ""
+    },
+    {
+      "id": "*34",
+      "name": "رابع برمجيات مسائي",
+      "teacherid": "",
+      "classroomids": [],
+      "bell": "0",
+      "color": "#99FF66",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "printsubjectpictures": true,
+      "classroomid": ""
+    },
+    {
+      "id": "*35",
+      "name": "رابع نظم مسائي",
+      "teacherid": "",
+      "classroomids": [],
+      "bell": "0",
+      "color": "#339933",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "printsubjectpictures": true,
+      "classroomid": ""
+    },
+    {
+      "id": "*36",
+      "name": "رابع ذكاء مسائي",
+      "teacherid": "",
+      "classroomids": [],
+      "bell": "0",
+      "color": "#0000FF",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "printsubjectpictures": true,
+      "classroomid": ""
+    },
+    {
+      "id": "*37",
+      "name": "رابع امنية مسائي",
+      "teacherid": "",
+      "classroomids": [],
+      "bell": "0",
+      "color": "#0000FF",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "printsubjectpictures": true,
+      "classroomid": ""
+    },
+    {
+      "id": "*38",
+      "name": "رابع شبكات مسائي",
+      "teacherid": "",
+      "classroomids": [],
+      "bell": "0",
+      "color": "#FF0000",
+      "timeoff": [
+        [
+          [
+            "1"
+          ]
+        ]
+      ],
+      "printsubjectpictures": true,
+      "classroomid": ""
+    }
+  ]
+}

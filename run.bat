@@ -1,0 +1,1 @@
+alembic revision --autogenerate -m "init" & alembic upgrade head & uvicorn app.main:app --reload

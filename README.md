@@ -26,6 +26,10 @@ Coming soon...
 
 <img src="readme/stack.png">
 
+## How to use
+
+* Rename .env.development to .env and set it's value
+
 ## HTML to Image
 
 Coming soon...

@@ -14,7 +14,7 @@ en_us = {
     "technologies": "*Python* : Backend, Web scrapper and Websocket for telegram bot\n\n"
                     "*Node-Express* : Rendering Html to image\n\n"
                     "*Vuejs* : a better wrapper for main website make it Queryful Searchable\n\n",
-    "how_does_it_work": "After you tell the *schedule* you need python scrape the data from "
+    "how_does_it_work": "After you tell the *schedule* you need python scrape the asc_data from "
                         "techno website (uotcs.edupage.org/timetable)",
     "credits": "@no6_sha @MAtheerS",
 }

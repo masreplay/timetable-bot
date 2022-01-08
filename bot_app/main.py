@@ -11,12 +11,11 @@ from aiogram.types import ParseMode, CallbackQuery
 from aiogram.utils.executor import start_webhook
 
 from asc_scrapper.main import get_schedule_image
-from config import *
 from i18n import translate
 
 logging.basicConfig(level=logging.INFO)
 
-bot = Bot(token=get_settings().telegram_bot_api_token)
+bot = Bot(token=settings().telegram_bot_api_token)
 
 storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
@@ -116,7 +115,7 @@ async def cancel_handler(message: types.Message, state: FSMContext):
     await message.reply('تم الالغاء', reply_markup=types.ReplyKeyboardRemove())
 
 
-@dp.message_handler(lambda message: message.text not in branches.keys(), state=Form.branch)
+@dp.message_handler(lambda message: message.msg not in branches.keys(), state=Form.branch)
 async def process_branch_invalid(message: types.Message):
     return await message.reply("اختر من القائمة")
 
