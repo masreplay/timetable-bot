@@ -7,14 +7,17 @@ from sqlmodel import Relationship, SQLModel, Field, Column, JSON
 from app.schemas.base import BaseSchema
 from app.schemas.branch import BranchBase
 from app.schemas.building import BuildingBase
+from app.schemas.card import CardBase
 from app.schemas.department import DepartmentBase
 from app.schemas.floor import FloorBase
 from app.schemas.job_title import JobTitleBase
+from app.schemas.lesson import LessonBase
 from app.schemas.period import PeriodBase
 from app.schemas.permissions import default_permissions, Permissions
 from app.schemas.role import RoleBase
 from app.schemas.room import RoomBase
 from app.schemas.stage import StageBase
+from app.schemas.subject import SubjectBase
 from app.schemas.user import UserBase
 
 
@@ -88,3 +91,15 @@ class Room(BaseSchema, RoomBase, table=True):
 
 class Floor(BaseSchema, FloorBase, table=True):
     rooms: List["Room"] = Relationship(back_populates="floor")
+
+
+class Card(BaseSchema, CardBase, table=True):
+    pass
+
+
+class Lesson(BaseSchema, LessonBase, table=True):
+    pass
+
+
+class Subject(BaseSchema, SubjectBase, table=True):
+    pass

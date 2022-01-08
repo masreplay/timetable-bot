@@ -4,7 +4,7 @@ from .crud_user import user
 from .. import schemas, models
 from ..schemas import (RoleCreate, PeriodCreate, JobTitleCreate, DepartmentCreate, BranchCreate, BuildingCreate,
                        RoomCreate, RoleUpdate, PeriodUpdate, JobTitleUpdate, DepartmentUpdate, BranchUpdate,
-                       BuildingUpdate, RoomUpdate, FloorCreate, FloorUpdate, )
+                       BuildingUpdate, RoomUpdate, FloorCreate, FloorUpdate, CardCreate, CardUpdate, )
 
 role = CRUDBase[models.Role, RoleCreate, RoleUpdate, schemas.Role](models.Role, schemas.Role)
 
@@ -24,3 +24,5 @@ building = CRUDBase[models.Building, BuildingCreate, BuildingUpdate, schemas.Bui
 room = CRUDBase[models.Room, RoomCreate, RoomUpdate, schemas.Room](models.Room, schemas.Room)
 
 floor = CRUDBase[models.Floor, FloorCreate, FloorUpdate, schemas.Floor](models.Floor, schemas.Floor)
+
+card = CRUDBase[models.Card, CardCreate, CardUpdate, schemas.Card](models.Card, schemas.Card)

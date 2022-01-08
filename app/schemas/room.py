@@ -4,7 +4,7 @@ from uuid import UUID
 from sqlalchemy import Enum, Column
 from sqlmodel import Field
 
-from app.schemas.card_item import CardContent
+from app.schemas.base import CardContent
 from app.schemas.enums import RoomType
 
 

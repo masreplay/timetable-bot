@@ -9,5 +9,6 @@ from app.schemas.role import Role, RoleCreate, RoleUpdate
 from app.schemas.room import Room, RoomCreate, RoomUpdate
 from app.schemas.stage import Stage, StageCreate, StageUpdate
 from app.schemas.user import User, UserCreate, UserUpdate
+from app.schemas.card import Card, CardCreate, CardUpdate
 from app.schemas.floor import Floor, FloorCreate, FloorUpdate
 from app.schemas.user_token import Token, TokenPayload

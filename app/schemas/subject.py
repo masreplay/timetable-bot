@@ -1,23 +1,24 @@
 from uuid import UUID
 
 from app.schemas.base import CardContent
-from app.schemas.location import Location
 
 
 # Shared properties
-class BuildingBase(CardContent, Location):
+
+
+class SubjectBase(CardContent):
     pass
 
 
-class Building(BuildingBase):
+class Subject(SubjectBase):
     id: UUID
 
 
 # Properties to receive via API on creation
-class BuildingCreate(BuildingBase):
+class SubjectCreate(SubjectBase):
     pass
 
 
 # Properties to receive via API on update
-class BuildingUpdate(BuildingBase):
+class SubjectUpdate(SubjectBase):
     pass
