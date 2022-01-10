@@ -9,7 +9,7 @@ from app import crud, schemas, models
 from app.core.config import settings
 from app.schemas import enums
 from app.schemas.enums import UserType, CollageShifts
-from app.schemas.permissions import default_permissions, Permissions, super_admin_permissions
+from app.schemas.permissions import default_permissions, super_admin_permissions
 from uot_scraper.match_teachers import get_acs_uot_teachers, MergedTeacher
 
 # asc ids to uuid
@@ -320,7 +320,7 @@ def init_db(db: Session):
             db=db, obj_in=schemas.UserCreate(
                 email=settings().FIRST_SUPERUSER,
                 password=settings().FIRST_SUPERUSER_PASSWORD,
-                color='#000000',
+                color='#00000',
                 gender=None,
                 en_name="SUPER ADMIN",
                 name="مسؤول",
