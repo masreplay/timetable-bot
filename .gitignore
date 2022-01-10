@@ -4,3 +4,4 @@ asc_scrapper/generated_data
 **/[Tt]est*
 **/__pycache__
 asc_scrapper/asc_data
+asc_schedule.json
