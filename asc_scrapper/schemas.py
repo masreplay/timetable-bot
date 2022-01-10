@@ -84,9 +84,8 @@ class Teacher(BaseModel):
     timeoff: list[list[list[str]]]
 
     @property
-    def get_name(self) -> str | None:
+    def get_name(self) -> str:
         """
-
         :return: name without job title
         """
         name = self.short.split(".")
@@ -121,7 +120,6 @@ class Teacher(BaseModel):
 class Class(BaseModel):
     id: str
     name: str
-    short: str
     teacherid: str
     classroomids: list[str]
     bell: str

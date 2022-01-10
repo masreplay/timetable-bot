@@ -1,6 +1,6 @@
 import json
 import uuid
-from typing import List
+
 
 import requests
 import urllib3

@@ -30,6 +30,7 @@ class UserGender(str, Enum):
 class CollageShifts(str, Enum):
     morning = "morning"
     evening = "evening"
+    both = "both"
 
 
 class RoomType(str, Enum):

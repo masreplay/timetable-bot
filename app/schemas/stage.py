@@ -9,10 +9,10 @@ from app.schemas.named_object import NamedObject
 
 # Shared properties
 class StageBase(SQLModel):
-    __table_args__ = (UniqueConstraint('shift', 'level', 'branch_id', name='branch_stage'),)
-
+    # __table_args__ = (UniqueConstraint('shift', 'level', 'branch_id', name='branch_stage'),)
+    name: str | None = Field(default=None)
     shift: CollageShifts | None = Field(index=True, sa_column=Column(Enum(CollageShifts)))
-    level: int = Field(index=True, ge=1, le=10)
+    level: int | None = Field(index=True, ge=1, le=10)
     branch_id: UUID | None = Field(default=None, foreign_key="branch.id")
 
 

@@ -39,7 +39,7 @@ class APIPermissionsRouter(APIRouter):
     def include_permissions_router(
             self: APIRouter,
             router: "APIRouter" = None,
-            prefix_permissions: str = "",
+            prefix: str = "",
             tags: list[str] = None,
             dependencies: Sequence[params.Depends] | None = None,
             default_response_class: Type[Response] = Default(JSONResponse),
@@ -48,13 +48,16 @@ class APIPermissionsRouter(APIRouter):
             deprecated: bool | None = None,
             include_in_schema: bool = True,
     ):
-        """
-        Extension function (AKA monkey patching) on APIRouter to easily add permissions
-        """
-        _dependencies = [params.Depends(PermissionHandler(prefix_permissions))]
+        if prefix:
+            assert prefix.startswith("/"), "A path prefix must start with '/'"
+            assert not prefix.endswith(
+                "/"
+            ), "A path prefix must not end with '/', as the routes will start with '/'"
+
+        _dependencies = [params.Depends(PermissionHandler(prefix.split("/")[1]))]
         if dependencies:
             _dependencies = _dependencies.extend(list(dependencies))
 
-        self.include_router(router=router, prefix=f"/{prefix_permissions}", tags=tags, dependencies=_dependencies,
+        self.include_router(router=router, prefix=prefix, tags=tags, dependencies=_dependencies,
                             default_response_class=default_response_class, responses=responses, callbacks=callbacks,
                             deprecated=deprecated, include_in_schema=include_in_schema)

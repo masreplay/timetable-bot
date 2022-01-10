@@ -1,5 +1,5 @@
 from random import randint
-from typing import List, Any
+from typing import Any
 
 from colors.primaries import *
 from colors.accent import *

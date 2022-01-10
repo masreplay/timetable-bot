@@ -1,8 +1,6 @@
-from typing import List
-
+from pydantic import BaseModel
 from pydantic.color import Color
 
-from app import schemas
 from app.schemas.user import UserGender, UserScrapeFrom
 from asc_scrapper.asc_data import db
 from colors.color_utils import random_primary, colored_text
@@ -11,7 +9,22 @@ from uot_scraper.db import get_teachers
 TeachersName = list[str]
 
 
-def get_acs_uot_teachers() -> list[schemas.UserCreate]:
+class MergedTeacher(BaseModel):
+    id: str
+    name: str | None
+    en_name: str | None
+    image: str | None
+    email: str | None
+    uot_url: str | None
+    role_id: str | None
+    color: str
+    asc_job_title: str | None
+    asc_name: str | None
+    scrape_from: UserScrapeFrom
+    gender: UserGender | None
+
+
+def get_acs_uot_teachers() -> list[MergedTeacher]:
     old_uot = get_teachers()
     old_asc = db.get_teachers()
 
@@ -29,8 +42,8 @@ def get_acs_uot_teachers() -> list[schemas.UserCreate]:
                 new_asc.append(asc_teacher)
                 new_uot.append(uot_teacher)
                 teachers.append(
-                    schemas.UserCreate(
-                        job_titles=[],
+                    MergedTeacher(
+                        id=asc_teacher.id,
                         name=uot_teacher.ar_name,
                         en_name=uot_teacher.en_name,
                         image=uot_teacher.image,
@@ -48,9 +61,11 @@ def get_acs_uot_teachers() -> list[schemas.UserCreate]:
                 break
     new_asc = [teacher for teacher in old_asc if teacher not in new_asc]
     for teacher in new_asc:
+        if teacher.get_name is None:
+            print(teacher)
         teachers.append(
-            schemas.UserCreate(
-                job_titles=[],
+            MergedTeacher(
+                id=teacher.id,
                 name=teacher.get_name,
                 en_name=None,
                 image=None,
@@ -68,8 +83,8 @@ def get_acs_uot_teachers() -> list[schemas.UserCreate]:
     new_uot = [teacher for teacher in old_uot if teacher not in new_uot]
     for teacher in new_uot:
         teachers.append(
-            schemas.UserCreate(
-                job_titles=[],
+            MergedTeacher(
+                id=teacher.id,
                 name=teacher.ar_name,
                 en_name=teacher.en_name,
                 image=teacher.image,

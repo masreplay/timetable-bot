@@ -1,3 +1,4 @@
+from typing import List
 from uuid import UUID
 
 from pydantic import validator
@@ -7,6 +8,7 @@ from app.schemas.base import BaseSchema
 from app.schemas.branch import BranchBase
 from app.schemas.building import BuildingBase
 from app.schemas.card import CardBase
+from app.schemas.day import DayBase
 from app.schemas.department import DepartmentBase
 from app.schemas.floor import FloorBase
 from app.schemas.job_title import JobTitleBase
@@ -34,12 +36,12 @@ class UserJobTitle(SQLModel, table=True):
 class JobTitle(BaseSchema, JobTitleBase, table=True):
     __tablename__ = "job_title"
     __name__ = "job_title"
-    users: list["User"] = Relationship(back_populates="job_titles", link_model=UserJobTitle)
+    users: List["User"] = Relationship(back_populates="job_titles", link_model=UserJobTitle)
 
 
 class User(UserBase, BaseSchema, table=True):
-    job_titles: list["JobTitle"] = Relationship(back_populates="users", link_model=UserJobTitle)
-    hashed_password: str | None = Field(None)
+    job_titles: List["JobTitle"] = Relationship(back_populates="users", link_model=UserJobTitle)
+    hashed_password: str | None = Field(default=None)
 
     class Config:
         orm_mode = True
@@ -67,12 +69,12 @@ class Period(BaseSchema, PeriodBase, table=True):
 
 
 class Department(BaseSchema, DepartmentBase, table=True):
-    branches: list["Branch"] = Relationship(back_populates="department")
+    branches: List["Branch"] = Relationship(back_populates="department")
 
 
 class Branch(BaseSchema, BranchBase, table=True):
     department: "Department" = Relationship(back_populates="branches")
-    stages: list["Stage"] = Relationship(back_populates="branch")
+    stages: List["Stage"] = Relationship(back_populates="branch")
 
 
 class Stage(BaseSchema, StageBase, table=True):
@@ -80,7 +82,7 @@ class Stage(BaseSchema, StageBase, table=True):
 
 
 class Building(BaseSchema, BuildingBase, table=True):
-    rooms: list["Room"] = Relationship(back_populates="building")
+    rooms: List["Room"] = Relationship(back_populates="building")
 
 
 class Room(BaseSchema, RoomBase, table=True):
@@ -89,7 +91,7 @@ class Room(BaseSchema, RoomBase, table=True):
 
 
 class Floor(BaseSchema, FloorBase, table=True):
-    rooms: list["Room"] = Relationship(back_populates="floor")
+    rooms: List["Room"] = Relationship(back_populates="floor")
 
 
 class Card(BaseSchema, CardBase, table=True):
@@ -101,4 +103,8 @@ class Lesson(BaseSchema, LessonBase, table=True):
 
 
 class Subject(BaseSchema, SubjectBase, table=True):
+    pass
+
+
+class Day(BaseSchema, DayBase, table=True):
     pass

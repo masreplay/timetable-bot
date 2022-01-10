@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, Dict, Generic, Type, TypeVar
+from typing import Any, Generic, Type, TypeVar
 from uuid import UUID
 
 from fastapi.encoders import jsonable_encoder
@@ -16,7 +16,7 @@ Schema = TypeVar("Schema", bound=SQLModel)
 @dataclass
 class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType, Schema]):
     model: Type[ModelType]
-    schema: Schema
+    schema: Type[Schema]
 
     def get(self, db: Session, id: UUID) -> ModelType | None:
         statement = select(self.model).where(self.model.id == id)
@@ -25,7 +25,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType, Schema]):
     def get_multi(
             self, db: Session, *, skip: UUID = 0, limit: UUID = 100
     ) -> Paging[Schema]:
-        return Paging[self.schema](
+        return Paging[Schema](
             count=db.query(self.model).filter().count(),
             results=db.exec(select(self.model).offset(skip).limit(limit)).all()
         )

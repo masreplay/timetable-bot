@@ -1,6 +1,6 @@
 import os
 from functools import lru_cache
-from typing import List
+
 
 from asc_scrapper.extract_asc_schedule import load_data
 from uot_scraper.schemas import Teacher, Role

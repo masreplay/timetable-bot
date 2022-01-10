@@ -1,4 +1,4 @@
-from typing import List
+
 
 from extract_emails import DefaultFilterAndEmailFactory
 from extract_emails.browsers.chrome_browser import ChromeBrowser

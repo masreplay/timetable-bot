@@ -29,7 +29,7 @@ def get_classrooms():
 
 @lru_cache()
 def get_classes():
-    return load_data(os.path.join(BASE_DIR, 'classes.json.json'), schemas.Class)
+    return load_data(os.path.join(BASE_DIR, 'classes.json'), schemas.Class)
 
 
 @lru_cache()

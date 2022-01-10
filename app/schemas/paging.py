@@ -1,4 +1,4 @@
-from typing import TypeVar, list, Generic
+from typing import TypeVar, Generic
 
 from fastapi import Query
 from pydantic import BaseModel
