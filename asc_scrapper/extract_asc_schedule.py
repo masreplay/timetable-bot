@@ -18,7 +18,7 @@ def main():
 
     os.chdir("asc_data")
 
-    ignores = ["weeksdefs", "weeks", "termsdefs", "terms", "breaks", "studentsubjects", "students", "bells", ]
+    ignores = ["weeksdefs", "weeks", "termsdefs", "terms", "breaks", "studentsubjects", "students", "bells", ""]
 
     for i in data['asc_data']:
         name = i['id']
