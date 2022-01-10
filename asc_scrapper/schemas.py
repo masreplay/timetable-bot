@@ -1,6 +1,15 @@
 from typing import Any
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+
+
+class AscItem(BaseModel):
+    name: str = Field(alias="id")
+    data_rows: list[dict]
+
+
+class AscData(BaseModel):
+    data: list[AscItem]
 
 
 class Card(BaseModel):
