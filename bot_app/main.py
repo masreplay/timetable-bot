@@ -10,12 +10,13 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.types import ParseMode, CallbackQuery
 from aiogram.utils.executor import start_webhook
 
+from app.core.config import settings, WEBHOOK_URL, WEBHOOK_PATH
 from asc_scrapper.test import get_schedule_image
 from i18n import translate
 
 logging.basicConfig(level=logging.INFO)
 
-bot = Bot(token=settings().telegram_bot_api_token)
+bot = Bot(token=settings().TELEGRAM_BOT_API_TOKEN)
 
 storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
@@ -115,7 +116,7 @@ async def cancel_handler(message: types.Message, state: FSMContext):
     await message.reply('تم الالغاء', reply_markup=types.ReplyKeyboardRemove())
 
 
-@dp.message_handler(lambda message: message.msg not in branches.keys(), state=Form.branch)
+@dp.message_handler(lambda message: message.text not in branches.keys(), state=Form.branch)
 async def process_branch_invalid(message: types.Message):
     return await message.reply("اختر من القائمة")
 
@@ -271,6 +272,12 @@ def main():
         webhook_path=WEBHOOK_PATH,
         skip_updates=True,
         on_startup=on_startup,
-        host=WEBAPP_HOST,
-        port=WEBAPP_PORT,
+        host=settings().WEBAPP_HOST,
+        port=settings().WEBAPP_PORT,
     )
+
+
+if __name__ == '__main__':
+    from aiogram.utils import executor
+
+    executor.start_polling(dp, skip_updates=True)

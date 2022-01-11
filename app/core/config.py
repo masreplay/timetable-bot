@@ -10,11 +10,7 @@ load_dotenv()
 class Settings(BaseSettings):
     API_V1_STR: str = "/v1"
     SECRET_KEY: str = secrets.token_urlsafe(32)
-    HTML_TO_IMAGE_SERVICE: str
-    TELEGRAM_BOT_API_TOKEN: str
-    HEROKU_APP_NAME: str
     DATABASE_URL: str
-    PORT: int
     TRANSLATION_KEY: str
 
     RESPONSIBLE_USERS: list[EmailStr] = []
@@ -46,16 +42,23 @@ class Settings(BaseSettings):
         env_file = "../../.env"
         case_sensitive = True
 
+    HTML_TO_IMAGE_SERVICE: str
+
+    TELEGRAM_BOT_API_TOKEN: str
+
+    # webserver settings
+    WEBAPP_HOST = '0.0.0.0'
+    WEBAPP_PORT: int
+
+    HEROKU_APP_NAME: str
+
 
 @lru_cache()
 def settings():
     return Settings()
 
 
+# webserver settings
 WEBHOOK_HOST = f'https://{settings().HEROKU_APP_NAME}.herokuapp.com'
 WEBHOOK_PATH = f'/webhook/{settings().TELEGRAM_BOT_API_TOKEN}'
 WEBHOOK_URL = f'{WEBHOOK_HOST}{WEBHOOK_PATH}'
-
-# webserver settings
-WEBAPP_HOST = '0.0.0.0'
-WEBAPP_PORT = settings().PORT

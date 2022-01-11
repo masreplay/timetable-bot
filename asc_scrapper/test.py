@@ -10,7 +10,7 @@ IMAGE_URL = settings().HTML_TO_IMAGE_SERVICE + "image"
 
 
 def get_schedule_image(name: str, test: bool = True):
-    asc_crud: AscCRUD = AscCRUD.from_file(file_name="asc_schedule.json")
+    asc_crud: AscCRUD = AscCRUD.from_file(file_name="../../asc_schedule.json")
 
     periods = asc_crud.get_periods()
     days = asc_crud.get_days()
