@@ -188,7 +188,7 @@ async def process_shift(message: types.Message, state: FSMContext):
         await bot.send_photo(
             chat_id=message.chat.id,
             caption=md.text(
-                md.text(f"جدول: {md.bold(human_name)}"),
+                md.text(f"جدول: {md.link(human_name,'https://uot.csschedule.app/stage/123-123-123-123')}"),
                 sep='\n',
             ),
             photo=url,
