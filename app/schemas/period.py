@@ -12,6 +12,10 @@ class PeriodBase(SQLModel):
     end_time: time
 
 
+class Period(PeriodBase):
+    id: UUID
+
+
 # Properties to receive via API on creation
 class PeriodCreate(PeriodBase):
     pass
@@ -20,7 +24,3 @@ class PeriodCreate(PeriodBase):
 # Properties to receive via API on update
 class PeriodUpdate(PeriodBase):
     pass
-
-
-class Period(PeriodBase):
-    id: UUID

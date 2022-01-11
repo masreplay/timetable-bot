@@ -18,4 +18,4 @@ class BaseSchema(SQLModel):
 
 class CardContent(SQLModel):
     name: str | None = Field(index=True)
-    color: constr(regex=color_regex)
+    color: constr(regex=color_regex) | None

@@ -17,7 +17,6 @@ class UserBase(CardContent):
     email: EmailStr | None = Field(default=None, sa_column_kwargs=sa_column_kwargs(unique=True))
     uot_url: constr(regex=url_regex) | None = Field(default=None)
     image: constr(regex=url_regex) | None = Field(default=None)
-
     is_active: bool | None = True
 
     gender: UserGender | None = Field(sa_column=Column(Enum(UserGender)))

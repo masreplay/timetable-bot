@@ -1,15 +1,29 @@
-from typing import Any
+from typing import Any, Generic, TypeVar
 
 from pydantic import BaseModel, Field
+from pydantic.generics import GenericModel
+
+ModelType = TypeVar('ModelType')
 
 
-class AscItem(BaseModel):
+class AscItem(GenericModel, Generic[ModelType]):
     name: str = Field(alias="id")
-    data_rows: list[dict]
+    data_rows: list[ModelType]
+
+    class Config:
+        orm_mode = True
 
 
 class AscData(BaseModel):
-    data: list[AscItem]
+    tables: list[AscItem]
+
+
+class R(BaseModel):
+    dbiAccessorRes: AscData
+
+
+class AscTimeTable(BaseModel):
+    r: R
 
 
 class Card(BaseModel):

@@ -6,6 +6,9 @@ from sqlmodel import SQLModel
 # Shared properties
 class FloorBase(SQLModel):
     pass
+    # TODO
+    # name: str
+    # number: int
 
 
 class Floor(FloorBase):

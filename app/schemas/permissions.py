@@ -42,7 +42,6 @@ default_permissions: Permissions = Permissions(
     lessons=PermissionGroup(),
     cards=PermissionGroup(),
     days=PermissionGroup(),
-
 )
 
 full_crud_permission = PermissionGroup(

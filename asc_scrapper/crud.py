@@ -1,5 +1,3 @@
-from asc_scrapper.asc_data import db
-from asc_scrapper.asc_data.db import *
 from asc_scrapper.schemas import *
 
 

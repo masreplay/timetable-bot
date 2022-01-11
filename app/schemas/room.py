@@ -16,7 +16,6 @@ class RoomBase(CardContent):
 
 class Room(RoomBase):
     id: UUID
-    pass
 
 
 # Properties to receive via API on creation

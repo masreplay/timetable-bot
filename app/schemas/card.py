@@ -14,7 +14,6 @@ class CardBase(SQLModel):
 
 class Card(CardBase):
     id: UUID
-    pass
 
 
 # Properties to receive via API on creation
