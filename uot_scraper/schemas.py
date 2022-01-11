@@ -23,16 +23,4 @@ class Teacher(BaseModel):
 class Role(BaseModel):
     id: str
     en_name: str
-    ar_name: str | None
-
-
-Teachers = list[Teacher]
-Roles = list[Role]
-
-
-class TeacherCreate(Teacher):
-    pass
-
-
-class TeacherEdit(Teacher):
-    pass
+    ar_name: str | None = Field(None)

@@ -1,14 +1,13 @@
 import json
 import uuid
 
-
 import requests
 import urllib3
 from bs4 import BeautifulSoup as BSHTML
 
 from app.core.config import settings
 from uot_scraper.email_extract import get_emails
-from uot_scraper.schemas import Teacher, Teachers, Role, Roles
+from uot_scraper.schemas import Teacher, Role
 
 
 def main():
@@ -39,7 +38,7 @@ def extract_department_teachers(department_abbr: str):
     print("Getting teachers urls, image and en_name...")
     names = []
     teachers_urls = []
-    teachers: Teachers = []
+    teachers: list[Teacher] = []
 
     for link in soup.findAll('a'):
         href = link['href']
@@ -78,7 +77,7 @@ def extract_department_teachers(department_abbr: str):
     # Get teacher role
     print("Getting teacher role...")
     roles = []
-    roles_objects: Roles = []
+    roles_objects: list[Role] = []
     for (i, link) in enumerate(teachers_urls):
 
         response = http.request('GET', link)
