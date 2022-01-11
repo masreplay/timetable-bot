@@ -104,6 +104,8 @@ def generate_tab(days: list[schemas.Day], periods: list[schemas.Period], cards: 
     card_tags = ""
     on_background_color = "#ffffff" if is_dark else "#000000"
     for day in days:
+        if day.short in ["X", "E"]:
+            continue
         _day = day.vals[0]
         row = []
         for period in periods:
@@ -131,6 +133,6 @@ def card_into_table(card: schemas.Card):
         f"<p>{crud.get_subject_by_lesson_id(card.lessonid).short}</p>" \
         f"<p>{crud.get_teacher_by_lesson_id(card.lessonid).short}</p>" \
         # f"{get_class_by_lesson_id(card.lessonid).short}<br>"
-    # if len(card.classroomids) > 0:
-    #     card_data += f"<p>{crud.get_item_by_id(icard.classroomids[0]).short}</p>"
+    if len(card.classroomids) > 0:
+        card_data += f"<p>{crud.get_item_by_id(id=card.classroomids[0], type=schemas.Classroom).short}</p>"
     return card_data
