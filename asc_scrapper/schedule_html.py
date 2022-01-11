@@ -1,4 +1,5 @@
-from asc_scrapper import schemas
+from pydantic.color import Color
+
 from asc_scrapper.crud import *
 from asc_scrapper.schemas import *
 from colors.color_utils import decide_text_color, reduce_color_lightness
@@ -106,9 +107,9 @@ def generate_tab(days: list[schemas.Day], periods: list[schemas.Period], cards: 
         _day = day.vals[0]
         row = []
         for period in periods:
-            card = get_card(day=_day, period=period.period, cards=cards)
+            card = crud.get_card(day=_day, period=period.period, cards=cards)
             if card:
-                color = get_teacher_by_lesson_id(card.lessonid).color
+                color = crud.get_teacher_by_lesson_id(card.lessonid).color
                 color = reduce_color_lightness(Color(color), 0.75)
                 font_color = decide_text_color(color)
                 print(f"{color} ,{font_color}")
@@ -127,9 +128,9 @@ def generate_tab(days: list[schemas.Day], periods: list[schemas.Period], cards: 
 
 def card_into_table(card: schemas.Card):
     card_data = \
-        f"<p>{get_subject_by_lesson_id(card.lessonid).short}</p>" \
-        f"<p>{get_teacher_by_lesson_id(card.lessonid).short}</p>" \
+        f"<p>{crud.get_subject_by_lesson_id(card.lessonid).short}</p>" \
+        f"<p>{crud.get_teacher_by_lesson_id(card.lessonid).short}</p>" \
         # f"{get_class_by_lesson_id(card.lessonid).short}<br>"
-    if len(card.classroomids) > 0:
-        card_data += f"<p>{get_classroom(card.classroomids[0]).short}</p>"
+    # if len(card.classroomids) > 0:
+    #     card_data += f"<p>{crud.get_item_by_id(icard.classroomids[0]).short}</p>"
     return card_data

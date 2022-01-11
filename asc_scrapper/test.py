@@ -1,8 +1,10 @@
+import json
+import pathlib
+
 import requests
 
 from app.core.config import settings
 from asc_scrapper.crud import AscCRUD
-
 from asc_scrapper.schedule_html import schedule_html
 from asc_scrapper.schemas import Schedule
 
@@ -10,7 +12,9 @@ IMAGE_URL = settings().HTML_TO_IMAGE_SERVICE + "image"
 
 
 def get_schedule_image(name: str, test: bool = True):
-    asc_crud: AscCRUD = AscCRUD.from_file(file_name="../../asc_schedule.json")
+    json_file = open("../asc_scrapper/asc_schedule.json", encoding="utf8")
+    data = json.load(json_file)
+    asc_crud: AscCRUD = AscCRUD(data=data)
 
     periods = asc_crud.get_periods()
     days = asc_crud.get_days()
@@ -22,6 +26,7 @@ def get_schedule_image(name: str, test: bool = True):
     response = requests.get(IMAGE_URL, data={"html": data}, stream=True)
     url = response.json()["url"]
     img_data = requests.get(url).content
+    pathlib.Path("generated_data").mkdir(parents=True, exist_ok=True)
     with open(f'generated_data/{name}table.png', 'wb') as handler:
         handler.write(img_data)
     if test:
@@ -33,10 +38,3 @@ def get_schedule_image(name: str, test: bool = True):
 
 if __name__ == '__main__':
     get_schedule_image("ثالث برمجيات صباحي", test=True)
-
-# matlab -38
-# classroom_schedule("-38")
-# class_schedule("*22")
-# ولاء *58
-# teacher_schedule("*24")
-# print("\n".join([f"{teacher.short}, {teacher.id}" for teacher in get_teachers()]))
