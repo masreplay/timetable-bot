@@ -5,3 +5,4 @@ asc_scrapper/generated_data
 **/__pycache__
 asc_scrapper/asc_data
 asc_schedule.json
+/bot_app/generated_data/
