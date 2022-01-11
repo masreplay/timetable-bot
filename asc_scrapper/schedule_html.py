@@ -2,7 +2,7 @@ from pydantic.color import Color
 
 from asc_scrapper.crud import *
 from asc_scrapper.schemas import *
-from colors.color_utils import decide_text_color, reduce_color_lightness
+from colors.color_utils import decide_text_color, reduce_color_lightness, cprint
 
 
 def schedule_html(*, periods: list[schemas.Period], days: list[schemas.Day], cards: Schedule, title: str,
@@ -114,7 +114,7 @@ def generate_tab(days: list[schemas.Day], periods: list[schemas.Period], cards: 
                 color = crud.get_teacher_by_lesson_id(card.lessonid).color
                 color = reduce_color_lightness(Color(color), 0.75)
                 font_color = decide_text_color(color)
-                print(f"{color} ,{font_color}")
+                cprint(f"{color} ,{font_color}")
                 row.append(
                     f'<td '
                     f'style="background-color: {color}; color: {font_color}">'
