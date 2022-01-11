@@ -2,7 +2,7 @@ import os
 from functools import lru_cache
 
 
-from asc_scrapper.test import load_data
+from asc_scrapper.crud import load_data
 from uot_scraper.schemas import Teacher, Role
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))

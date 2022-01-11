@@ -10,7 +10,7 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.types import ParseMode, CallbackQuery
 from aiogram.utils.executor import start_webhook
 
-from asc_scrapper.main import get_schedule_image
+from asc_scrapper.test import get_schedule_image
 from i18n import translate
 
 logging.basicConfig(level=logging.INFO)

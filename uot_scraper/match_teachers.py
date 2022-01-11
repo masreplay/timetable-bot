@@ -1,15 +1,16 @@
 from pydantic import BaseModel
-from pydantic.color import Color
 
 from app.schemas.user import UserGender, UserScrapeFrom
-from asc_scrapper.asc_data import db
-from colors.color_utils import random_primary, colored_text
+from asc_scrapper import schemas as asc_schemas
+from asc_scrapper.crud import AscCRUD
+from colors.color_utils import random_primary
 from uot_scraper.db import get_teachers
-
-TeachersName = list[str]
 
 
 class MergedTeacher(BaseModel):
+    """
+    Teacher's data from Acs and Uot combined
+    """
     id: str
     name: str | None
     en_name: str | None
@@ -24,9 +25,13 @@ class MergedTeacher(BaseModel):
     gender: UserGender | None
 
 
-def get_acs_uot_teachers() -> list[MergedTeacher]:
+def combine_acs_uot_teachers(asc: AscCRUD) -> list[MergedTeacher]:
+    """
+    combine teacher's data from asc and uot
+    :return: combined teachers data
+    """
     old_uot = get_teachers()
-    old_asc = db.get_teachers()
+    old_asc = asc.get_all(asc_schemas)
 
     c = 0
     new_asc = []
@@ -106,9 +111,8 @@ def get_acs_uot_teachers() -> list[MergedTeacher]:
     ]
     return teachers
 
-
-if __name__ == '__main__':
-    print("\n".join(
-        [f"{colored_text(i + 1, bg_color=Color(teacher.color))}{teacher.dict(),}" for i, teacher in
-         enumerate(get_acs_uot_teachers())]
-    ))
+# if __name__ == '__main__':
+#     print("\n".join(
+#         [f"{colored_text(i + 1, bg_color=Color(teacher.color))}{teacher.dict(),}" for i, teacher in
+#          enumerate(get_acs_uot_teachers())]
+#     ))

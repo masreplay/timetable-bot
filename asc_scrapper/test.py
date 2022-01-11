@@ -1,55 +1,42 @@
-import json
-import pathlib
-from typing import TypeVar, Type
+import requests
 
-from pydantic import parse_obj_as
+from app.core.config import settings
+from asc_scrapper.crud import AscCRUD
 
-from asc_scrapper import schemas
-from asc_scrapper.schemas import AscData
+from asc_scrapper.schedule_html import schedule_html
+from asc_scrapper.schemas import Schedule
 
-T = TypeVar("T")
+IMAGE_URL = settings().HTML_TO_IMAGE_SERVICE + "image"
 
 
-class AscCRUD:
-    all = ["globals", "periods", "breaks", "bells", "daysdefs", "weeksdefs", "termsdefs", "days", "weeks", "terms",
-           "buildings", "classrooms", "classes", "subjects", "teachers", "groups", "divisions", "students", "lessons",
-           "studentsubjects", "cards", "ttreports", "classroomsupervisions", "coursegroups"]
+def get_schedule_image(name: str, test: bool = True):
+    asc_crud: AscCRUD = AscCRUD.from_file(file_name="asc_schedule.json")
 
-    wanted = {"cards", "daysdefs", "subjects", "lessons", "periods", "teachers", "classes", "classrooms", "buildings"}
+    periods = asc_crud.get_periods()
+    days = asc_crud.get_days()
 
-    ignores = set(all).difference(wanted)
+    schedule: Schedule = asc_crud.get_schedule_by_class_name(name)
 
-    data: AscData
+    data = schedule_html(periods=periods, days=days, cards=schedule, title=name, is_dark=True)
 
-    def __init__(self, data: json):
-        self.data = schemas.AscTimeTable.parse_obj(data).r.dbiAccessorRes
+    response = requests.get(IMAGE_URL, data={"html": data}, stream=True)
+    url = response.json()["url"]
+    img_data = requests.get(url).content
+    with open(f'generated_data/{name}table.png', 'wb') as handler:
+        handler.write(img_data)
+    if test:
+        with open("generated_data/table.g.html", "w", encoding="utf-8") as file:
+            file.write(data)
 
-    # self.parse_table(schemas.Card, name="cards")
-    def parse_table(self, type_: Type[T], *, name: str) -> list[T]:
-        """
-        parse table from asc by its name
-        """
-        assert name in self.wanted, "table not exist"
-        for table in self.data.tables:
-            if table.name == name:
-                return parse_obj_as(list[type_], table.data_rows)
-
-    def save_tables_as_files(self, *, dir_name: str = "/asc_data"):
-        """
-        save all wanted tables as files
-        """
-        pathlib.Path(dir_name).mkdir(parents=True, exist_ok=True)
-        for column in self.data.tables:
-            name = column.name
-            if name in self.wanted:
-                file = open(f"{dir_name}/{name}.json", "w", encoding="utf8")
-                json.dump(column.dict(), file, indent=2, ensure_ascii=False)
-                file.close()
+    return url
 
 
 if __name__ == '__main__':
-    json_file = open(f"asc_schedule.json", encoding="utf8")
-    data = json.load(json_file)
+    get_schedule_image("ثالث برمجيات صباحي", test=True)
 
-    asc_crud = AscCRUD(data=data)
-    asc_crud.save_tables_as_files()
+# matlab -38
+# classroom_schedule("-38")
+# class_schedule("*22")
+# ولاء *58
+# teacher_schedule("*24")
+# print("\n".join([f"{teacher.short}, {teacher.id}" for teacher in get_teachers()]))

@@ -3,14 +3,14 @@ from uuid import UUID, uuid4
 
 from sqlmodel import Session
 
-import asc_scrapper.crud as asc_crud
 import asc_scrapper.schemas as asc_schemas
 from app import crud, schemas, models
 from app.core.config import settings
 from app.schemas import enums
 from app.schemas.enums import UserType, CollageShifts
 from app.schemas.permissions import default_permissions, super_admin_permissions
-from uot_scraper.match_teachers import get_acs_uot_teachers, MergedTeacher
+from asc_scrapper.crud import AscCRUD as asc
+from uot_scraper.match_teachers import combine_acs_uot_teachers, MergedTeacher
 
 # asc ids to uuid
 building_ids: dict[str, UUID] = {}
@@ -24,17 +24,17 @@ cards_ids: dict[str, UUID] = {}
 days_ids: dict[str, UUID] = {}
 
 
-class InitializeDatabase:
+class InitializeDatabaseWithASC:
     db: Session
-    asc_crud: ASCCRUD
+    asc: asc
 
-    def __init__(self, db: Session, asc_crud: ASCCRUD):
+    def __init__(self, db: Session, asc_crud: asc):
         self.db = db
-        self.asc_crud = asc_crud
+        self.asc = asc_crud
         self.init_db(db)
 
     def init_building(self, db: Session):
-        buildings = asc_crud.get_buildings()
+        buildings = self.asc.get_all(asc_schemas.Building)
 
         for building in buildings:
             building_ids[building.id] = crud.building.create(
@@ -46,7 +46,7 @@ class InitializeDatabase:
             ).id
 
     def init_subjects(self, db: Session):
-        subjects = asc_crud.get_subjects()
+        subjects = self.asc.get_all(asc_schemas.Subject)
         for subject in subjects:
             subjects_ids[subject.id] = crud.subject.create(
                 db=db,
@@ -141,7 +141,7 @@ class InitializeDatabase:
             "صباحي": CollageShifts.morning,
             "مسائي": CollageShifts.evening,
         }
-        classes = asc_crud.get_classes()
+        classes = self.asc.get_all(asc_schemas.Class)
 
         for class_ in classes:
             if class_.name not in ["", " "]:
@@ -171,7 +171,7 @@ class InitializeDatabase:
                     ).id
 
     def init_lessons(self, db: Session):
-        lessons = asc_crud.get_lessons()
+        lessons = self.asc.get_all(asc_schemas.Lesson)
         for lesson in lessons:
 
             # get first class or null
@@ -193,7 +193,7 @@ class InitializeDatabase:
             ).id
 
     def init_rooms(self, db: Session):
-        rooms = asc_crud.get_classrooms()
+        rooms = self.asc.get_all(asc_schemas.Classroom)
         for room in rooms:
             rooms_ids[room.id] = crud.room.create(
                 db=db,
@@ -206,7 +206,7 @@ class InitializeDatabase:
             ).id
 
     def init_teachers(self, db: Session, teacher_jt, default_role):
-        teachers: list[MergedTeacher] = get_acs_uot_teachers()
+        teachers: list[MergedTeacher] = combine_acs_uot_teachers(self.asc)
         for teacher in teachers:
             user = crud.user.create(db=db, obj_in=schemas.UserCreate(
                 job_titles=[teacher_jt],
@@ -225,7 +225,7 @@ class InitializeDatabase:
             teachers_ids[teacher.id] = user.id
 
     def init_periods(self, db: Session):
-        periods = asc_crud.get_periods()
+        periods = self.asc.get_all(asc_schemas.Period)
         for period in periods:
             periods_ids[period.id] = crud.period.create(db=db, obj_in=schemas.PeriodCreate(
                 start_time=period.starttime,
@@ -233,7 +233,7 @@ class InitializeDatabase:
             )).id
 
     def init_days(self, db: Session):
-        days: list[asc_schemas.Day] = asc_crud.get_days()
+        days: list[asc_schemas.Day] = self.asc.get_all(asc_schemas.Day)
         for day in days:
             days_ids[day.vals[0]] = crud.day.create(
                 db=db,
@@ -243,7 +243,7 @@ class InitializeDatabase:
             ).id
 
     def init_cards(self, db: Session):
-        cards: list[asc_schemas.Card] = asc_crud.get_cards()
+        cards: list[asc_schemas.Card] = self.asc.get_all(asc_schemas.Card)
         for card in cards:
             cards_ids[card.id] = crud.card.create(
                 db=db,
