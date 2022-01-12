@@ -255,88 +255,86 @@ class InitializeDatabaseWithASC:
             ).id
 
     def init_db(self, db: Session):
-        user = crud.user.get_by_email(db, email=settings().FIRST_SUPERUSER)
-        print(user)
-        if not user:
-            self.init_building(db)
-            self.init_classes(db)
-            self.init_subjects(db)
-            self.init_rooms(db)
-            self.init_periods(db)
-            self.init_days(db)
 
-            # define user job titles
-            student_jt = models.JobTitle(
-                name="طالب",
-                en_name="Student",
-                type=UserType.student
-            )
-            representative_jt = models.JobTitle(
-                name="ممثل",
-                en_name="Representative",
-                type=UserType.student
-            )
+        self.init_building(db)
+        self.init_classes(db)
+        self.init_subjects(db)
+        self.init_rooms(db)
+        self.init_periods(db)
+        self.init_days(db)
 
-            teacher_jt = models.JobTitle(
-                name="مدرس",
-                en_name="Teacher",
-                type=UserType.teacher
-            )
-            responsible_jt = models.JobTitle(
-                name="المقرر",
-                en_name="Responsible",
-                type=UserType.teacher
-            )
-            assistant_teacher_jt = models.JobTitle(
-                name="مدرس مساعد",
-                en_name="Assistant Teacher",
-                type=UserType.teacher
-            )
+        # define user job titles
+        student_jt = models.JobTitle(
+            name="طالب",
+            en_name="Student",
+            type=UserType.student
+        )
+        representative_jt = models.JobTitle(
+            name="ممثل",
+            en_name="Representative",
+            type=UserType.student
+        )
 
-            employee_jt = models.JobTitle(
-                name="موظف",
-                en_name="Employee",
-                type=UserType.employee
+        teacher_jt = models.JobTitle(
+            name="مدرس",
+            en_name="Teacher",
+            type=UserType.teacher
+        )
+        responsible_jt = models.JobTitle(
+            name="المقرر",
+            en_name="Responsible",
+            type=UserType.teacher
+        )
+        assistant_teacher_jt = models.JobTitle(
+            name="مدرس مساعد",
+            en_name="Assistant Teacher",
+            type=UserType.teacher
+        )
+
+        employee_jt = models.JobTitle(
+            name="موظف",
+            en_name="Employee",
+            type=UserType.employee
+        )
+
+        creator_jt = models.JobTitle(
+            name="Constructor Team",
+            en_name="Constructor Team",
+            type=UserType.other
+        )
+
+        # Add job titles that will not add by relationship table
+        for job_title in [employee_jt, assistant_teacher_jt, representative_jt]:
+            crud.job_title.create(db, obj_in=job_title)
+
+        # crud.user.update_job_titles_by_email(db, email=user.email, job_titles=[creator_jt])
+
+        default_role = crud.role.create(
+            db=db, obj_in=schemas.RoleCreate(
+                ar_name="مستخدم جديد",
+                en_name="default",
+                permissions=default_permissions,
             )
-
-            creator_jt = models.JobTitle(
-                name="Constructor Team",
-                en_name="Constructor Team",
-                type=UserType.other
+        )
+        user: schemas.User = crud.user.create(
+            db=db, obj_in=schemas.UserCreate(
+                email="pts@gmail.com",
+                password="password",
+                color='#000000',
+                gender=None,
+                name="بطس",
+                en_name="pts",
+                role_id=default_role.id
             )
+        )
+        crud.user.update_job_titles_by_email(db, email=user.email, job_titles=[student_jt, creator_jt])
 
-            # Add job titles that will not add by relationship table
-            for job_title in [employee_jt, assistant_teacher_jt, representative_jt]:
-                crud.job_title.create(db, obj_in=job_title)
-
-            crud.user.update_job_titles_by_email(db, email=user.email, job_titles=[creator_jt])
-
-            default_role = crud.role.create(
-                db=db, obj_in=schemas.RoleCreate(
-                    ar_name="مستخدم جديد",
-                    en_name="default",
-                    permissions=default_permissions,
-                )
-            )
-            user: schemas.User = crud.user.create(
-                db=db, obj_in=schemas.UserCreate(
-                    email="pts@gmail.com",
-                    password="password",
-                    color='#000000',
-                    gender=None,
-                    name="بطس",
-                    en_name="pts",
-                    role_id=default_role.id
-                )
-            )
-            crud.user.update_job_titles_by_email(db, email=user.email, job_titles=[student_jt, creator_jt])
-
-            self.init_teachers(db, teacher_jt, default_role)
-            # Update Mr. osama job titles
-            for teacher_email in settings().RESPONSIBLE_USERS:
-                user: schemas.User = crud.user.get_by_email(db, email=teacher_email)
-                if not user:
-                    continue
-                crud.user.update_job_titles_by_email(db, email=user.email, job_titles=[teacher_jt, responsible_jt])
-            self.init_lessons(db)
-            self.init_cards(db)
+        self.init_teachers(db, teacher_jt, default_role)
+        # Update Mr. osama job titles
+        for teacher_email in settings().RESPONSIBLE_USERS:
+            user: schemas.User = crud.user.get_by_email(db, email=teacher_email)
+            if not user:
+                continue
+            crud.user.update_job_titles_by_email(db, email=user.email, job_titles=[teacher_jt, responsible_jt])
+        self.init_lessons(db)
+        self.init_cards(db)
