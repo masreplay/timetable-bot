@@ -8,6 +8,7 @@ from starlette.middleware.cors import CORSMiddleware
 from app.api.api_v1 import api
 from app.core.config import settings
 from app.open_api_to_files.main import get_models_zip
+from app.db.initial_db import main as seed_db
 
 app = FastAPI(
     title="CS UOT App",
@@ -16,6 +17,12 @@ app = FastAPI(
     docs_url=f"{settings().API_V1_STR}/docs",
     redoc_url=f"{settings().API_V1_STR}/redoc",
 )
+
+
+@app.on_event("startup")
+async def startup_event():
+    seed_db()
+
 
 # Routers
 app.include_router(api.api_router, prefix=settings().API_V1_STR)

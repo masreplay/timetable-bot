@@ -1,1 +1,1 @@
-web: alembic upgrade head && uvicorn app.main:app --host=0.0.0.0 --port=${PORT:-5000} && python app.db.initial_db.py
+web: alembic upgrade head && uvicorn app.main:app --host=0.0.0.0 --port=${PORT:-5000}
