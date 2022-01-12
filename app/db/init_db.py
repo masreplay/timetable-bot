@@ -8,7 +8,7 @@ from app import crud, schemas, models
 from app.core.config import settings
 from app.schemas import enums
 from app.schemas.enums import UserType, CollageShifts
-from app.schemas.permissions import default_permissions, super_admin_permissions
+from app.schemas.permissions import default_permissions
 from asc_scrapper.crud import AscCRUD as asc
 from uot_scraper.match_teachers import combine_acs_uot_teachers, MergedTeacher
 
@@ -308,25 +308,6 @@ class InitializeDatabaseWithASC:
             for job_title in [employee_jt, assistant_teacher_jt, representative_jt]:
                 crud.job_title.create(db, obj_in=job_title)
 
-            # Predefines users
-            super_admin_role = crud.role.create(
-                db=db, obj_in=schemas.RoleCreate(
-                    ar_name="مسؤول",
-                    en_name="SUPER ADMIN",
-                    permissions=super_admin_permissions,
-                )
-            )
-            user: schemas.User = crud.user.create(
-                db=db, obj_in=schemas.UserCreate(
-                    email=settings().FIRST_SUPERUSER,
-                    password=settings().FIRST_SUPERUSER_PASSWORD,
-                    color='#00000',
-                    gender=None,
-                    en_name="SUPER ADMIN",
-                    name="مسؤول",
-                    role_id=super_admin_role.id,
-                )
-            )
             crud.user.update_job_titles_by_email(db, email=user.email, job_titles=[creator_jt])
 
             default_role = crud.role.create(
