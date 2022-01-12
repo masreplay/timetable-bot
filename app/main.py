@@ -12,7 +12,7 @@ from app.api.api_v1 import api
 from app.core.config import settings
 from app.db.db import get_db
 from app.db.init_db import InitializeDatabaseWithASC
-from app.db.initial_db import init as init_db_seed
+from app.db.initial_db import main as init_db_seed
 from app.open_api_to_files.main import get_models_zip
 from asc_scrapper.crud import AscCRUD
 
