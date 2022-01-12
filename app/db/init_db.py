@@ -31,34 +31,33 @@ class InitializeDatabaseWithASC:
     def __init__(self, db: Session, asc_crud: asc):
         self.db = db
         self.asc = asc_crud
-        self.init_db(db)
 
-    def init_building(self, db: Session):
+    def init_building(self):
         buildings = self.asc.get_all(asc_schemas.Building)
 
         for building in buildings:
             building_ids[building.id] = crud.building.create(
-                db=db,
+                db=self.db,
                 obj_in=schemas.BuildingCreate(
                     name=building.name,
                     color=building.color,
                 )
             ).id
 
-    def init_subjects(self, db: Session):
+    def init_subjects(self):
         subjects = self.asc.get_all(asc_schemas.Subject)
         for subject in subjects:
             subjects_ids[subject.id] = crud.subject.create(
-                db=db,
+                db=self.db,
                 obj_in=schemas.SubjectCreate(
                     name=subject.name,
                     color=subject.color,
                 )
             ).id
 
-    def init_classes(self, db: Session):
+    def init_classes(self):
         computer_science_department = crud.department.create(
-            db=db, obj_in=schemas.DepartmentCreate(
+            db=self.db, obj_in=schemas.DepartmentCreate(
                 name="علوم الحاسوب",
                 en_name="Computer Science",
                 abbr="CS",
@@ -117,11 +116,11 @@ class InitializeDatabaseWithASC:
         ]
         for branch in branches:
             crud.branch.create(
-                db=db, obj_in=branch
+                db=self.db, obj_in=branch
             )
 
         other = crud.branch.create(
-            db=db, obj_in=schemas.BranchCreate(
+            db=self.db, obj_in=schemas.BranchCreate(
                 id=uuid4(),
                 name="اخرى",
                 en_name="",
@@ -147,7 +146,7 @@ class InitializeDatabaseWithASC:
             if class_.name not in ["", " "]:
                 if len(class_.name.split()) < 3:
                     stages_ids[class_.id] = crud.stage.create(
-                        db=db, obj_in=schemas.StageCreate(
+                        db=self.db, obj_in=schemas.StageCreate(
                             name=class_.name,
                             shift=CollageShifts.morning,
                             level=None,
@@ -163,14 +162,14 @@ class InitializeDatabaseWithASC:
                     branch: schemas.Branch = list(filter(lambda b: b.name == branch, branches))[0]
 
                     stages_ids[class_.id] = crud.stage.create(
-                        db=db, obj_in=schemas.StageCreate(
+                        db=self.db, obj_in=schemas.StageCreate(
                             shift=shift,
                             level=level,
                             branch_id=branch.id,
                         )
                     ).id
 
-    def init_lessons(self, db: Session):
+    def init_lessons(self):
         lessons = self.asc.get_all(asc_schemas.Lesson)
         for lesson in lessons:
 
@@ -184,7 +183,7 @@ class InitializeDatabaseWithASC:
                     continue
 
             lessons_ids[lesson.id] = crud.lesson.create(
-                db=db,
+                db=self.db,
                 obj_in=schemas.LessonCreate(
                     subject_id=subjects_ids[lesson.subjectid],
                     teacher_id=teachers_ids[lesson.teacherids[0]] if lesson.teacherids else None,
@@ -192,11 +191,11 @@ class InitializeDatabaseWithASC:
                 )
             ).id
 
-    def init_rooms(self, db: Session):
+    def init_rooms(self):
         rooms = self.asc.get_all(asc_schemas.Classroom)
         for room in rooms:
             rooms_ids[room.id] = crud.room.create(
-                db=db,
+                db=self.db,
                 obj_in=schemas.RoomCreate(
                     name=room.name,
                     color=room.color,
@@ -205,10 +204,10 @@ class InitializeDatabaseWithASC:
                 )
             ).id
 
-    def init_teachers(self, db: Session, teacher_jt, default_role):
+    def init_teachers(self, teacher_jt, default_role):
         teachers: list[MergedTeacher] = combine_acs_uot_teachers(self.asc)
         for teacher in teachers:
-            user = crud.user.create(db=db, obj_in=schemas.UserCreate(
+            user = crud.user.create(db=self.db, obj_in=schemas.UserCreate(
                 job_titles=[teacher_jt],
                 name=teacher.name,
                 en_name=teacher.en_name,
@@ -224,29 +223,29 @@ class InitializeDatabaseWithASC:
             ))
             teachers_ids[teacher.id] = user.id
 
-    def init_periods(self, db: Session):
+    def init_periods(self):
         periods = self.asc.get_all(asc_schemas.Period)
         for period in periods:
-            periods_ids[period.id] = crud.period.create(db=db, obj_in=schemas.PeriodCreate(
+            periods_ids[period.id] = crud.period.create(db=self.db, obj_in=schemas.PeriodCreate(
                 start_time=period.starttime,
                 end_time=period.endtime,
             )).id
 
-    def init_days(self, db: Session):
+    def init_days(self):
         days: list[asc_schemas.Day] = self.asc.get_all(asc_schemas.Day)
         for day in days:
             days_ids[day.vals[0]] = crud.day.create(
-                db=db,
+                db=self.db,
                 obj_in=schemas.DayCreate(
                     name=day.name
                 )
             ).id
 
-    def init_cards(self, db: Session):
+    def init_cards(self):
         cards: list[asc_schemas.Card] = self.asc.get_all(asc_schemas.Card)
         for card in cards:
             cards_ids[card.id] = crud.card.create(
-                db=db,
+                db=self.db,
                 obj_in=schemas.CardCreate(
                     period_id=periods_ids[card.period],
                     day_id=days_ids[card.days],
@@ -254,14 +253,14 @@ class InitializeDatabaseWithASC:
                 )
             ).id
 
-    def init_db(self, db: Session):
+    def init_db(self):
 
-        self.init_building(db)
-        self.init_classes(db)
-        self.init_subjects(db)
-        self.init_rooms(db)
-        self.init_periods(db)
-        self.init_days(db)
+        self.init_building()
+        self.init_classes()
+        self.init_subjects()
+        self.init_rooms()
+        self.init_periods()
+        self.init_days()
 
         # define user job titles
         student_jt = models.JobTitle(
@@ -305,19 +304,19 @@ class InitializeDatabaseWithASC:
 
         # Add job titles that will not add by relationship table
         for job_title in [employee_jt, assistant_teacher_jt, representative_jt]:
-            crud.job_title.create(db, obj_in=job_title)
+            crud.job_title.create(self.db, obj_in=job_title)
 
-        # crud.user.update_job_titles_by_email(db, email=user.email, job_titles=[creator_jt])
+        # crud.user.update_job_titles_by_email(self.db, email=user.email, job_titles=[creator_jt])
 
         default_role = crud.role.create(
-            db=db, obj_in=schemas.RoleCreate(
+            db=self.db, obj_in=schemas.RoleCreate(
                 ar_name="مستخدم جديد",
                 en_name="default",
                 permissions=default_permissions,
             )
         )
         user: schemas.User = crud.user.create(
-            db=db, obj_in=schemas.UserCreate(
+            db=self.db, obj_in=schemas.UserCreate(
                 email="pts@gmail.com",
                 password="password",
                 color='#000000',
@@ -327,14 +326,14 @@ class InitializeDatabaseWithASC:
                 role_id=default_role.id
             )
         )
-        crud.user.update_job_titles_by_email(db, email=user.email, job_titles=[student_jt, creator_jt])
+        crud.user.update_job_titles_by_email(self.db, email=user.email, job_titles=[student_jt, creator_jt])
 
-        self.init_teachers(db, teacher_jt, default_role)
+        self.init_teachers( teacher_jt, default_role)
         # Update Mr. osama job titles
         for teacher_email in settings().RESPONSIBLE_USERS:
-            user: schemas.User = crud.user.get_by_email(db, email=teacher_email)
+            user: schemas.User = crud.user.get_by_email(self.db, email=teacher_email)
             if not user:
                 continue
-            crud.user.update_job_titles_by_email(db, email=user.email, job_titles=[teacher_jt, responsible_jt])
-        self.init_lessons(db)
-        self.init_cards(db)
+            crud.user.update_job_titles_by_email(self.db, email=user.email, job_titles=[teacher_jt, responsible_jt])
+        self.init_lessons()
+        self.init_cards()

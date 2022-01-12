@@ -53,7 +53,7 @@ async def seed_db(
     InitializeDatabaseWithASC(
         db=db,
         asc_crud=AscCRUD(data=json_data)
-    )
+    ).init_db()
 
 
 # Models to files
