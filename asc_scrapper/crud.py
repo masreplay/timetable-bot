@@ -88,7 +88,7 @@ class AscCRUD:
                 json.dump(column.dict(), file, indent=2, ensure_ascii=False)
                 file.close()
 
-    def get_item_by_id(self, *, id: str, type: Type[T]) -> T:
+    def get_item(self, *, id: str, type: Type[T]) -> T:
         """
         Reusable to get item by its id
         :param type: item type
@@ -119,56 +119,45 @@ class AscCRUD:
         cards = self.get_all(schemas.Card)
         schedule = []
         for card in cards:
-            _class = self.get_class_by_lesson_id(card.lessonid)
+            lesson = self.get_item(id=card.lessonid, type=schemas.Lesson)
+            _class = self.get_item(id=lesson.class_id, type=schemas.Class)
             if _class and _class.id == class_id:
                 schedule.append(card)
         return schedule
 
-    def get_schedule_by_class_name(self, name: str) -> Schedule:
+    def get__class_schedule_by_name(self, name: str) -> Schedule:
+        """
+        Get all class cards
+        """
         cards = self.get_all(schemas.Card)
         schedule = []
         for card in cards:
-            _class = self.get_class_by_lesson_id(card.lessonid)
+            lesson = self.get_item(id=card.lessonid, type=schemas.Lesson)
+            _class = self.get_item(id=lesson.class_id, type=schemas.Class)
             if _class and _class.name == name:
                 schedule.append(card)
         return schedule
 
     def get_teacher_schedule(self, teacher_id: str) -> Schedule:
+        """
+        Get all teacher cards
+        """
         cards = self.get_all(schemas.Card)
         schedule = []
         for card in cards:
-            _class = self.get_teacher_by_lesson_id(card.lessonid)
+            lesson = self.get_item(id=card.lessonid, type=schemas.Lesson)
+            print(lesson)
+            _class = self.get_item(id=lesson.teacher_id, type=schemas.Teacher)
             if _class and _class.id == teacher_id:
                 schedule.append(card)
         return schedule
 
     def get_card(self, day: str, period: str, cards: list[Card]) -> schemas.Card | None:
-        # cards: list[schemas.Card] = self.get_all(schemas.Card)
         for card in cards:
             if card.period == period and card.days == day:
                 return card
 
-    def get_subject_by_lesson_id(self, lesson_id: str) -> schemas.Subject:
-        lesson = self.get_item_by_id(id=lesson_id, type=schemas.Lesson)
-        return self.get_item_by_id(id=lesson.subjectid, type=schemas.Subject)
 
-    def get_classroom_by_lesson_id(self, lesson_id: str) -> schemas.Classroom:
-        lesson = self.get_item_by_id(id=lesson_id, type=schemas.Lesson)
-        return self.get_item_by_id(id=lesson.classroomidss[0][0], type=schemas.Classroom)
-
-    def get_class_by_lesson_id(self, lesson_id: str) -> schemas.Class:
-        lesson = self.get_item_by_id(id=lesson_id, type=schemas.Lesson)
-        classes = lesson.classids
-        if len(classes) > 0:
-            return self.get_item_by_id(id=classes[0], type=schemas.Class)
-
-    def get_teacher_by_lesson_id(self, lesson_id: str) -> schemas.Teacher:
-        lesson = self.get_item_by_id(id=lesson_id, type=schemas.Lesson)
-        teachers = lesson.teacherids
-        if len(teachers) > 0:
-            return self.get_item_by_id(id=teachers[0], type=schemas.Teacher)
-
-
-crud = AscCRUD.from_file(file_name="../asc_scrapper/asc_schedule.json")
+crud: AscCRUD = AscCRUD.from_file(file_name="../asc_scrapper/asc_schedule.json")
 if __name__ == '__main__':
     crud.save_tables_as_files()

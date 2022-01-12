@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from sqlalchemy import Column, Enum, UniqueConstraint
+from sqlalchemy import Column, Enum
 from sqlmodel import Field, SQLModel
 
 from app.schemas.enums import CollageShifts
@@ -26,6 +26,9 @@ class Branch(NamedObject):
 class Stage(StageBase):
     id: UUID
     branch: Branch
+
+    class Config:
+        orm_mode = True
 
 
 # Properties to receive via API on creation

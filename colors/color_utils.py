@@ -87,7 +87,7 @@ def colored_text(*values: object, bg_color: Color) -> str:
            f"{reset}"
 
 
-def cprint(*values: object, bg_color: Color) -> Any:
+def cprint(values: str, bg_color: Color) -> Any:
     print(colored_text(values, bg_color=bg_color))
 
 

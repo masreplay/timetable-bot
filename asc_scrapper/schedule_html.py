@@ -5,7 +5,7 @@ from asc_scrapper.schemas import *
 from colors.color_utils import decide_text_color, reduce_color_lightness, cprint
 
 
-def schedule_html(*, periods: list[schemas.Period], days: list[schemas.Day], cards: Schedule, title: str,
+def schedule_html(*, periods: list[Period], days: list[Day], cards: Schedule, title: str,
                   is_dark: bool):
     col_width = 100 / (len(periods) + 1)
     row_height = 100 / (len(days) + 1)
@@ -92,7 +92,7 @@ def schedule_html(*, periods: list[schemas.Period], days: list[schemas.Day], car
                     {"".join([f'<th style="color: #ffffff">{period.time}</th>' for period in periods])}
                 </tr>
             </thead>
-            <tbody>{generate_tab(days=days, periods=periods, cards=cards)}</tbody>
+            <tbody>{generate_table(days=days, periods=periods, cards=cards)}</tbody>
         </table>
     </div>
 </body>
@@ -100,7 +100,7 @@ def schedule_html(*, periods: list[schemas.Period], days: list[schemas.Day], car
 </html>"""
 
 
-def generate_tab(days: list[schemas.Day], periods: list[schemas.Period], cards: Schedule, is_dark: bool = True):
+def generate_table(days: list[Day], periods: list[Period], cards: Schedule, is_dark: bool = True):
     card_tags = ""
     on_background_color = "#ffffff" if is_dark else "#000000"
     for day in days:
@@ -109,16 +109,16 @@ def generate_tab(days: list[schemas.Day], periods: list[schemas.Period], cards: 
         _day = day.vals[0]
         row = []
         for period in periods:
-            card = crud.get_card(day=_day, period=period.period, cards=cards)
+            card: Card = crud.get_card(day=_day, period=period.period, cards=cards)
+            lesson: Lesson = crud.get_item(id=card.lessonid, type=Lesson)
             if card:
-                color = crud.get_teacher_by_lesson_id(card.lessonid).color
+                color = crud.get_item(id=lesson.teacherids[0], type=Teacher).color
                 color = reduce_color_lightness(Color(color), 0.75)
                 font_color = decide_text_color(color)
-                cprint(f"{color} ,{font_color}")
                 row.append(
                     f'<td '
                     f'style="background-color: {color}; color: {font_color}">'
-                    f'{card_into_table(card)}</td>'
+                    f'{card_into_table(card, lesson, color)}</td>'
                 )
             else:
                 row.append(f"<td></td>")
@@ -128,11 +128,17 @@ def generate_tab(days: list[schemas.Day], periods: list[schemas.Period], cards: 
     return card_tags
 
 
-def card_into_table(card: schemas.Card):
+def card_into_table(card: Card, lesson: Lesson, color: Color):
+    subject_name = crud.get_item(id=lesson.subjectid, type=Subject).short
+    teacher_name = crud.get_item(id=lesson.teacher_id, type=Teacher).short
+
     card_data = \
-        f"<p>{crud.get_subject_by_lesson_id(card.lessonid).short}</p>" \
-        f"<p>{crud.get_teacher_by_lesson_id(card.lessonid).short}</p>" \
-        # f"{get_class_by_lesson_id(card.lessonid).short}<br>"
-    if len(card.classroomids) > 0:
-        card_data += f"<p>{crud.get_item_by_id(id=card.classroomids[0], type=schemas.Classroom).short}</p>"
+        f"<p>{subject_name}</p>" \
+        f"<p>{teacher_name}</p>"
+
+    classroom = None
+    if len(lesson.classroomidss) > 0:
+        classroom = crud.get_item(id=lesson.classroom_id, type=Classroom).short
+        card_data += f"<p>{classroom}</p>"
+    cprint(f"{subject_name} , {teacher_name} , {classroom}", bg_color=color)
     return card_data

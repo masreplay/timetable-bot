@@ -31,7 +31,7 @@ class Card(BaseModel):
     lessonid: str
     period: str
     days: str
-    weeks: str
+
     classroomids: list[str]
 
 
@@ -74,6 +74,20 @@ class Lesson(BaseModel):
     bell: str
     studentids: list
     groupnames: list[str]
+
+    @property
+    def classroom_id(self) -> str:
+        return self.classroomidss[0][0]
+
+    @property
+    def teacher_id(self) -> str | None:
+        teachers = self.teacherids
+        if len(teachers) > 0:
+            return teachers[0]
+
+    @property
+    def class_id(self) -> str | None:
+        return self.classids[0]
 
 
 class Period(BaseModel):
