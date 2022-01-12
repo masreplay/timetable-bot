@@ -31,7 +31,7 @@ def combine_acs_uot_teachers(asc: AscCRUD) -> list[MergedTeacher]:
     :return: combined teachers data
     """
     old_uot = get_teachers()
-    old_asc = asc.get_all(asc_schemas)
+    old_asc = asc.get_all(asc_schemas.Teacher)
 
     c = 0
     new_asc = []
