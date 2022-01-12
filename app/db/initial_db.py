@@ -28,7 +28,7 @@ def init_super_admin(db):
         db=db, obj_in=schemas.UserCreate(
             email=settings().FIRST_SUPERUSER,
             password=settings().FIRST_SUPERUSER_PASSWORD,
-            color='#00000',
+            color='#000000',
             gender=None,
             en_name="SUPER ADMIN",
             name="مسؤول",
