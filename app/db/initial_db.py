@@ -1,5 +1,6 @@
 import logging
 
+from app import crud
 from app import schemas
 from app.core.config import settings
 from app.db.db import get_db
@@ -16,7 +17,6 @@ def init() -> None:
 
 
 def init_super_admin(db):
-    from app import crud
     super_admin_role = crud.role.create(
         db=db, obj_in=schemas.RoleCreate(
             ar_name="مسؤول",

@@ -256,6 +256,7 @@ class InitializeDatabaseWithASC:
 
     def init_db(self, db: Session):
         user = crud.user.get_by_email(db, email=settings().FIRST_SUPERUSER)
+        print(user)
         if not user:
             self.init_building(db)
             self.init_classes(db)
