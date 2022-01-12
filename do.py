@@ -13,7 +13,7 @@
 #         await bot.set_webhook(WEBHOOK_URL)
 #         print(await bot.get_webhook_info())
 #
-#     asyncio.run(hook_set())
+#     asyncio.run(hook_set ())
 #     bot.close()
 from app.db.initial_db import main
 
