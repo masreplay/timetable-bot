@@ -160,6 +160,6 @@ class AscCRUD:
                 return card
 
 
-crud: AscCRUD = AscCRUD.from_file(file_name="../asc_scrapper/asc_schedule.json")
 if __name__ == '__main__':
+    crud: AscCRUD = AscCRUD.from_file(file_name="../asc_scrapper/asc_schedule.json")
     crud.save_tables_as_files()
