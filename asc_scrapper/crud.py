@@ -1,5 +1,6 @@
 import json
 import pathlib
+from functools import lru_cache
 from typing import Type
 
 from pydantic import parse_obj_as
@@ -67,6 +68,7 @@ class AscCRUD:
             if table.name == name:
                 return parse_obj_as(list[type_], table.data_rows)
 
+    @lru_cache
     def get_all(self, type_: Type[T]) -> list[T]:
         assert type_ in self.included_dict.keys(), "type not included"
         """
@@ -158,6 +160,6 @@ class AscCRUD:
                 return card
 
 
+crud: AscCRUD = AscCRUD.from_file(file_name="../asc_scrapper/asc_schedule.json")
 if __name__ == '__main__':
-    crud: AscCRUD = AscCRUD.from_file(file_name="../asc_scrapper/asc_schedule.json")
     crud.save_tables_as_files()

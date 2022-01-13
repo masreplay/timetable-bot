@@ -87,7 +87,8 @@ class Lesson(BaseModel):
 
     @property
     def class_id(self) -> str | None:
-        return self.classids[0]
+        if len(self.classids) > 0:
+            return self.classids[0]
 
 
 class Period(BaseModel):

@@ -110,8 +110,8 @@ def generate_table(days: list[Day], periods: list[Period], cards: Schedule, is_d
         row = []
         for period in periods:
             card: Card = crud.get_card(day=_day, period=period.period, cards=cards)
-            lesson: Lesson = crud.get_item(id=card.lessonid, type=Lesson)
             if card:
+                lesson: Lesson = crud.get_item(id=card.lessonid, type=Lesson)
                 color = crud.get_item(id=lesson.teacherids[0], type=Teacher).color
                 color = reduce_color_lightness(Color(color), 0.75)
                 font_color = decide_text_color(color)

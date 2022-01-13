@@ -28,7 +28,7 @@ def get_schedule_image(name: str, test: bool = True):
 
     data = schedule_html(periods=periods, days=days, cards=schedule, title=name, is_dark=True)
 
-    response = requests.get(IMAGE_URL, data={"html": data}, stream=True)
+    response = requests.post(IMAGE_URL, data={"html": data}, stream=True)
     image_url = ImageUrl.parse_obj(response.json())
 
     img_data = requests.get(image_url.url).content
