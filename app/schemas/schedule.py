@@ -26,12 +26,19 @@ class PeriodSchedule(PeriodBase):
     id: UUID
 
 
-class CardSchedule(CardBase):
-    id: UUID
-
-
 class LessonSchedule(LessonBase):
     id: UUID
+
+    class Config:
+        orm_mode = True
+
+
+class CardSchedule(CardBase):
+    id: UUID
+    lesson: "LessonSchedule"
+
+    class Config:
+        orm_mode = True
 
 
 class BuildingSchedule(BuildingBase):
@@ -59,7 +66,7 @@ class Schedule(SQLModel):
     periods: list[PeriodSchedule]
 
     cards: list[CardSchedule]
-    lessons: list[LessonSchedule]
+    # lessons: list[LessonSchedule]
 
     buildings: list[BuildingSchedule]
     floors: list[FloorSchedule]

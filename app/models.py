@@ -95,11 +95,11 @@ class Floor(BaseSchema, FloorBase, table=True):
 
 
 class Card(BaseSchema, CardBase, table=True):
-    pass
+    lesson: "Lesson" = Relationship(back_populates="card")
 
 
 class Lesson(BaseSchema, LessonBase, table=True):
-    pass
+    card: Card = Relationship(back_populates="lesson")
 
 
 class Subject(BaseSchema, SubjectBase, table=True):

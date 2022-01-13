@@ -10,7 +10,6 @@ class CRUDSchedule:
             periods=db.exec(select(models.Period)).all(),
 
             cards=db.exec(select(models.Card)).all(),
-            lessons=db.exec(select(models.Lesson)).all(),
 
             buildings=db.exec(select(models.Building)).all(),
             floors=db.exec(select(models.Floor)).all(),
