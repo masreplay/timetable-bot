@@ -25,7 +25,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType, Schema]):
     def get_multi(
             self, db: Session, *, skip: int = 0, limit: int = 100
     ) -> Paging[Schema]:
-        return Paging[Schema](
+        return Paging[self.schema](
             count=db.query(self.model).filter().count(),
             results=db.exec(select(self.model).offset(skip).limit(limit)).all()
         )

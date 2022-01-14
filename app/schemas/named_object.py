@@ -7,5 +7,3 @@ class NamedObject(BaseModel):
     id: UUID
     name: str
 
-    class Config:
-        orm_mode = True

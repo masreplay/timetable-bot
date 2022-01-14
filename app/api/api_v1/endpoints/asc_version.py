@@ -14,7 +14,7 @@ from asc_scrapper.crud import AscCRUD
 router = APIRouter()
 
 
-@router.post("/asc", tags=["asc"])
+@router.post("/")
 async def seed_db(
         db: Session = Depends(get_db),
         upload_file: UploadFile = File(...),

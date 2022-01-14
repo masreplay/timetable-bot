@@ -6,7 +6,7 @@ from app.models import Stage
 from app.schemas.stage import StageCreate, StageUpdate
 
 
-class CRUDStage(CRUDBase[Stage, StageCreate, StageUpdate, schemas.Stage]):
+class CRUDStage(CRUDBase[Stage, StageCreate, StageUpdate, Stage]):
 
     def get_by_object(self, db: Session, stage: StageCreate | StageUpdate) -> Stage:
         statement = select(Stage) \
@@ -14,4 +14,4 @@ class CRUDStage(CRUDBase[Stage, StageCreate, StageUpdate, schemas.Stage]):
         return db.exec(statement).first()
 
 
-stage = CRUDStage(Stage, schemas.Stage)
+stage: CRUDStage = CRUDStage(Stage, schemas.Stage)
