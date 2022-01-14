@@ -1,4 +1,5 @@
 from enum import Enum
+from typing import Tuple
 
 from fastapi import Depends, HTTPException, status, Request
 from fastapi.security import OAuth2PasswordBearer
@@ -10,6 +11,7 @@ from app import crud, schemas, models
 from app.core import security
 from app.core.config import settings
 from app.db.db import get_db
+from app.models import Role, User
 
 reusable_oauth2 = OAuth2PasswordBearer(
     tokenUrl=f"{settings().API_V1_STR}/auth/login/access-token"
@@ -76,6 +78,9 @@ def method_to_permission_name(method: str):
         return method
 
 
+UserRole: type = tuple[User, Role]
+
+
 class PermissionHandler:
     """
     Check if user have permission to preform this actions
@@ -93,7 +98,7 @@ class PermissionHandler:
             request: Request,
             current_user: models.User = Depends(get_current_user),
             db: Session = Depends(get_db)
-    ) -> models.Role:
+    ) -> UserRole:
         method = self.method.value if self.method else request.method
 
         print(f"METHOD: {method}")
@@ -124,7 +129,7 @@ class PermissionHandler:
                 detail="The user doesn't have enough permissions",
             )
 
-        return role
+        return current_user, role
 
 
 users_permission_handler = PermissionHandler(router="users")

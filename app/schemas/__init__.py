@@ -1,3 +1,4 @@
+from app.schemas.asc_version import AscVersion, AscVersionCreate
 from app.schemas.branch import Branch, BranchCreate, BranchUpdate
 from app.schemas.building import Building, BuildingCreate, BuildingUpdate
 from app.schemas.card import Card, CardCreate, CardUpdate

@@ -253,7 +253,7 @@ class InitializeDatabaseWithASC:
                 )
             ).id
 
-    def init_db(self):
+    def init_db(self) -> bool:
         user = crud.user.get_by_email(self.db, email="pts@gmail.com")
         if not user:
             self.init_building()
@@ -338,3 +338,6 @@ class InitializeDatabaseWithASC:
                 crud.user.update_job_titles_by_email(self.db, email=user.email, job_titles=[teacher_jt, responsible_jt])
             self.init_lessons()
             self.init_cards()
+            return True
+        else:
+            return False

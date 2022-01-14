@@ -4,6 +4,7 @@ from uuid import UUID
 from pydantic import validator
 from sqlmodel import Relationship, SQLModel, Field, Column, JSON
 
+from app.schemas.asc_version import AscVersionBase
 from app.schemas.base import BaseSchema
 from app.schemas.branch import BranchBase
 from app.schemas.building import BuildingBase
@@ -107,4 +108,10 @@ class Subject(BaseSchema, SubjectBase, table=True):
 
 
 class Day(BaseSchema, DayBase, table=True):
+    cards: List["Card"] = Relationship(
+        sa_relationship_kwargs={"cascade": "delete"}
+    )
+
+
+class AscVersion(BaseSchema, AscVersionBase, table=True):
     pass

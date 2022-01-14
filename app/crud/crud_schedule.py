@@ -1,6 +1,7 @@
 from sqlmodel import select, Session
 
 from app import schemas, models
+from app.schemas import enums
 
 
 class CRUDSchedule:
@@ -16,6 +17,9 @@ class CRUDSchedule:
             classrooms=db.exec(select(models.Stage)).all(),
 
             subjects=db.exec(select(models.Subject)).all(),
-            teachers=db.exec(select(models.User)).all(),
+            teachers=db.exec(
+                select(models.User).where(
+                    models.User.job_titles.any(models.JobTitle.type == enums.UserType.teacher)
+                )).all(),
             stages=db.exec(select(models.Stage)).all(),
         )

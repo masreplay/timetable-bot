@@ -1,4 +1,5 @@
 from .base import CRUDBase
+from .crud_asc_version import CRUDAscVersion
 from .crud_schedule import CRUDSchedule
 from .crud_stage import stage
 from .crud_user import user
@@ -35,3 +36,5 @@ subject: SubjectCRUD = SubjectCRUD(models.Subject, schemas.Subject)
 lesson: LessonCRUD = LessonCRUD(models.Lesson, schemas.Lesson)
 day: DayCRUD = DayCRUD(models.Day, schemas.Day)
 schedule: CRUDSchedule = CRUDSchedule()
+asc_version: CRUDAscVersion = CRUDAscVersion()
+

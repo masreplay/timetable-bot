@@ -20,7 +20,7 @@ def parse_json_list(file_dir: str, type_: Type[T], data="results") -> list[T]:
     :param data:
     :return:
     """
-    with open(file_dir, "r") as f:
+    with open(file_dir, "r", encoding='utf-8') as f:
         json_list = json.load(f)
         return parse_obj_as(list[type_], json_list[data])
 

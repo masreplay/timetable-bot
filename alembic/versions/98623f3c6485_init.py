@@ -1,8 +1,8 @@
 """init
 
-Revision ID: 848f6f49fdb6
+Revision ID: 98623f3c6485
 Revises: 
-Create Date: 2022-01-10 19:21:50.604745
+Create Date: 2022-01-15 00:33:26.124474
 
 """
 from alembic import op
@@ -11,7 +11,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '848f6f49fdb6'
+revision = '98623f3c6485'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -23,7 +23,7 @@ def upgrade():
     sa.Column('lng', sa.Float(), nullable=True),
     sa.Column('lat', sa.Float(), nullable=True),
     sa.Column('name', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
-    sa.Column('color', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+    sa.Column('color', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
     sa.Column('id', sqlmodel.sql.sqltypes.GUID(), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.PrimaryKeyConstraint('id')
@@ -75,7 +75,7 @@ def upgrade():
     )
     op.create_table('subject',
     sa.Column('name', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
-    sa.Column('color', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+    sa.Column('color', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
     sa.Column('id', sqlmodel.sql.sqltypes.GUID(), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.PrimaryKeyConstraint('id')
@@ -95,7 +95,7 @@ def upgrade():
     op.create_table('room',
     sa.Column('type', sa.Enum('classroom', 'employee', 'other', name='roomtype'), nullable=True),
     sa.Column('name', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
-    sa.Column('color', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+    sa.Column('color', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
     sa.Column('building_id', sqlmodel.sql.sqltypes.GUID(), nullable=True),
     sa.Column('floor_id', sqlmodel.sql.sqltypes.GUID(), nullable=True),
     sa.Column('id', sqlmodel.sql.sqltypes.GUID(), nullable=True),
@@ -111,7 +111,7 @@ def upgrade():
     sa.Column('id', sqlmodel.sql.sqltypes.GUID(), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.Column('name', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
-    sa.Column('color', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+    sa.Column('color', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
     sa.Column('en_name', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
     sa.Column('email', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
     sa.Column('uot_url', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
@@ -127,6 +127,14 @@ def upgrade():
     )
     op.create_index(op.f('ix_user_en_name'), 'user', ['en_name'], unique=False)
     op.create_index(op.f('ix_user_name'), 'user', ['name'], unique=False)
+    op.create_table('ascversion',
+    sa.Column('created_by', sqlmodel.sql.sqltypes.GUID(), nullable=False),
+    sa.Column('file_name', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+    sa.Column('id', sqlmodel.sql.sqltypes.GUID(), nullable=True),
+    sa.Column('created_at', sa.DateTime(), nullable=True),
+    sa.ForeignKeyConstraint(['created_by'], ['user.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
     op.create_table('stage',
     sa.Column('shift', sa.Enum('morning', 'evening', 'both', name='collageshifts'), nullable=True),
     sa.Column('name', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
@@ -178,6 +186,7 @@ def downgrade():
     op.drop_table('user_job_title')
     op.drop_index(op.f('ix_stage_level'), table_name='stage')
     op.drop_table('stage')
+    op.drop_table('ascversion')
     op.drop_index(op.f('ix_user_name'), table_name='user')
     op.drop_index(op.f('ix_user_en_name'), table_name='user')
     op.drop_table('user')
