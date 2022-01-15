@@ -1,11 +1,12 @@
 from typing import Any
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlmodel import Session
 
 from app import schemas, crud
 from app.db.db import get_db
+from app.schemas import enums
 from app.schemas.enums import StaffType
 from app.schemas.paging import LimitSkipParams, Paging
 
@@ -20,13 +21,13 @@ def read_users(
         paging: LimitSkipParams = Depends(),
         query: str | None = None,
         role_id: UUID | None = None,
-        user_type: StaffType | None = None
+        user_type: list[enums.StaffType] = Query(None)
 ) -> Any:
     """
     Retrieve users.
     """
     users = crud.user.get_filter(db, skip=paging.skip, limit=paging.limit, query=query, role_id=role_id,
-                                 user_type=user_type)
+                                 user_types=user_type)
     return users
 
 

@@ -1,3 +1,4 @@
+from fastapi.encoders import jsonable_encoder
 from sqlmodel import Session, select
 
 from app import schemas
@@ -6,7 +7,7 @@ from app.models import Stage
 from app.schemas.stage import StageCreate, StageUpdate
 
 
-class CRUDStage(CRUDBase[Stage, StageCreate, StageUpdate, Stage]):
+class CRUDStage(CRUDBase[Stage, StageCreate, StageUpdate, schemas.Stage]):
 
     def get_by_object(self, db: Session, stage: StageCreate | StageUpdate) -> Stage:
         statement = select(Stage) \

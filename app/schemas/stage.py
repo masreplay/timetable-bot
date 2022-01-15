@@ -1,8 +1,11 @@
 from uuid import UUID
 
+from pydantic import validator, root_validator
+from pydantic.utils import GetterDict
 from sqlalchemy import Column, Enum
 from sqlmodel import Field, SQLModel
 
+from app.schemas import enums
 from app.schemas.enums import CollageShifts
 from app.schemas.named_object import NamedObject
 
@@ -23,9 +26,35 @@ class Branch(NamedObject):
         orm_mode = True
 
 
+stage_level_t = {
+    1: "اول",
+    2: "ثاني",
+    3: "ثالث",
+    4: "رابع",
+    5: "خامس",
+}
+
+stage_shift_t = {
+    enums.CollageShifts.morning: "صباحي",
+    enums.CollageShifts.evening: "مسائي",
+}
+
+
 class Stage(StageBase):
     id: UUID
     branch: Branch
+
+    @root_validator(pre=True)
+    def passwords_match(cls, values: GetterDict):
+        if values['name']:
+            return values
+        else:
+            new: dict = dict(values)
+            level: str = stage_level_t[new.get('level')]
+            shift: str = stage_shift_t[new.get('shift')]
+            branch: Branch = new.get('branch')
+            new['name'] = f"{level} {branch.name} {shift}"
+            return new
 
     class Config:
         orm_mode = True

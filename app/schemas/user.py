@@ -1,3 +1,4 @@
+from typing import TYPE_CHECKING
 from uuid import UUID
 
 from pydantic import EmailStr, constr
@@ -9,6 +10,9 @@ from app.core.utils.regex import url_regex
 from app.core.utils.sql_alchemy_utils import sa_column_kwargs
 from app.schemas.base import CardContent
 from app.schemas.enums import UserGender, UserScrapeFrom
+
+if TYPE_CHECKING:
+    pass
 
 
 # Shared properties

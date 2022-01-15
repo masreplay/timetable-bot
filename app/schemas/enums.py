@@ -15,6 +15,7 @@ class StaffType(str, Enum):
     teacher = "teacher"
 
 
+
 class UserType(str, Enum):
     employee = "employee"
     teacher = "teacher"

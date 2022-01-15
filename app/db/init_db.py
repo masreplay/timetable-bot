@@ -256,11 +256,11 @@ class InitializeDatabaseWithASC:
                 type=UserType.student
             )
 
-            teacher_jt = crud.job_title.create(db=self.db, obj_in=schemas.JobTitleCreate(
+            teacher_jt = models.JobTitle(
                 name="مدرس",
                 en_name="Teacher",
                 type=UserType.teacher
-            ))
+            )
             responsible_jt = models.JobTitle(
                 name="المقرر",
                 en_name="Responsible",
@@ -308,12 +308,11 @@ class InitializeDatabaseWithASC:
                     role_id=default_role.id
                 )
             )
-            crud.user.update_job_titles_by_email(self.db, email=user.email, job_titles=[student_jt, creator_jt])
+            crud.user.update_job_titles(self.db, id=user.id, job_titles=[student_jt, creator_jt])
 
             teachers: list[MergedTeacher] = get_combine_teachers(self.asc)
             for teacher in teachers:
                 user = crud.user.create(db=self.db, obj_in=schemas.UserCreate(
-                    job_titles=[teacher_jt],
                     name=teacher.name,
                     en_name=teacher.en_name,
                     image=teacher.image,
@@ -326,14 +325,15 @@ class InitializeDatabaseWithASC:
                     scrape_from=teacher.scrape_from,
                     gender=teacher.gender,
                 ))
+                crud.user.update_job_titles(self.db, id=user.id, job_titles=[teacher_jt])
                 teachers_ids[teacher.id] = user.id
 
             # Update Mr. osama job titles
             for teacher_email in settings().RESPONSIBLE_USERS:
                 user: schemas.User = crud.user.get_by_email(self.db, email=teacher_email)
-                if not user:
-                    continue
-                crud.user.update_job_titles_by_email(self.db, email=user.email, job_titles=[teacher_jt, responsible_jt])
+                if user:
+                    crud.user.update_job_titles(self.db, id=user.id, job_titles=[teacher_jt, responsible_jt])
+
             self.init_lessons()
             self.init_cards()
             return True
