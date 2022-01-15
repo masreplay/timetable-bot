@@ -1,7 +1,7 @@
-
 from uuid import UUID
 
-from sqlmodel import SQLModel
+from sqlalchemy import Column, Enum
+from sqlmodel import SQLModel, Field
 
 # Shared properties
 from app.schemas.enums import UserType
@@ -10,7 +10,7 @@ from app.schemas.enums import UserType
 class JobTitleBase(SQLModel):
     name: str
     en_name: str | None
-    type: UserType
+    type: UserType | None = Field(sa_column=Column(Enum(UserType)))
 
 
 # Properties to receive via API on creation

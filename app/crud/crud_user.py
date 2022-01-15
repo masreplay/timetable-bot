@@ -61,7 +61,7 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate, schemas.User]):
         else:
             where.append(
                 User.job_titles.any(
-                    models.JobTitle.type == UserType.teacher and models.JobTitle.type == UserType.employee
+                    models.JobTitle.type == UserType.teacher.name and models.JobTitle.type == UserType.employee
                 )
             )
 
