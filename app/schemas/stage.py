@@ -45,7 +45,7 @@ class Stage(StageBase):
     branch: Branch
 
     @root_validator(pre=True)
-    def passwords_match(cls, values: GetterDict):
+    def name_reshape(cls, values):
         if values['name']:
             return values
         else:

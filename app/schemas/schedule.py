@@ -9,7 +9,7 @@ from app.schemas.floor import FloorBase
 from app.schemas.lesson import LessonBase
 from app.schemas.period import PeriodBase
 from app.schemas.room import RoomBase
-from app.schemas.stage import StageBase
+from app.schemas.stage import StageBase, Stage
 from app.schemas.subject import SubjectBase
 from app.schemas.user import UserBase
 
@@ -74,4 +74,4 @@ class Schedule(SQLModel):
 
     subjects: list[SubjectSchedule]
     teachers: list[TeacherSchedule]
-    stages: list[StageSchedule]
+    stages: list[Stage]
