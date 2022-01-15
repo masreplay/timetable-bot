@@ -2,6 +2,7 @@ from sqlmodel import select, Session
 
 from app import schemas, models
 from app.schemas import enums
+from app.schemas.enums import UserType
 
 
 class CRUDSchedule:
@@ -19,7 +20,7 @@ class CRUDSchedule:
             subjects=db.exec(select(models.Subject)).all(),
             teachers=db.exec(
                 select(models.User).where(
-                    models.User.job_titles.any(models.JobTitle.type == enums.UserType.teacher)
+                    models.User.job_titles.any(models.JobTitle.type == UserType.teacher)
                 )).all(),
             stages=db.exec(select(models.Stage)).all(),
         )

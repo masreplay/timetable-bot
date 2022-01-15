@@ -1,9 +1,11 @@
 from pydantic import BaseModel
+from pydantic.color import Color
 
 from app.schemas.user import UserGender, UserScrapeFrom
 from asc_scrapper import schemas as asc_schemas
 from asc_scrapper.crud import AscCRUD
-from colors.color_utils import random_primary
+from asc_scrapper.schemas import Teacher
+from colors.color_utils import random_primary, colored_text
 from uot_scraper.db import get_teachers
 
 
@@ -25,7 +27,7 @@ class MergedTeacher(BaseModel):
     gender: UserGender | None
 
 
-def combine_acs_uot_teachers(asc: AscCRUD) -> list[MergedTeacher]:
+def get_combine_teachers(asc: AscCRUD) -> list[MergedTeacher]:
     """
     combine teacher's data from asc and uot
     :return: combined teachers data
@@ -111,8 +113,10 @@ def combine_acs_uot_teachers(asc: AscCRUD) -> list[MergedTeacher]:
     ]
     return teachers
 
-# if __name__ == '__main__':
-#     print("\n".join(
-#         [f"{colored_text(i + 1, bg_color=Color(teacher.color))}{teacher.dict(),}" for i, teacher in
-#          enumerate(get_acs_uot_teachers())]
-#     ))
+
+if __name__ == '__main__':
+    asc: AscCRUD = AscCRUD.from_file(file_name="../asc_scrapper/asc_schedule.json")
+    print("\n".join(
+        [f"{colored_text(i + 1, bg_color=Color(teacher.color))}{teacher.dict(),}" for i, teacher in
+         enumerate(get_combine_teachers(asc=asc))]
+    ))

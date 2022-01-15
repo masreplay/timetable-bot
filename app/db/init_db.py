@@ -9,8 +9,8 @@ from app.core.config import settings
 from app.schemas import enums
 from app.schemas.enums import UserType, CollageShifts
 from app.schemas.permissions import default_permissions
-from asc_scrapper.crud import AscCRUD as asc
-from uot_scraper.match_teachers import combine_acs_uot_teachers, MergedTeacher
+from asc_scrapper.crud import AscCRUD
+from uot_scraper.match_teachers import get_combine_teachers, MergedTeacher
 
 # asc ids to uuid
 building_ids: dict[str, UUID] = {}
@@ -26,9 +26,9 @@ days_ids: dict[str, UUID] = {}
 
 class InitializeDatabaseWithASC:
     db: Session
-    asc: asc
+    asc: AscCRUD
 
-    def __init__(self, db: Session, asc_crud: asc):
+    def __init__(self, db: Session, asc_crud: AscCRUD):
         self.db = db
         self.asc = asc_crud
 
@@ -204,25 +204,6 @@ class InitializeDatabaseWithASC:
                 )
             ).id
 
-    def init_teachers(self, teacher_jt, default_role):
-        teachers: list[MergedTeacher] = combine_acs_uot_teachers(self.asc)
-        for teacher in teachers:
-            user = crud.user.create(db=self.db, obj_in=schemas.UserCreate(
-                job_titles=[teacher_jt],
-                name=teacher.name,
-                en_name=teacher.en_name,
-                image=teacher.image,
-                email=teacher.email,
-                uot_url=teacher.uot_url,
-                role_id=default_role.id,
-                color=teacher.color,
-                asc_job=teacher.asc_job_title,
-                asc_name=teacher.asc_name,
-                scrape_from=teacher.scrape_from,
-                gender=teacher.gender,
-            ))
-            teachers_ids[teacher.id] = user.id
-
     def init_periods(self):
         periods = self.asc.get_all(asc_schemas.Period)
         for period in periods:
@@ -275,11 +256,11 @@ class InitializeDatabaseWithASC:
                 type=UserType.student
             )
 
-            teacher_jt = models.JobTitle(
+            teacher_jt = crud.job_title.create(db=self.db, obj_in=schemas.JobTitleCreate(
                 name="مدرس",
                 en_name="Teacher",
                 type=UserType.teacher
-            )
+            ))
             responsible_jt = models.JobTitle(
                 name="المقرر",
                 en_name="Responsible",
@@ -329,7 +310,24 @@ class InitializeDatabaseWithASC:
             )
             crud.user.update_job_titles_by_email(self.db, email=user.email, job_titles=[student_jt, creator_jt])
 
-            self.init_teachers(teacher_jt, default_role)
+            teachers: list[MergedTeacher] = get_combine_teachers(self.asc)
+            for teacher in teachers:
+                user = crud.user.create(db=self.db, obj_in=schemas.UserCreate(
+                    job_titles=[teacher_jt],
+                    name=teacher.name,
+                    en_name=teacher.en_name,
+                    image=teacher.image,
+                    email=teacher.email,
+                    uot_url=teacher.uot_url,
+                    role_id=default_role.id,
+                    color=teacher.color,
+                    asc_job=teacher.asc_job_title,
+                    asc_name=teacher.asc_name,
+                    scrape_from=teacher.scrape_from,
+                    gender=teacher.gender,
+                ))
+                teachers_ids[teacher.id] = user.id
+
             # Update Mr. osama job titles
             for teacher_email in settings().RESPONSIBLE_USERS:
                 user: schemas.User = crud.user.get_by_email(self.db, email=teacher_email)
