@@ -122,7 +122,6 @@ class Lesson(BaseSchema, LessonBase, table=True):
     stages: List["Stage"] = Relationship(back_populates="lessons", link_model=StageLesson)
 
 
-
 class Subject(BaseSchema, SubjectBase, table=True):
     pass
 
