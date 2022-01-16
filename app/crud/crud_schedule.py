@@ -20,8 +20,7 @@ class CRUDSchedule:
 
             subjects=db.exec(select(models.Subject)).all(),
 
-            teachers=db.exec(select(models.User)
-                             .where(models.User.job_titles.any(models.JobTitle.type.in_([UserType.teacher])))
-                             ).all(),
+            teachers=db.exec(select(models.User).where(
+                models.User.job_titles.any(models.JobTitle.type.in_([UserType.teacher])))).all(),
             stages=db.exec(select(models.Stage)).all(),
         )
