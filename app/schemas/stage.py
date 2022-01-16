@@ -7,7 +7,7 @@ from sqlmodel import Field, SQLModel
 
 from app.schemas import enums
 from app.schemas.enums import CollageShifts
-from app.schemas.named_object import NamedObject
+from app.schemas.named_object import NamedObject, IdObject
 
 
 # Shared properties
