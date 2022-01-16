@@ -1,19 +1,16 @@
-from typing import Any
 from uuid import UUID
 
-from pydantic import validator
 from sqlmodel import SQLModel
 
-from app import models
 from app.schemas.building import BuildingBase
 from app.schemas.card import CardBase
 from app.schemas.day import DayBase
 from app.schemas.floor import FloorBase
 from app.schemas.lesson import LessonBase
-from app.schemas.named_object import NamedObject, IdObject
+from app.schemas.named_object import IdObject
 from app.schemas.period import PeriodBase
 from app.schemas.room import RoomBase
-from app.schemas.stage import StageBase, Stage, StageSchedule
+from app.schemas.stage import StageSchedule
 from app.schemas.subject import SubjectBase
 from app.schemas.user import UserBase
 
