@@ -103,6 +103,7 @@ def schedule_html(*, periods: list[Period], days: list[Day], cards: Schedule, ti
 def generate_table(days: list[Day], periods: list[Period], cards: Schedule, is_dark: bool = True):
     card_tags = ""
     on_background_color = "#ffffff" if is_dark else "#000000"
+    crud = AscCRUD.from_file(file_name="../asc_scrapper/asc_schedule.json")
     for day in days:
         if day.short in ["X", "E"]:
             continue
@@ -118,7 +119,7 @@ def generate_table(days: list[Day], periods: list[Period], cards: Schedule, is_d
                 row.append(
                     f'<td '
                     f'style="background-color: {color}; color: {font_color}">'
-                    f'{card_into_table(card, lesson, color)}</td>'
+                    f'{card_into_table(card, lesson, color, crud)}</td>'
                 )
             else:
                 row.append(f"<td></td>")
@@ -128,7 +129,7 @@ def generate_table(days: list[Day], periods: list[Period], cards: Schedule, is_d
     return card_tags
 
 
-def card_into_table(card: Card, lesson: Lesson, color: Color):
+def card_into_table(card: Card, lesson: Lesson, color: Color, crud):
     subject_name = crud.get_item(id=lesson.subjectid, type=Subject).short
     teacher_name = crud.get_item(id=lesson.teacher_id, type=Teacher).short
 

@@ -17,3 +17,4 @@ from app.schemas.stage import Stage, StageCreate, StageUpdate
 from app.schemas.subject import Subject, SubjectCreate, SubjectUpdate
 from app.schemas.user import User, UserCreate, UserUpdate
 from app.schemas.user_token import Token, TokenPayload
+from app.schemas.paging import Paging

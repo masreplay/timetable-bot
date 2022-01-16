@@ -15,7 +15,6 @@ class StaffType(str, Enum):
     teacher = "teacher"
 
 
-
 class UserType(str, Enum):
     employee = "employee"
     teacher = "teacher"
@@ -38,3 +37,8 @@ class RoomType(str, Enum):
     classroom = "classroom"
     employee = "employee"
     other = "other"
+
+
+class Environment(str, Enum):
+    development = "development"
+    production = "production"

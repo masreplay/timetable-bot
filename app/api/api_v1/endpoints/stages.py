@@ -15,11 +15,14 @@ router = APIRouter()
 def read_stages(
         db: Session = Depends(get_db),
         paging: LimitSkipParams = Depends(),
+        branch_id: UUID = Query(None),
+        branch_name: str = Query(None)
 ) -> Any:
     """
     Retrieve stages.
     """
-    stages = crud.stage.get_multi(db, skip=paging.skip, limit=paging.limit)
+    stages = crud.stage.get_filter(db, skip=paging.skip, limit=paging.limit, branch_id=branch_id,
+                                   branch_name=branch_name)
     return stages
 
 

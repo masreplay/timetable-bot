@@ -1,8 +1,9 @@
 import logging
-import logging
 import uuid
+from enum import Enum
 
 import aiogram.utils.markdown as md
+import requests
 from aiogram import Bot, Dispatcher, types
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.contrib.middlewares.logging import LoggingMiddleware
@@ -14,10 +15,9 @@ from aiogram.types import ParseMode, CallbackQuery, InlineQuery, InputTextMessag
 from aiogram.utils.executor import start_webhook
 
 from app import crud, schemas
-from app.core.config import settings, WEBHOOK_URL, WEBHOOK_PATH
+from app.core.config import settings
 from app.db.db import get_db
 from app.schemas.enums import UserType
-from asc_scrapper.test import get_schedule_image
 from i18n import translate
 
 logging.basicConfig(level=logging.INFO)
@@ -28,54 +28,20 @@ storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
 dp.middleware.setup(LoggingMiddleware())
 
-branches = {
-    "امنية": {
-        "اول": ["صباحي", "مسائي"],
-        "ثاني": ["صباحي", "مسائي"],
-        "ثالث": ["صباحي", "مسائي"],
-        "رابع": ["صباحي", "مسائي"],
-    },
-    "برمجيات": {
-        "ثاني": ["صباحي", "مسائي"],
-        "اول": ["صباحي", "مسائي"],
-        "رابع": ["صباحي", "مسائي"],
-        "ثالث": ["صباحي", "مسائي"]
-    },
-    "وسائط": {
-        "ثاني": ["صباحي", "مسائي"],
-        "اول": ["صباحي", "مسائي"],
-        "رابع": ["صباحي", "مسائي"],
-        "ثالث": ["صباحي", "مسائي"]
-    },
-    "ذكاء": {
-        "ثاني": ["صباحي", "مسائي"],
-        "اول": ["صباحي", "مسائي"],
-        "رابع": ["صباحي", "مسائي"],
-        "ثالث": ["صباحي", "مسائي"]
-    },
-    "شبكات": {
-        "ثاني": ["صباحي", "مسائي"],
-        "اول": ["صباحي", "مسائي"],
-        "رابع": ["صباحي", "مسائي"],
-        "ثالث": ["صباحي", "مسائي"]
-    },
-    "نظم": {
-        "ثاني": ["صباحي", "مسائي"],
-        "اول": ["صباحي", "مسائي"],
-        "رابع": ["صباحي", "مسائي"],
-        "ثالث": ["صباحي", "مسائي"]
-    },
-}
-
 
 # States
 class Form(StatesGroup):
-    branch = State()  # Will be represented in storage as 'Form:name'
-    stage = State()  # Will be represented in storage as 'Form:age'
-    shift = State()  # Will be represented in storage as 'Form:gender'
+    branch = State()
+    stage = State()
 
 
-@dp.message_handler(commands='start')
+class Commands(str, Enum):
+    start = "start"
+    schedule = "schedule"
+    cancel = "cancel"
+
+
+@dp.message_handler(commands=Commands.start)
 async def cmd_schedule(message: types.Message):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, selective=True)
 
@@ -86,124 +52,41 @@ async def cmd_schedule(message: types.Message):
     await message.reply("اختر نوع الجدول", reply_markup=markup)
 
 
-@dp.callback_query_handler(lambda c: c.data == 'creditss')
-@dp.message_handler(commands='schedule')
+@dp.message_handler(commands=Commands.schedule)
 async def cmd_schedule(message: types.Message):
+    """
+    Get branch
+    """
     # Set state
     await Form.branch.set()
 
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, selective=True)
+    response = requests.get(url=f"{settings().FAST_API_HOST}/branches")
+    items = schemas.Paging[schemas.Branch].parse_obj(response.json()).results
+    for item in items:
+        markup.add(item.name)
 
-    # return list of branches
-    items = list(branches.keys())
-    for i in range(0, len(items), 2):
-        markup.add(items[i], items[i + 1])
-
-    await message.reply("اختر الفرع", reply_markup=markup)
-
-
-# You can use state '*' if you need to handle all states
-@dp.message_handler(state='*', commands='cancel')
-@dp.message_handler(Text(equals='cancel', ignore_case=True), state='*')
-async def cancel_handler(message: types.Message, state: FSMContext):
-    """
-    Allow user to cancel any action
-    """
-    current_state = await state.get_state()
-    if current_state is None:
-        return
-
-    types.ReplyKeyboardRemove()
-
-    logging.info('Cancelling state %r', current_state)
-    # Cancel state and inform user about it
-    await state.finish()
-    # And remove keyboard (just in case)
-    await message.reply('تم الالغاء', reply_markup=types.ReplyKeyboardRemove())
-
-
-@dp.message_handler(lambda message: message.text not in branches.keys(), state=Form.branch)
-async def process_branch_invalid(message: types.Message):
-    return await message.reply("اختر من القائمة")
+    await message.reply(f"اختر الفرع", reply_markup=markup)
 
 
 @dp.message_handler(state=Form.branch)
 async def process_branch(message: types.Message, state: FSMContext):
-    """
-    Process branch name
-    """
-    async with state.proxy() as data:
-        data['branch'] = message.text
-
-    await Form.next()
-
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, selective=True)
 
-    # Return list of stages remove stage witch doesn't have any shifts
-    unfiltered_stages = list(branches[data['branch']].items())
-    stages = [stage for stage, shifts in unfiltered_stages if len(shifts) > 0]
-
-    for i in range(0, len(stages), 2):
-        try:
-            markup.add(stages[i], stages[i + 1])
-        except IndexError:
-            markup.add(stages[i])
+    response = requests.get(url=f"{settings().FAST_API_HOST}/stages?branch_name={message.text}")
+    items = schemas.Paging[schemas.Stage].parse_obj(response.json()).results
+    for item in items:
+        markup.add(item.name)
 
     await message.reply("اختر المرحلة", reply_markup=markup)
+    await Form.next()
 
 
 @dp.message_handler(state=Form.stage)
 async def process_stage(message: types.Message, state: FSMContext):
-    async with state.proxy() as data:
-        data['stage'] = message.text
 
-    await Form.next()
-
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, selective=True)
-
-    shifts = list(branches[data['branch']][data['stage']])
-
-    for i in range(0, len(shifts), 2):
-        try:
-            markup.add(shifts[i], shifts[i + 1])
-        except IndexError:
-            markup.add(shifts[i])
-
-    await message.reply("اختر نوع الدراسة", reply_markup=markup)
-
-
-# @dp.message_handler(lambda message: message.text not in shifts, state=Form.shift)
-# async def process_shift_invalid(message: types.Message):
-#     return await message.reply("اختر من القائمة")
-
-
-@dp.message_handler(state=Form.shift)
-async def process_shift(message: types.Message, state: FSMContext):
-    async with state.proxy() as data:
-        data['shift'] = message.text
-
-        # Remove keyboard
-        markup = types.ReplyKeyboardRemove()
-
-        name = f'{data["stage"]} {data["branch"]} {data["shift"]}'
-        human_name = f'{data["branch"]} {data["stage"]} {data["shift"]}'
-
-        url = get_schedule_image(name)
-
-        # And send message
-        await bot.send_photo(
-            chat_id=message.chat.id,
-            caption=md.text(
-                md.text(f"جدول: {md.link(human_name, 'https://uot.csschedule.app/stage/123-123-123-123')}"),
-                sep='\n',
-            ),
-            photo=url,
-            reply_markup=markup,
-            parse_mode=ParseMode.MARKDOWN,
-        )
-
-    # Finish conversation
     await state.finish()
+    await message.reply('Done', reply_markup=types.ReplyKeyboardRemove())
 
 
 @dp.message_handler(commands='teachers')
@@ -270,7 +153,7 @@ async def inline_echo(inline_query: InlineQuery):
     # but for example i'll generate it based on text because I know, that
     # only text will be passed in this example
     text = inline_query.query
-    if text.startswith("teacher ") or text.startswith(" استاذ"):
+    if text.__contains__("teacher") or text.__contains__("استاذ"):
         with next(get_db()) as db:
             teachers: list[schemas.User] = crud.user.get_filter(db=db, query=text, role_id=None,
                                                                 user_type=UserType.teacher, )
@@ -301,10 +184,28 @@ async def inline_echo(inline_query: InlineQuery):
         await bot.answer_inline_query(inline_query.id, results=[item], cache_time=1)
 
 
+# You can use state '*' if you need to handle all states
+@dp.message_handler(state='*', commands='cancel')
+@dp.message_handler(Text(equals='cancel', ignore_case=True), state='*')
+async def cancel_handler(message: types.Message, state: FSMContext):
+    """
+    Allow user to cancel any action
+    """
+    current_state = await state.get_state()
+
+    types.ReplyKeyboardRemove()
+
+    logging.info('Cancelling state %r', current_state)
+    # Cancel state and inform user about it
+    await state.finish()
+    # And remove keyboard (just in case)
+    await message.reply('تم الالغاء', reply_markup=types.ReplyKeyboardRemove())
+
+
 async def on_startup(_):
     logging.warning(
         'Starting connection. ')
-    await bot.set_webhook(WEBHOOK_URL, drop_pending_updates=True)
+    await bot.set_webhook(settings().WEBHOOK_URL, drop_pending_updates=True)
 
 
 async def on_shutdown(_):
@@ -315,7 +216,7 @@ def main():
     logging.basicConfig(level=logging.INFO)
     start_webhook(
         dispatcher=dp,
-        webhook_path=WEBHOOK_PATH,
+        webhook_path=settings().WEBHOOK_PATH,
         skip_updates=True,
         on_startup=on_startup,
         host=settings().WEBAPP_HOST,

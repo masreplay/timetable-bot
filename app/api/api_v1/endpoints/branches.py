@@ -5,10 +5,12 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session
 
 from app import schemas, crud
+from app.api.deps import PermissionHandler
 from app.db.db import get_db
 from app.schemas.paging import *
 
 router = APIRouter()
+permissions = Depends(PermissionHandler("branches"))
 
 
 @router.get("/", response_model=Paging[schemas.Branch])
@@ -23,7 +25,7 @@ def read_branches(
     return branches
 
 
-@router.post("/", response_model=schemas.Branch)
+@router.post("/", response_model=schemas.Branch, dependencies=[permissions])
 def create_branch(
         *,
         db: Session = Depends(get_db),
@@ -36,7 +38,7 @@ def create_branch(
     return branch
 
 
-@router.put("/{id}", response_model=schemas.Branch)
+@router.put("/{id}", response_model=schemas.Branch, dependencies=[permissions])
 def update_branch(
         *,
         db: Session = Depends(get_db),
@@ -53,7 +55,7 @@ def update_branch(
     return branch
 
 
-@router.get("/{id}", response_model=schemas.Branch)
+@router.get("/{id}", response_model=schemas.Branch, dependencies=[permissions])
 def read_branch(
         *,
         db: Session = Depends(get_db),
@@ -68,7 +70,7 @@ def read_branch(
     return branch
 
 
-@router.delete("/{id}", response_model=schemas.Branch)
+@router.delete("/{id}", response_model=schemas.Branch, dependencies=[permissions])
 def delete_branch(
         *,
         db: Session = Depends(get_db),

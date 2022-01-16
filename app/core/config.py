@@ -2,7 +2,9 @@ import secrets
 from functools import lru_cache
 
 from dotenv import load_dotenv
-from pydantic import BaseSettings, AnyHttpUrl, validator, EmailStr
+from pydantic import BaseSettings, AnyHttpUrl, validator, EmailStr, root_validator
+
+from app.schemas.enums import Environment
 
 load_dotenv()
 
@@ -52,13 +54,60 @@ class Settings(BaseSettings):
 
     HEROKU_APP_NAME: str
 
+    ENVIRONMENT: Environment
+
+    @validator("ENVIRONMENT", pre=True)
+    def cast_environment(cls, v: str | None) -> Environment:
+        if v:
+            # get enum by its enum representation
+            return Environment[v]
+        else:
+            return Environment.development
+
+    HEROKU_APP_HOST: str
+
+    @root_validator(pre=True)
+    def assemble_app_host(cls, values):
+        new = dict(values)
+        name = new.get('HEROKU_APP_NAME')
+        new['HEROKU_APP_HOST'] = f'https://{name}.herokuapp.com'
+        return new
+
+    FAST_API_HOST: str
+
+    @root_validator(pre=True)
+    def assemble_fast_api_host(cls, values):
+        new = dict(values)
+        environment: Environment = new.get('ENVIRONMENT')
+        version = "/v1"
+
+        if environment == Environment.development:
+            new['FAST_API_HOST'] = f"http://127.0.0.1:8000{version}"
+            return new
+
+        else:
+            host = new.get('HEROKU_APP_HOST')
+            new['FAST_API_HOST'] = f'{host}{version}'
+            return new
+
+    WEBHOOK_PATH: str
+
+    @root_validator(pre=True)
+    def assemble_webhook_path(cls, values):
+        new = dict(values)
+        new['WEBHOOK_PATH'] = f'/webhook/{new.get("TELEGRAM_BOT_API_TOKEN")}'
+        return new
+
+    WEBHOOK_URL: str
+
+    @root_validator(pre=True)
+    def assemble_webhook_url(cls, values):
+        new = dict(values)
+
+        new['WEBHOOK_URL'] = f'{new.get("HEROKU_APP_HOST")}{new.get("WEBHOOK_PATH")}'
+        return new
+
 
 @lru_cache()
 def settings():
     return Settings()
-
-
-# webserver settings
-WEBHOOK_HOST = f'https://{settings().HEROKU_APP_NAME}.herokuapp.com'
-WEBHOOK_PATH = f'/webhook/{settings().TELEGRAM_BOT_API_TOKEN}'
-WEBHOOK_URL = f'{WEBHOOK_HOST}{WEBHOOK_PATH}'
