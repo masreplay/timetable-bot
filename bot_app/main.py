@@ -18,6 +18,7 @@ from app import crud, schemas
 from app.core.config import settings
 from app.db.db import get_db
 from app.schemas.enums import UserType
+from asc_scrapper.test import get_schedule_image
 from i18n import translate
 
 logging.basicConfig(level=logging.INFO)
@@ -63,8 +64,12 @@ async def cmd_schedule(message: types.Message):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, selective=True)
     response = requests.get(url=f"{settings().FAST_API_HOST}/branches")
     items = schemas.Paging[schemas.Branch].parse_obj(response.json()).results
-    for item in items:
-        markup.add(item.name)
+
+    for i in range(0, len(items), 2):
+        try:
+            markup.add(items[i].name, items[i + 1].name)
+        except IndexError:
+            markup.add(items[i].name)
 
     await message.reply(f"اختر الفرع", reply_markup=markup)
 
@@ -84,9 +89,31 @@ async def process_branch(message: types.Message, state: FSMContext):
 
 @dp.message_handler(state=Form.stage)
 async def process_stage(message: types.Message, state: FSMContext):
+    await state.update_data(stage=str(message.text))
+    await message.reply('...جاري تحويل الصورة', reply_markup=types.ReplyKeyboardRemove())
+
+    # Remove keyboard
+    markup = types.ReplyKeyboardRemove()
+
+    name = f'{message.text}'
+
+    url = get_schedule_image(name)
+    print(f"{url}")
+    # And send message
+    await bot.send_photo(
+        chat_id=message.chat.id,
+        caption=md.text(
+            md.text(f"جدول: {md.link(name, 'https://uot.csschedule.app/stage/123-123-123-123')}"),
+            sep='\n',
+        ),
+        photo=url,
+        reply_markup=markup,
+        parse_mode=ParseMode.MARKDOWN,
+    )
+
+    # Finish conversation
 
     await state.finish()
-    await message.reply('Done', reply_markup=types.ReplyKeyboardRemove())
 
 
 @dp.message_handler(commands='teachers')
