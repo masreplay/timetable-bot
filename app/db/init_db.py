@@ -215,12 +215,13 @@ class InitializeDatabaseWithASC:
     def init_days(self):
         days: list[asc_schemas.Day] = self.asc.get_all(asc_schemas.Day)
         for day in days:
-            days_ids[day.vals[0]] = crud.day.create(
-                db=self.db,
-                obj_in=schemas.DayCreate(
-                    name=day.name
-                )
-            ).id
+            if day.name not in ["Any day", "Every day"]:
+                days_ids[day.vals[0]] = crud.day.create(
+                    db=self.db,
+                    obj_in=schemas.DayCreate(
+                        name=day.name
+                    )
+                ).id
 
     def init_cards(self):
         cards: list[asc_schemas.Card] = self.asc.get_all(asc_schemas.Card)
