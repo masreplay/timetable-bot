@@ -53,7 +53,7 @@ def sign_up(user: schemas.UserCreate, db: Session = Depends(get_db)) -> Any:
     return schemas.Message(message="User have been created")
 
 
-@router.post("/login/test-token", response_model=schemas.User)
+@router.post("/login/test.json-token", response_model=schemas.User)
 def test_token(current_user: schemas.User = Depends(deps.get_current_user)) -> Any:
     """
     Test access token

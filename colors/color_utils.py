@@ -95,4 +95,4 @@ if __name__ == '__main__':
     bg = Color('64b5f6')
     text_color = decide_text_color(Color('64b5f6'))
     print(reduce_color_lightness(Color('64b5f6'), 0.1))
-    cprint("test", bg_color=bg)
+    cprint("test.json", bg_color=bg)

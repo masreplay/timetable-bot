@@ -34,6 +34,17 @@ class UserJobTitle(SQLModel, table=True):
     )
 
 
+class StageLesson(SQLModel, table=True):
+    __tablename__ = "stage_lesson"
+    __name__ = "stage_lesson"
+    lesson_id: UUID | None = Field(
+        default=None, foreign_key="lesson.id", primary_key=True
+    )
+    stage_id: UUID | None = Field(
+        default=None, foreign_key="stage.id", primary_key=True
+    )
+
+
 class JobTitle(BaseSchema, JobTitleBase, table=True):
     __tablename__ = "job_title"
     __name__ = "job_title"
@@ -80,6 +91,10 @@ class Branch(BaseSchema, BranchBase, table=True):
 
 class Stage(BaseSchema, StageBase, table=True):
     branch: "Branch" = Relationship(back_populates="stages")
+    lessons: List["Lesson"] = Relationship(back_populates="stages", link_model=StageLesson)
+
+    class Config:
+        orm_mode = True
 
 
 class Building(BaseSchema, BuildingBase, table=True):
@@ -98,9 +113,13 @@ class Floor(BaseSchema, FloorBase, table=True):
 class Card(BaseSchema, CardBase, table=True):
     lesson: "Lesson" = Relationship(back_populates="card")
 
+    class Config:
+        orm_mode = True
+
 
 class Lesson(BaseSchema, LessonBase, table=True):
     card: Card = Relationship(back_populates="lesson")
+    stages: List["Stage"] = Relationship(back_populates="lessons", link_model=StageLesson)
 
 
 class Subject(BaseSchema, SubjectBase, table=True):

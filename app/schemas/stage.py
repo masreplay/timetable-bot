@@ -40,6 +40,26 @@ stage_shift_t = {
 }
 
 
+class StageSchedule(StageBase):
+    id: UUID
+    branch: NamedObject
+
+    @root_validator(pre=True)
+    def name_reshape(cls, values):
+        if values['name']:
+            return values
+        else:
+            new: dict = dict(values)
+            level: str = stage_level_t[new.get('level')]
+            shift: str = stage_shift_t[new.get('shift')]
+            branch: Branch = new.get('branch')
+            new['name'] = f"{level} {branch.name} {shift}"
+            return new
+
+    class Config:
+        orm_mode = True
+
+
 class Stage(StageBase):
     id: UUID
     branch: Branch

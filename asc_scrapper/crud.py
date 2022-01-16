@@ -158,7 +158,3 @@ class AscCRUD:
         for card in cards:
             if card.period == period and card.days == day:
                 return card
-
-# if __name__ == '__main__':
-#     crud: AscCRUD = AscCRUD.from_file(file_name="../asc_scrapper/asc_schedule.json")
-#     crud.save_tables_as_files()

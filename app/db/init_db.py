@@ -172,24 +172,16 @@ class InitializeDatabaseWithASC:
     def init_lessons(self):
         lessons = self.asc.get_all(asc_schemas.Lesson)
         for lesson in lessons:
-
-            # get first class or null
-            stages_id = lesson.classids[0] if lesson.classids else None
-
-            # if class and not in classes
-            if stages_id:
-                stages_id = stages_ids.get(stages_id)
-                if not stages_id:
-                    continue
-
-            lessons_ids[lesson.id] = crud.lesson.create(
+            lesson_id = crud.lesson.create(
                 db=self.db,
                 obj_in=schemas.LessonCreate(
                     subject_id=subjects_ids[lesson.subjectid],
                     teacher_id=teachers_ids[lesson.teacherids[0]] if lesson.teacherids else None,
-                    stage_id=stages_id if lesson.classids else None,
                 )
             ).id
+            lessons_ids[lesson.id] = lesson_id
+            for stage_id in lesson.classids:
+                self.db.add(models.StageLesson(stage_id=stages_ids.get(stage_id), lesson_id=lesson_id))
 
     def init_rooms(self):
         rooms = self.asc.get_all(asc_schemas.Classroom)

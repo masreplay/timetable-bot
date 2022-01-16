@@ -36,7 +36,7 @@ def get_schedule_image(name: str, test: bool = True) -> str | None:
     # pathlib.Path("generated_data").mkdir(parents=True, exist_ok=True)
     # with open(f'generated_data/{name}table.png', 'wb') as handler:
     #     handler.write(img_data)
-    # if test:
+    # if test.json:
     #     with open("generated_data/table.g.html", "w", encoding="utf-8") as file:
     #         file.write(data)
     #

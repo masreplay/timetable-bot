@@ -1,15 +1,19 @@
+from typing import Any
 from uuid import UUID
 
+from pydantic import validator
 from sqlmodel import SQLModel
 
+from app import models
 from app.schemas.building import BuildingBase
 from app.schemas.card import CardBase
 from app.schemas.day import DayBase
 from app.schemas.floor import FloorBase
 from app.schemas.lesson import LessonBase
+from app.schemas.named_object import NamedObject, IdObject
 from app.schemas.period import PeriodBase
 from app.schemas.room import RoomBase
-from app.schemas.stage import StageBase, Stage
+from app.schemas.stage import StageBase, Stage, StageSchedule
 from app.schemas.subject import SubjectBase
 from app.schemas.user import UserBase
 
@@ -28,17 +32,11 @@ class PeriodSchedule(PeriodBase):
 
 class LessonSchedule(LessonBase):
     id: UUID
-
-    class Config:
-        orm_mode = True
+    stages: list[IdObject]
 
 
 class CardSchedule(CardBase):
     id: UUID
-    lesson: "LessonSchedule"
-
-    class Config:
-        orm_mode = True
 
 
 class BuildingSchedule(BuildingBase):
@@ -46,10 +44,6 @@ class BuildingSchedule(BuildingBase):
 
 
 class ClassroomSchedule(RoomBase):
-    id: UUID
-
-
-class StageSchedule(StageBase):
     id: UUID
 
 
@@ -66,7 +60,7 @@ class Schedule(SQLModel):
     periods: list[PeriodSchedule]
 
     cards: list[CardSchedule]
-    # lessons: list[LessonSchedule]
+    lessons: list[LessonSchedule]
 
     buildings: list[BuildingSchedule]
     floors: list[FloorSchedule]
@@ -74,4 +68,4 @@ class Schedule(SQLModel):
 
     subjects: list[SubjectSchedule]
     teachers: list[TeacherSchedule]
-    stages: list[Stage]
+    stages: list[StageSchedule]

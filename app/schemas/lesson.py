@@ -7,8 +7,9 @@ from sqlmodel import SQLModel, Field
 class LessonBase(SQLModel):
     subject_id: UUID = Field(default=None, foreign_key="subject.id")
     teacher_id: UUID | None = Field(default=None, foreign_key="user.id")
-    stage_id: UUID | None = Field(default=None, foreign_key="stage.id")
 
+    class Config:
+        orm_mode = True
 
 class Lesson(LessonBase):
     id: UUID
