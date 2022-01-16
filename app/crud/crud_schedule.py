@@ -1,7 +1,6 @@
 from sqlmodel import select, Session
 
 from app import schemas, models
-from app.schemas import enums
 from app.schemas.enums import UserType
 
 
@@ -17,7 +16,13 @@ class CRUDSchedule:
             floors=db.exec(select(models.Floor)).all(),
             classrooms=db.exec(select(models.Stage)).all(),
 
-            subjects=db.exec(select(models.Subject)).all(),
-            teachers=db.exec(select(models.User)).all(),
+            subjects=db.exec(
+                select(models.Subject)
+
+            ).all(),
+
+            teachers=db.exec(select(models.User)
+                             .where(models.User.job_titles.any(models.JobTitle.type.in_([UserType.teacher])))
+                             ).all(),
             stages=db.exec(select(models.Stage)).all(),
         )

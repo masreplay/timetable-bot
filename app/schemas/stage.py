@@ -27,7 +27,7 @@ class Branch(NamedObject):
 
 
 stage_level_t = {
-    1: "اول",
+    1: "أول",
     2: "ثاني",
     3: "ثالث",
     4: "رابع",

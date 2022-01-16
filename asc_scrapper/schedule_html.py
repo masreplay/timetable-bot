@@ -112,14 +112,15 @@ def generate_table(days: list[Day], periods: list[Period], cards: Schedule, is_d
         for period in periods:
             card: Card = crud.get_card(day=_day, period=period.period, cards=cards)
             if card:
-                lesson: Lesson = crud.get_item(id=card.lessonid, type=Lesson)
-                color = crud.get_item(id=lesson.teacherids[0], type=Teacher).color
+                lesson = crud.get_item(id=card.lessonid, type=Lesson)
+                teacher = crud.get_item(id=lesson.teacher_id, type=Teacher)
+                color = teacher.color
                 color = reduce_color_lightness(Color(color), 0.75)
                 font_color = decide_text_color(color)
                 row.append(
                     f'<td '
                     f'style="background-color: {color}; color: {font_color}">'
-                    f'{card_into_table(card, lesson, color, crud)}</td>'
+                    f'{card_into_table(card=card, lesson=lesson, teacher=teacher, color=color, crud=crud)}</td>'
                 )
             else:
                 row.append(f"<td></td>")
@@ -129,17 +130,14 @@ def generate_table(days: list[Day], periods: list[Period], cards: Schedule, is_d
     return card_tags
 
 
-def card_into_table(card: Card, lesson: Lesson, color: Color, crud):
+def card_into_table(*, card: Card, lesson: Lesson, teacher: Teacher, color: Color, crud):
     subject_name = crud.get_item(id=lesson.subjectid, type=Subject).short
-    teacher_name = crud.get_item(id=lesson.teacher_id, type=Teacher).short
+    classroom = crud.get_item(id=lesson.classroom_id, type=Classroom)
+    tags = [f"<p>{subject_name}</p>"]
+    if teacher:
+        tags.append(f"<p>{teacher.short}</p>")
 
-    card_data = \
-        f"<p>{subject_name}</p>" \
-        f"<p>{teacher_name}</p>"
-
-    classroom = None
-    if len(lesson.classroomidss) > 0:
-        classroom = crud.get_item(id=lesson.classroom_id, type=Classroom).short
-        card_data += f"<p>{classroom}</p>"
-    cprint(f"{subject_name} , {teacher_name} , {classroom}", bg_color=color)
-    return card_data
+    if classroom and len(lesson.classroomidss) > 0:
+        tags.append(f"<p>{classroom.name}</p>")
+    cprint(f"{subject_name} , {teacher.short if teacher else ''} , {classroom}", bg_color=color)
+    return "".join(tags)

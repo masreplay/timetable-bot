@@ -14,10 +14,8 @@ from aiogram.types import ParseMode, CallbackQuery, InlineQuery, InputTextMessag
     InlineQueryResultPhoto
 from aiogram.utils.executor import start_webhook
 
-from app import crud, schemas
+from app import schemas
 from app.core.config import settings
-from app.db.db import get_db
-from app.schemas.enums import UserType
 from asc_scrapper.test import get_schedule_image
 from i18n import translate
 
@@ -78,7 +76,8 @@ async def cmd_schedule(message: types.Message):
 async def process_branch(message: types.Message, state: FSMContext):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, selective=True)
 
-    response = requests.get(url=f"{settings().FAST_API_HOST}/stages?branch_name={message.text}")
+    response = requests.get(url=f"{settings().FAST_API_HOST}/stages", params=dict(branch_name={message.text}))
+    print(response.request.url)
     items = schemas.Paging[schemas.Stage].parse_obj(response.json()).results
     for item in items:
         markup.add(item.name)
@@ -180,22 +179,20 @@ async def inline_echo(inline_query: InlineQuery):
     # but for example i'll generate it based on text because I know, that
     # only text will be passed in this example
     text = inline_query.query
-    if text.__contains__("teacher") or text.__contains__("استاذ"):
-        with next(get_db()) as db:
-            teachers: list[schemas.User] = crud.user.get_filter(db=db, query=text, role_id=None,
-                                                                user_type=UserType.teacher, )
+    if "teacher" in text or "استاذ" in text:
+        teachers = requests.get(url=f"{settings().FAST_API_HOST}/user?")
 
-            items = []
-            for teacher in teachers:
-                items.append(
-                    InlineQueryResultArticle(
-                        id=str(teacher.id),
-                        title=teacher.name,
-                        input_message_content=InputTextMessageContent(f"m. {teacher.name}"),
-                    )
+        items = []
+        for teacher in teachers:
+            items.append(
+                InlineQueryResultArticle(
+                    id=str(teacher.id),
+                    title=teacher.name,
+                    input_message_content=InputTextMessageContent(f"m. {teacher.name}"),
                 )
-            # don't forget to set cache_time=1 for testing (default is 300s or 5m)
-            await bot.answer_inline_query(inline_query.id, results=items, cache_time=1)
+            )
+        # don't forget to set cache_time=1 for testing (default is 300s or 5m)
+        await bot.answer_inline_query(inline_query.id, results=items, cache_time=1)
     else:
 
         item = InlineQueryResultPhoto(

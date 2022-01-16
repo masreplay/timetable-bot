@@ -16,7 +16,7 @@ class ImageUrl(BaseModel):
     url: str
 
 
-def get_schedule_image(name: str, test: bool = True):
+def get_schedule_image(name: str, test: bool = True) -> str | None:
     json_file = open("../asc_scrapper/asc_schedule.json", encoding="utf8")
     data = json.load(json_file)
     asc_crud: AscCRUD = AscCRUD(data=data)
@@ -28,19 +28,19 @@ def get_schedule_image(name: str, test: bool = True):
 
     data = schedule_html(periods=periods, days=days, cards=schedule, title=name, is_dark=True)
 
-    response = requests.post(IMAGE_URL, data={"html": data}, stream=True)
-    image_url = ImageUrl.parse_obj(response.json())
-
-    img_data = requests.get(image_url.url).content
-
-    pathlib.Path("generated_data").mkdir(parents=True, exist_ok=True)
-    with open(f'generated_data/{name}table.png', 'wb') as handler:
-        handler.write(img_data)
-    if test:
-        with open("generated_data/table.g.html", "w", encoding="utf-8") as file:
-            file.write(data)
-
-    return image_url.url
+    # response = requests.post(IMAGE_URL, data={"html": data}, stream=True)
+    # image_url = ImageUrl.parse_obj(response.json())
+    #
+    # img_data = requests.get(image_url.url).content
+    #
+    # pathlib.Path("generated_data").mkdir(parents=True, exist_ok=True)
+    # with open(f'generated_data/{name}table.png', 'wb') as handler:
+    #     handler.write(img_data)
+    # if test:
+    #     with open("generated_data/table.g.html", "w", encoding="utf-8") as file:
+    #         file.write(data)
+    #
+    # return image_url.url
 
 
 if __name__ == '__main__':

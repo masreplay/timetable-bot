@@ -75,6 +75,8 @@ class Lesson(BaseModel):
     studentids: list
     groupnames: list[str]
 
+
+
     @property
     def classroom_id(self) -> str:
         return self.classroomidss[0][0]

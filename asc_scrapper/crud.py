@@ -90,7 +90,7 @@ class AscCRUD:
                 json.dump(column.dict(), file, indent=2, ensure_ascii=False)
                 file.close()
 
-    def get_item(self, *, id: str, type: Type[T]) -> T:
+    def get_item(self, *, id: str, type: Type[T]) -> T | None:
         """
         Reusable to get item by its id
         :param type: item type
@@ -158,7 +158,6 @@ class AscCRUD:
         for card in cards:
             if card.period == period and card.days == day:
                 return card
-
 
 # if __name__ == '__main__':
 #     crud: AscCRUD = AscCRUD.from_file(file_name="../asc_scrapper/asc_schedule.json")
