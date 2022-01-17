@@ -9,7 +9,7 @@ from app.db.db import get_db
 router = APIRouter()
 
 
-@router.get("/", response_model=schemas.Schedule)
+@router.get("/", response_model=schemas.ScheduleSchemas)
 def read_schedule(
         db: Session = Depends(get_db),
 ) -> Any:

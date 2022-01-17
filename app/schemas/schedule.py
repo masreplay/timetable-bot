@@ -1,5 +1,7 @@
+from typing import Any, List
 from uuid import UUID
 
+from pydantic import validator, root_validator
 from sqlmodel import SQLModel
 
 from app.schemas.building import BuildingBase
@@ -58,6 +60,34 @@ class Schedule(SQLModel):
 
     cards: list[CardSchedule]
     lessons: list[LessonSchedule]
+
+    buildings: list[BuildingSchedule]
+    floors: list[FloorSchedule]
+    classrooms: list[ClassroomSchedule]
+
+    subjects: list[SubjectSchedule]
+    teachers: list[TeacherSchedule]
+    stages: list[StageSchedule]
+
+
+class LessonScheduleSchemas(LessonBase):
+    id: UUID
+    stages: list
+
+    @validator("stages", pre=True, check_fields=False, whole=True)
+    def cast_stages(cls, value: Any):
+        if len(value) > 0 and isinstance(value[0], dict):
+            return [stage_id["id"] for stage_id in value]
+        else:
+            return value
+
+
+class ScheduleSchemas(SQLModel):
+    days: list[DaySchedule]
+    periods: list[PeriodSchedule]
+
+    cards: list[CardSchedule]
+    lessons: list[LessonScheduleSchemas]
 
     buildings: list[BuildingSchedule]
     floors: list[FloorSchedule]

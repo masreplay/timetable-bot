@@ -6,7 +6,7 @@ from app.schemas.enums import UserType
 
 
 class CRUDSchedule:
-    def get(self, db: Session):
+    def get(self, db: Session) -> schemas.Schedule:
         return schemas.Schedule(
             days=db.exec(select(models.Day)).all(),
             periods=db.exec(select(models.Period)).all(),
