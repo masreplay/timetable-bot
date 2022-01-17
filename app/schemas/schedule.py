@@ -1,7 +1,7 @@
-from typing import Any, List
+from typing import Any
 from uuid import UUID
 
-from pydantic import validator, root_validator
+from pydantic import validator
 from sqlmodel import SQLModel
 
 from app.schemas.building import BuildingBase
@@ -54,6 +54,19 @@ class FloorSchedule(FloorBase):
     id: UUID
 
 
+class LessonScheduleSchemas(LessonBase):
+    id: UUID
+    stages: list
+
+    @validator("stages", pre=True, check_fields=False, whole=True)
+    def cast_stages(cls, value: Any):
+        if len(value) > 0 and isinstance(value[0], dict):
+            return [stage_id["id"] for stage_id in value]
+        else:
+            return value
+
+
+# Generic will destroy the performance
 class Schedule(SQLModel):
     days: list[DaySchedule]
     periods: list[PeriodSchedule]
@@ -68,18 +81,6 @@ class Schedule(SQLModel):
     subjects: list[SubjectSchedule]
     teachers: list[TeacherSchedule]
     stages: list[StageSchedule]
-
-
-class LessonScheduleSchemas(LessonBase):
-    id: UUID
-    stages: list
-
-    @validator("stages", pre=True, check_fields=False, whole=True)
-    def cast_stages(cls, value: Any):
-        if len(value) > 0 and isinstance(value[0], dict):
-            return [stage_id["id"] for stage_id in value]
-        else:
-            return value
 
 
 class ScheduleSchemas(SQLModel):
