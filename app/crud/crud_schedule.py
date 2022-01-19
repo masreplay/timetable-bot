@@ -4,20 +4,25 @@ from sqlmodel import select, Session
 
 from app import schemas, models
 from app.schemas.enums import UserType
+from app.schemas.schedule import ScheduleDetails
 
 
 class CRUDSchedule:
     # noinspection PyTypeChecker
-    def get(self, db: Session, stage_id: UUID) -> list[schemas.ScheduleCard]:
-        return db.exec(
-            select(models.Card).where(
-                models.Card.lesson.has(
-                    models.Lesson.stages.any(
-                        models.Stage.id == stage_id
+    def get(self, db: Session, stage_id: UUID) -> ScheduleDetails:
+        return ScheduleDetails(
+            cards=db.exec(
+                select(models.Card).where(
+                    models.Card.lesson.has(
+                        models.Lesson.stages.any(
+                            models.Stage.id == stage_id
+                        )
                     )
                 )
-            )
-        ).all()
+            ).all(),
+            days=db.exec(select(models.Day)).all(),
+            periods=db.exec(select(models.Period)).all(),
+        )
 
     def get_multi(self, db: Session) -> schemas.Schedule:
         return schemas.Schedule(

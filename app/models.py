@@ -52,8 +52,10 @@ class JobTitle(BaseSchema, JobTitleBase, table=True):
 
 
 class User(UserBase, BaseSchema, table=True):
-    job_titles: List["JobTitle"] = Relationship(back_populates="users", link_model=UserJobTitle)
     hashed_password: str | None = Field(default=None)
+
+    lesson: "Lesson" = Relationship(back_populates="teacher")
+    job_titles: List["JobTitle"] = Relationship(back_populates="users", link_model=UserJobTitle)
 
     class Config:
         orm_mode = True
@@ -91,6 +93,7 @@ class Branch(BaseSchema, BranchBase, table=True):
 
 class Stage(BaseSchema, StageBase, table=True):
     branch: "Branch" = Relationship(back_populates="stages")
+
     lessons: List["Lesson"] = Relationship(back_populates="stages", link_model=StageLesson)
 
     class Config:
@@ -119,11 +122,14 @@ class Card(BaseSchema, CardBase, table=True):
 
 class Lesson(BaseSchema, LessonBase, table=True):
     card: Card = Relationship(back_populates="lesson")
+    subject: "Subject" = Relationship(back_populates="lesson")
+    teacher: "User" = Relationship(back_populates="lesson")
+
     stages: List["Stage"] = Relationship(back_populates="lessons", link_model=StageLesson)
 
 
 class Subject(BaseSchema, SubjectBase, table=True):
-    pass
+    lesson: "Lesson" = Relationship(back_populates="subject")
 
 
 class Day(BaseSchema, DayBase, table=True):

@@ -12,7 +12,8 @@ from app.schemas.period import Period, PeriodCreate, PeriodUpdate
 from app.schemas.permissions import Permissions, PermissionGroup
 from app.schemas.role import Role, RoleCreate, RoleUpdate
 from app.schemas.room import Room, RoomCreate, RoomUpdate
-from app.schemas.schedule import Schedule, ScheduleSchemas, ScheduleCard
+from app.schemas.schedule import Schedule, ScheduleSchemas, CardScheduleDetails, ScheduleDetails, TeacherSchedule, \
+    DaySchedule, PeriodSchedule, SubjectSchedule,LessonScheduleDetails
 from app.schemas.stage import Stage, StageCreate, StageUpdate
 from app.schemas.subject import Subject, SubjectCreate, SubjectUpdate
 from app.schemas.user import User, UserCreate, UserUpdate

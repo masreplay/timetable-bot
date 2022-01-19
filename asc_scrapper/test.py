@@ -8,7 +8,7 @@ from app.core.config import settings
 from asc_scrapper.crud import AscCRUD
 from asc_scrapper.schedule_html import schedule_html
 
-IMAGE_URL = settings().HTML_TO_IMAGE_SERVICE + "image"
+IMAGE_URL = f"{settings().HTML_TO_IMAGE_SERVICE}/image"
 
 
 class ImageUrl(BaseModel):

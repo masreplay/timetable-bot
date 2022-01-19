@@ -11,7 +11,7 @@ from app.schemas.lesson import LessonBase
 from app.schemas.named_object import IdObject
 from app.schemas.period import PeriodBase
 from app.schemas.room import RoomBase
-from app.schemas.stage import StageScheduleDetails, Stage, StageBase
+from app.schemas.stage import Stage
 from app.schemas.subject import SubjectBase
 
 
@@ -25,6 +25,10 @@ class DaySchedule(DayBase):
 
 class PeriodSchedule(PeriodBase):
     id: UUID
+
+    @property
+    def time(self) -> str:
+        return f"{self.start_time} - {self.end_time}"
 
 
 class LessonSchedule(LessonBase):
@@ -71,24 +75,29 @@ class LessonScheduleSchemas(LessonBase):
 class LessonScheduleDetails(LessonBase):
     id: UUID
     stages: list[Stage]
+    teacher: TeacherSchedule | None
+    subject: SubjectSchedule
 
 
-class ScheduleCard(CardBase):
+class CardScheduleDetails(CardBase):
     lesson: LessonScheduleDetails
 
     class Config:
         orm_mode = True
 
 
+class ScheduleDetails(BaseModel):
+    cards: list[CardScheduleDetails]
+    days: list[DaySchedule]
+    periods: list[PeriodSchedule]
+
+
 # Generic will destroy the performance
-
-
-class Schedule(SQLModel):
+class ScheduleBase(SQLModel):
     days: list[DaySchedule]
     periods: list[PeriodSchedule]
 
     cards: list[CardSchedule]
-    lessons: list[LessonSchedule]
 
     buildings: list[BuildingSchedule]
     floors: list[FloorSchedule]
@@ -97,19 +106,11 @@ class Schedule(SQLModel):
     subjects: list[SubjectSchedule]
     teachers: list[TeacherSchedule]
     stages: list[Stage]
+
+
+class Schedule(ScheduleBase):
+    lessons: list[LessonSchedule]
 
 
 class ScheduleSchemas(SQLModel):
-    days: list[DaySchedule]
-    periods: list[PeriodSchedule]
-
-    cards: list[CardSchedule]
     lessons: list[LessonScheduleSchemas]
-
-    buildings: list[BuildingSchedule]
-    floors: list[FloorSchedule]
-    classrooms: list[ClassroomSchedule]
-
-    subjects: list[SubjectSchedule]
-    teachers: list[TeacherSchedule]
-    stages: list[Stage]

@@ -6,7 +6,7 @@ from sqlmodel import Session
 
 from app import schemas, crud
 from app.db.db import get_db
-from app.schemas.schedule import ScheduleCard
+from app.schemas.schedule import ScheduleDetails
 
 router = APIRouter()
 
@@ -22,7 +22,7 @@ def read_all_schedule(
     return crud.schedule.get_multi(db=db)
 
 
-@router.get("/stage/{stage_id}", response_model=list[ScheduleCard])
+@router.get("/stage/{stage_id}", response_model=ScheduleDetails)
 def read_schedule(
         stage_id: UUID,
         db: Session = Depends(get_db),
