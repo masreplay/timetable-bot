@@ -11,6 +11,7 @@ class LessonBase(SQLModel):
     class Config:
         orm_mode = True
 
+
 class Lesson(LessonBase):
     id: UUID
 

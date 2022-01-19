@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from sqlmodel import select, Session
 
 from app import schemas, models
@@ -5,7 +7,19 @@ from app.schemas.enums import UserType
 
 
 class CRUDSchedule:
-    def get(self, db: Session) -> schemas.Schedule:
+    # noinspection PyTypeChecker
+    def get(self, db: Session, stage_id: UUID) -> list[schemas.ScheduleCard]:
+        return db.exec(
+            select(models.Card).where(
+                models.Card.lesson.has(
+                    models.Lesson.stages.any(
+                        models.Stage.id == stage_id
+                    )
+                )
+            )
+        ).all()
+
+    def get_multi(self, db: Session) -> schemas.Schedule:
         return schemas.Schedule(
             days=db.exec(select(models.Day)).all(),
             periods=db.exec(select(models.Period)).all(),
@@ -19,7 +33,9 @@ class CRUDSchedule:
 
             subjects=db.exec(select(models.Subject)).all(),
 
-            teachers=db.exec(select(models.User).where(
-                models.User.job_titles.any(models.JobTitle.type.in_([UserType.teacher])))).all(),
+            teachers=db.exec(
+                select(models.User)
+                    .where(models.User.job_titles.any(models.JobTitle.type.in_([UserType.teacher])))
+            ).all(),
             stages=db.exec(select(models.Stage)).all(),
         )

@@ -1,13 +1,12 @@
 from uuid import UUID
 
-from pydantic import validator, root_validator
-from pydantic.utils import GetterDict
+from pydantic import root_validator
 from sqlalchemy import Column, Enum
 from sqlmodel import Field, SQLModel
 
 from app.schemas import enums
 from app.schemas.enums import CollageShifts
-from app.schemas.named_object import NamedObject, IdObject
+from app.schemas.named_object import NamedObject
 
 
 # Shared properties
@@ -40,7 +39,7 @@ stage_shift_t = {
 }
 
 
-class StageSchedule(StageBase):
+class StageScheduleDetails(StageBase):
     id: UUID
     branch: NamedObject
 

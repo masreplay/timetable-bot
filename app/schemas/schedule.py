@@ -4,7 +4,6 @@ from uuid import UUID
 from pydantic import validator, BaseModel
 from sqlmodel import SQLModel
 
-from app.schemas.building import BuildingBase
 from app.schemas.card import CardBase
 from app.schemas.day import DayBase
 from app.schemas.floor import FloorBase
@@ -12,9 +11,8 @@ from app.schemas.lesson import LessonBase
 from app.schemas.named_object import IdObject
 from app.schemas.period import PeriodBase
 from app.schemas.room import RoomBase
-from app.schemas.stage import StageSchedule
+from app.schemas.stage import StageScheduleDetails, Stage, StageBase
 from app.schemas.subject import SubjectBase
-from app.schemas.user import UserBase
 
 
 class SubjectSchedule(SubjectBase):
@@ -70,7 +68,21 @@ class LessonScheduleSchemas(LessonBase):
             return value
 
 
+class LessonScheduleDetails(LessonBase):
+    id: UUID
+    stages: list[Stage]
+
+
+class ScheduleCard(CardBase):
+    lesson: LessonScheduleDetails
+
+    class Config:
+        orm_mode = True
+
+
 # Generic will destroy the performance
+
+
 class Schedule(SQLModel):
     days: list[DaySchedule]
     periods: list[PeriodSchedule]
@@ -84,7 +96,7 @@ class Schedule(SQLModel):
 
     subjects: list[SubjectSchedule]
     teachers: list[TeacherSchedule]
-    stages: list[StageSchedule]
+    stages: list[Stage]
 
 
 class ScheduleSchemas(SQLModel):
@@ -100,4 +112,4 @@ class ScheduleSchemas(SQLModel):
 
     subjects: list[SubjectSchedule]
     teachers: list[TeacherSchedule]
-    stages: list[StageSchedule]
+    stages: list[Stage]
