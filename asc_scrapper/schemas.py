@@ -35,9 +35,6 @@ class Card(BaseModel):
     classroomids: list[str]
 
 
-Schedule = list[Card]
-
-
 class Day(BaseModel):
     id: str
     name: str
@@ -74,8 +71,6 @@ class Lesson(BaseModel):
     bell: str
     studentids: list
     groupnames: list[str]
-
-
 
     @property
     def classroom_id(self) -> str:

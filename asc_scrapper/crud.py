@@ -107,7 +107,7 @@ class AscCRUD:
     def get_days(self):
         return self.get_all(schemas.Day)
 
-    def get_classroom_schedule(self, classroom_id: str) -> Schedule:
+    def get_classroom_schedule(self, classroom_id: str) -> list[Card]:
         cards = self.get_all(schemas.Card)
         schedule = []
         for card in cards:
@@ -117,7 +117,7 @@ class AscCRUD:
 
         return schedule
 
-    def get_class_schedule(self, class_id: str) -> Schedule:
+    def get_class_schedule(self, class_id: str) -> list[Card]:
         cards = self.get_all(schemas.Card)
         schedule = []
         for card in cards:
@@ -127,7 +127,7 @@ class AscCRUD:
                 schedule.append(card)
         return schedule
 
-    def get__class_schedule_by_name(self, name: str) -> Schedule:
+    def get_class_schedule_by_name(self, name: str) -> list[Card]:
         """
         Get all class cards
         """
@@ -135,12 +135,13 @@ class AscCRUD:
         schedule = []
         for card in cards:
             lesson = self.get_item(id=card.lessonid, type=schemas.Lesson)
-            _class = self.get_item(id=lesson.class_id, type=schemas.Class)
-            if _class and _class.name == name:
-                schedule.append(card)
+            for class_id in lesson.classids:
+                _class = self.get_item(id=class_id, type=schemas.Class)
+                if _class and _class.name == name:
+                    schedule.append(card)
         return schedule
 
-    def get_teacher_schedule(self, teacher_id: str) -> Schedule:
+    def get_teacher_schedule(self, teacher_id: str) -> list[Card]:
         """
         Get all teacher cards
         """

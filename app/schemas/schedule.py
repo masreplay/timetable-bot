@@ -1,7 +1,7 @@
 from typing import Any
 from uuid import UUID
 
-from pydantic import validator
+from pydantic import validator, BaseModel
 from sqlmodel import SQLModel
 
 from app.schemas.building import BuildingBase
@@ -38,16 +38,20 @@ class CardSchedule(CardBase):
     id: UUID
 
 
-class BuildingSchedule(BuildingBase):
+class BuildingSchedule(BaseModel):
     id: UUID
+    name: str
+    color: str
 
 
 class ClassroomSchedule(RoomBase):
     id: UUID
 
 
-class TeacherSchedule(UserBase):
+class TeacherSchedule(BaseModel):
     id: UUID
+    name: str
+    color: str
 
 
 class FloorSchedule(FloorBase):

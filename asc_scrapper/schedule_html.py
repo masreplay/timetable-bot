@@ -5,7 +5,7 @@ from asc_scrapper.schemas import *
 from colors.color_utils import decide_text_color, reduce_color_lightness, cprint
 
 
-def schedule_html(*, periods: list[Period], days: list[Day], cards: Schedule, title: str,
+def schedule_html(*, periods: list[Period], days: list[Day], cards: list[Card], title: str,
                   is_dark: bool):
     col_width = 100 / (len(periods) + 1)
     row_height = 100 / (len(days) + 1)
@@ -56,8 +56,8 @@ def schedule_html(*, periods: list[Period], days: list[Day], cards: Schedule, ti
             text-align: center;
         }}
         
-        p {{
-            font-family: verdana;
+        .p, .h1, .h6, .h5 {{
+            font-family: serif;
         }}        
 
         thead:first-child tr:first-child th:first-child,
@@ -100,7 +100,7 @@ def schedule_html(*, periods: list[Period], days: list[Day], cards: Schedule, ti
 </html>"""
 
 
-def generate_table(days: list[Day], periods: list[Period], cards: Schedule, is_dark: bool = True):
+def generate_table(days: list[Day], periods: list[Period], cards: list[Card], is_dark: bool = True):
     card_tags = ""
     on_background_color = "#ffffff" if is_dark else "#000000"
     crud = AscCRUD.from_file(file_name="../asc_scrapper/asc_schedule.json")
@@ -139,5 +139,5 @@ def card_into_table(*, card: Card, lesson: Lesson, teacher: Teacher, color: Colo
 
     if classroom and len(lesson.classroomidss) > 0:
         tags.append(f"<p>{classroom.name}</p>")
-    cprint(f"{subject_name} , {teacher.short if teacher else ''} , {classroom}", bg_color=color)
+    cprint(f"{subject_name} , {teacher.short if teacher else ''} , {classroom.short}", bg_color=color)
     return "".join(tags)
