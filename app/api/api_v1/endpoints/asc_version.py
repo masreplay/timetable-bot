@@ -38,4 +38,4 @@ async def seed_db(
     if asc_init:
         return Message(message="Asc data has been init")
     else:
-        raise HTTPException(204, detail="Data already exist")
+        raise HTTPException(400, detail="Data already exist")

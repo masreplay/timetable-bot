@@ -153,39 +153,38 @@ def card_into_table(*, card: schemas.CardScheduleDetails, color: Color):
     subject_name = card.lesson.subject.name
     # classroom = lesson.c
     tags = [f"<p>{subject_name}</p>"]
+    if card.lesson.room:
+        tags.append(f"<p><b>{card.lesson.room.name}</b></p>")
+
     if card.lesson.teacher:
         tags.append(f'<p style="font-family: Tajawal;">{card.lesson.teacher.name}</p>')
 
-    # if classroom and len(lesson.classroomidss) > 0:
-    #     tags.append(f"<p>{classroom.name}</p>")
-    # {classroom.short}
-    cprint(f"{subject_name} , {card.lesson.teacher.name if card.lesson.teacher else ''}", bg_color=color)
+    cprint(f"{subject_name} - {card.lesson.teacher.name if card.lesson.teacher else ''} - {card.lesson.room.name}",
+           bg_color=color)
     return "".join(tags)
 
 
-def get_schedule_image(name: str, test: bool = True) -> str | None:
-    stage_id = "86465c2e-0b5c-4eeb-b884-e873961637cc"
+def get_schedule_image(*, stage_id: str, name: str, test: bool = True) -> str | None:
     response = requests.get(url=f"{settings().FAST_API_HOST}/schedule/stage/{stage_id}")
-    print(response.status_code)
-    print(response.json())
-    schedule = schemas.ScheduleDetails.parse_obj(response.json())
+    if response.status_code == 200:
+        schedule = schemas.ScheduleDetails.parse_obj(response.json())
 
-    data = schedule_html(schedule=schedule, title=name, is_dark=True)
+        data = schedule_html(schedule=schedule, title=name, is_dark=True)
 
-    response = requests.post(IMAGE_URL, data={"html": data}, stream=True)
-    image_url = ImageUrl.parse_obj(response.json())
+        response = requests.post(IMAGE_URL, data={"html": data}, stream=True)
+        image_url = ImageUrl.parse_obj(response.json())
 
-    img_data = requests.get(image_url.url).content
+        img_data = requests.get(image_url.url).content
 
-    pathlib.Path("generated_data").mkdir(parents=True, exist_ok=True)
-    with open(f'generated_data/{name}table.png', 'wb') as handler:
-        handler.write(img_data)
-    if test:
-        with open("generated_data/table.g.html", "w", encoding="utf-8") as file:
-            file.write(data)
+        pathlib.Path("generated_data").mkdir(parents=True, exist_ok=True)
+        with open(f'generated_data/{name}table.png', 'wb') as handler:
+            handler.write(img_data)
+        if test:
+            with open("generated_data/table.g.html", "w", encoding="utf-8") as file:
+                file.write(data)
 
-    return image_url.url
+        return image_url.url
 
 
 if __name__ == '__main__':
-    get_schedule_image("ثالث برمجيات صباحي", test=True)
+    get_schedule_image("9f1703de-cce5-41f5-b9b4-1f2d041578f0", "ثالث برمجيات صباحي", test=True)

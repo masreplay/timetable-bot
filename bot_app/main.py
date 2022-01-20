@@ -1,5 +1,4 @@
 import logging
-import uuid
 from enum import Enum
 
 import aiogram.utils.markdown as md
@@ -10,13 +9,14 @@ from aiogram.contrib.middlewares.logging import LoggingMiddleware
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Text
 from aiogram.dispatcher.filters.state import State, StatesGroup
-from aiogram.types import ParseMode, CallbackQuery, InlineQuery, InputTextMessageContent, InlineQueryResultArticle, \
-    InlineQueryResultPhoto
+from aiogram.types import ParseMode, CallbackQuery, InlineQuery
 from aiogram.utils.executor import start_webhook
 
 from app import schemas
 from app.core.config import settings
-from asc_scrapper.test import get_schedule_image
+from bot_app import service
+from bot_app.schedule_html import get_schedule_image
+from bot_app.service import get_stages
 from i18n import translate
 
 logging.basicConfig(level=logging.INFO)
@@ -52,16 +52,16 @@ async def cmd_schedule(message: types.Message):
 
 
 @dp.message_handler(commands=Commands.schedule)
-async def cmd_schedule(message: types.Message):
+async def cmd_schedule(message: types.Message, state: FSMContext):
     """
     Get branch
     """
-    # Set state
+
     await Form.branch.set()
 
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, selective=True)
     response = requests.get(url=f"{settings().FAST_API_HOST}/branches")
-    items = schemas.Paging[schemas.Branch].parse_obj(response.json()).results
+    items: list[schemas.Branch] = schemas.Paging[schemas.Branch].parse_obj(response.json()).results
 
     for i in range(0, len(items), 2):
         try:
@@ -74,30 +74,36 @@ async def cmd_schedule(message: types.Message):
 
 @dp.message_handler(state=Form.branch)
 async def process_branch(message: types.Message, state: FSMContext):
+    await state.update_data(branch=message.text)
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, selective=True)
 
-    response = requests.get(url=f"{settings().FAST_API_HOST}/stages", params=dict(branch_name={message.text}))
-    print(response.request.url)
-    items = schemas.Paging[schemas.Stage].parse_obj(response.json()).results
-    for item in items:
-        markup.add(item.name)
+    stages = service.get_stages(message.text)
+    for stage in stages:
+        markup.add(stage.name)
 
     await message.reply("اختر المرحلة", reply_markup=markup)
+
     await Form.next()
 
 
 @dp.message_handler(state=Form.stage)
 async def process_stage(message: types.Message, state: FSMContext):
-    await state.update_data(stage=str(message.text))
-    await message.reply('...جاري تحويل الصورة', reply_markup=types.ReplyKeyboardRemove())
+    await state.update_data(stage=message.text)
 
+    await message.reply('...جاري تحويل الصورة', reply_markup=types.ReplyKeyboardRemove())
     # Remove keyboard
     markup = types.ReplyKeyboardRemove()
 
-    name = f'{message.text}'
+    with state.proxy() as data:
+        branch_name = data["branch"]
+        stage_name = data["stage"]
+        stages = service.get_stages(branch_name)
+        selected_stage = next(filter(lambda stage: stage.name == stage_name, stages), None)
+    print(selected_stage.name)
+    name = f'{selected_stage.name}'
 
-    url = get_schedule_image(name)
-    print(f"{url}")
+    url = get_schedule_image(stage_id="stage_id", name=name)
+
     # And send message
     await bot.send_photo(
         chat_id=message.chat.id,
@@ -179,33 +185,33 @@ async def inline_echo(inline_query: InlineQuery):
     # but for example i'll generate it based on text because I know, that
     # only text will be passed in this example
     text = inline_query.query
-    if "teacher" in text or "استاذ" in text:
-        teachers = requests.get(url=f"{settings().FAST_API_HOST}/user?")
-
-        items = []
-        for teacher in teachers:
-            items.append(
-                InlineQueryResultArticle(
-                    id=str(teacher.id),
-                    title=teacher.name,
-                    input_message_content=InputTextMessageContent(f"m. {teacher.name}"),
-                )
-            )
-        # don't forget to set cache_time=1 for testing (default is 300s or 5m)
-        await bot.answer_inline_query(inline_query.id, results=items, cache_time=1)
-    else:
-
-        item = InlineQueryResultPhoto(
-            id=str(uuid.uuid4()),
-            title=f'Result {text!r}',
-            caption="جدول فارغ",
-            # input_message_content=input_content,
-            photo_url="https://masreplay.s3.amazonaws.com/fa3a06cf-6e00-41bb-a113-9c3ac47b89a4",
-            thumb_url="https://masreplay.s3.amazonaws.com/fa3a06cf-6e00-41bb-a113-9c3ac47b89a4",
-        )
-
-        # don't forget to set cache_time=1 for testing (default is 300s or 5m)
-        await bot.answer_inline_query(inline_query.id, results=[item], cache_time=1)
+    # if "teacher" in text or "استاذ" in text:
+    #     teachers = requests.get(url=f"{settings().FAST_API_HOST}/user?")
+    #
+    #     items = []
+    #     for teacher in teachers:
+    #         items.append(
+    #             InlineQueryResultArticle(
+    #                 id=str(teacher.id),
+    #                 title=teacher.name,
+    #                 input_message_content=InputTextMessageContent(f"m. {teacher.name}"),
+    #             )
+    #         )
+    #     # don't forget to set cache_time=1 for testing (default is 300s or 5m)
+    #     await bot.answer_inline_query(inline_query.id, results=items, cache_time=1)
+    # else:
+    #
+    #     item = InlineQueryResultPhoto(
+    #         id=str(uuid.uuid4()),
+    #         title=f'Result {text!r}',
+    #         caption="جدول فارغ",
+    #         # input_message_content=input_content,
+    #         photo_url="https://masreplay.s3.amazonaws.com/fa3a06cf-6e00-41bb-a113-9c3ac47b89a4",
+    #         thumb_url="https://masreplay.s3.amazonaws.com/fa3a06cf-6e00-41bb-a113-9c3ac47b89a4",
+    #     )
+    #
+    #     # don't forget to set cache_time=1 for testing (default is 300s or 5m)
+    #     await bot.answer_inline_query(inline_query.id, results=[item], cache_time=1)
 
 
 # You can use state '*' if you need to handle all states
