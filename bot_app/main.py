@@ -94,7 +94,7 @@ async def process_stage(message: types.Message, state: FSMContext):
     # Remove keyboard
     markup = types.ReplyKeyboardRemove()
 
-    with state.proxy() as data:
+    async with state.proxy() as data:
         branch_name = data["branch"]
         stage_name = data["stage"]
         stages = service.get_stages(branch_name)
@@ -102,13 +102,13 @@ async def process_stage(message: types.Message, state: FSMContext):
     print(selected_stage.name)
     name = f'{selected_stage.name}'
 
-    url = get_schedule_image(stage_id="stage_id", name=name)
+    url = get_schedule_image(stage_id=selected_stage.id, name=name)
 
     # And send message
     await bot.send_photo(
         chat_id=message.chat.id,
         caption=md.text(
-            md.text(f"جدول: {md.link(name, 'https://uot.csschedule.app/stage/123-123-123-123')}"),
+            md.text(f"جدول: {md.link(name, f'https://127.0.0.0/v1/schedule/stages/{selected_stage.id}')}"),
             sep='\n',
         ),
         photo=url,
