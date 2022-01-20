@@ -2,7 +2,7 @@ from typing import Any
 from uuid import UUID
 
 from pydantic import validator, BaseModel
-from sqlmodel import SQLModel
+from sqlmodel import SQLModel, Field
 
 from app.schemas.card import CardBase
 from app.schemas.day import DayBase
@@ -77,6 +77,7 @@ class LessonScheduleDetails(LessonBase):
     stages: list[Stage]
     teacher: TeacherSchedule | None
     subject: SubjectSchedule
+    room: ClassroomSchedule | None = Field(...)
 
 
 class CardScheduleDetails(CardBase):
@@ -112,5 +113,5 @@ class Schedule(ScheduleBase):
     lessons: list[LessonSchedule]
 
 
-class ScheduleSchemas(SQLModel):
+class ScheduleSchemas(ScheduleBase):
     lessons: list[LessonScheduleSchemas]

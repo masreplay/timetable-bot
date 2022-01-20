@@ -172,9 +172,11 @@ class InitializeDatabaseWithASC:
     def init_lessons(self):
         lessons = self.asc.get_all(asc_schemas.Lesson)
         for lesson in lessons:
+            print(f"rooms_ids {rooms_ids[lesson.classroom_id] if lesson.classroom_id else None}")
             lesson_id = crud.lesson.create(
                 db=self.db,
                 obj_in=schemas.LessonCreate(
+                    room_id=rooms_ids[lesson.classroom_id] if lesson.classroom_id else None,
                     subject_id=subjects_ids[lesson.subjectid],
                     teacher_id=teachers_ids[lesson.teacherids[0]] if lesson.teacherids else None,
                 )

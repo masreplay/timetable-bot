@@ -106,6 +106,7 @@ class Building(BaseSchema, BuildingBase, table=True):
 
 class Room(BaseSchema, RoomBase, table=True):
     building: "Building" = Relationship(back_populates="rooms")
+    lesson: "Lesson" = Relationship(back_populates="room")
     floor: "Floor" = Relationship(back_populates="rooms")
 
 
@@ -124,6 +125,7 @@ class Lesson(BaseSchema, LessonBase, table=True):
     card: Card = Relationship(back_populates="lesson")
     subject: "Subject" = Relationship(back_populates="lesson")
     teacher: "User" = Relationship(back_populates="lesson")
+    room: "Room" = Relationship(back_populates="lesson")
 
     stages: List["Stage"] = Relationship(back_populates="lessons", link_model=StageLesson)
 

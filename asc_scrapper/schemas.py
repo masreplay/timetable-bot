@@ -73,8 +73,11 @@ class Lesson(BaseModel):
     groupnames: list[str]
 
     @property
-    def classroom_id(self) -> str:
-        return self.classroomidss[0][0]
+    def classroom_id(self) -> str | None:
+        try:
+            return self.classroomidss[0][0]
+        except:
+            return None
 
     @property
     def teacher_id(self) -> str | None:
