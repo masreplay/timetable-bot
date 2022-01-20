@@ -28,7 +28,7 @@ class PeriodSchedule(PeriodBase):
 
     @property
     def time(self) -> str:
-        return f"{self.start_time} - {self.end_time}"
+        return f"{self.start_time.hour}:{self.start_time.minute} - {self.end_time.hour}:{self.end_time.minute}"
 
 
 class LessonSchedule(LessonBase):

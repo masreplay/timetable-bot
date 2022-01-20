@@ -24,6 +24,14 @@ def schedule_html(*, schedule: schemas.ScheduleDetails, title: str, is_dark: boo
             width: 100%;
             height: 100%;
         }}
+        
+        body, div, h1, h2, h3, h4, h5, h6, p, span {{
+            font-family: Tajawal!important;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }}
+
         h2 {{
            display:inline;
            margin-top:40px;
@@ -48,6 +56,7 @@ def schedule_html(*, schedule: schemas.ScheduleDetails, title: str, is_dark: boo
 
         th,
         td {{
+            padding: 4px;
             white-space:pre-wrap;
             height: {row_height}%;
             word-wrap:break-word;
@@ -59,10 +68,6 @@ def schedule_html(*, schedule: schemas.ScheduleDetails, title: str, is_dark: boo
         td {{
             border-top: 1px solid #ddd;
             text-align: center;
-        }}
-
-        .p, .h1, .h6, .h5 {{
-            font-family: arial;
         }}
 
         thead:first-child tr:first-child th:first-child,
@@ -82,6 +87,14 @@ def schedule_html(*, schedule: schemas.ScheduleDetails, title: str, is_dark: boo
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     {style}
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+        <script>
+          WebFont.load({{
+            google: {{
+            families: ['Tajawal']
+            }}
+          }});
+        </script>
 </head>
 
 <body>
@@ -99,6 +112,7 @@ def schedule_html(*, schedule: schemas.ScheduleDetails, title: str, is_dark: boo
             </thead>
             <tbody>{generate_table(schedule=schedule)}</tbody>
         </table>
+        <h3 style="color: white; text-align: right;">@ConstructorTeam</h1>
     </div>
 </body>
 
@@ -140,12 +154,12 @@ def card_into_table(*, card: schemas.CardScheduleDetails, color: Color):
     # classroom = lesson.c
     tags = [f"<p>{subject_name}</p>"]
     if card.lesson.teacher:
-        tags.append(f"<p>{card.lesson.teacher.name}</p>")
+        tags.append(f'<p style="font-family: Tajawal;">{card.lesson.teacher.name}</p>')
 
     # if classroom and len(lesson.classroomidss) > 0:
     #     tags.append(f"<p>{classroom.name}</p>")
     # {classroom.short}
-    cprint(f"{subject_name} , {card.lesson.teacher if card.lesson.teacher else ''} , ", bg_color=color)
+    cprint(f"{subject_name} , {card.lesson.teacher.name if card.lesson.teacher else ''}", bg_color=color)
     return "".join(tags)
 
 
