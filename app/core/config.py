@@ -87,8 +87,8 @@ class Settings(BaseSettings):
 
         else:
             host = new.get('HEROKU_APP_HOST')
-            # new['FAST_API_HOST'] = f'{host}{version}'
-            return f"http://127.0.0.1:8000{version}"
+            new['FAST_API_HOST'] = f'{host}{version}'
+            return new
 
     WEBHOOK_PATH: str
 
