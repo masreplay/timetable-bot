@@ -142,7 +142,3 @@ class Day(BaseSchema, DayBase, table=True):
 
 class AscVersion(BaseSchema, AscVersionBase, table=True):
     pass
-
-
-# class Telegram(SQLModel, table=True):
-#     pass
