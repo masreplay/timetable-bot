@@ -17,7 +17,7 @@ from aiogram.utils.executor import start_webhook
 from app import schemas
 from app.core.config import settings
 from bot_app import service
-from bot_app.schedule_html import get_schedule_image
+from bot_app.schedule_html import get_stage_schedule_image
 from i18n import translate
 
 logging.basicConfig(level=logging.INFO)
@@ -39,6 +39,7 @@ class Commands(str, Enum):
     start = "start"
     schedule = "schedule"
     cancel = "cancel"
+    test = "test"
 
 
 @dp.message_handler(commands=Commands.start)
@@ -53,7 +54,7 @@ async def cmd_schedule(message: types.Message):
 
 
 @dp.message_handler(commands=Commands.schedule)
-async def cmd_schedule(message: types.Message, state: FSMContext):
+async def cmd_schedule(message: types.Message):
     """
     Get branch
     """
@@ -79,7 +80,7 @@ async def process_branch(message: types.Message, state: FSMContext):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, selective=True)
 
     stages = service.get_stages(message.text)
-    for stage in stages:
+    for stage in stages.results:
         markup.add(stage.name)
 
     await Form.next()
@@ -96,12 +97,11 @@ async def process_stage(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         branch_name = data["branch"]
         stage_name = data["stage"]
-        stages = service.get_stages(branch_name)
-        selected_stage = next(filter(lambda stage: stage.name == stage_name, stages), None)
-    print(selected_stage.name)
+        selected_stage = service.get_stage_by_name(branch_name=branch_name, stage_name=stage_name)
+
     name = f'{selected_stage.name}'
 
-    url = get_schedule_image(stage_id=selected_stage.id, name=name)
+    url = get_stage_schedule_image(stage_id=selected_stage.id, name=name)
 
     # And send message
     await bot.send_photo(

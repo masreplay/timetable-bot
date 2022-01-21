@@ -1,14 +1,15 @@
 import pathlib
+from uuid import UUID
 
 import requests
 from pydantic.color import Color
 
 from app import schemas
 from app.core.config import settings
+from app.schemas.enums import Environment
 from asc_scrapper.test import ImageUrl
+from bot_app import service
 from colors.color_utils import decide_text_color, reduce_color_lightness, cprint
-
-IMAGE_URL = f"{settings().HTML_TO_IMAGE_SERVICE}/image"
 
 
 def schedule_html(*, schedule: schemas.ScheduleDetails, title: str, is_dark: bool):
@@ -164,27 +165,28 @@ def card_into_table(*, card: schemas.CardScheduleDetails, color: Color):
     return "".join(tags)
 
 
-def get_schedule_image(*, stage_id: str, name: str, test: bool = True) -> str | None:
-    response = requests.get(url=f"{settings().FAST_API_HOST}/schedule/stage/{stage_id}")
+def get_stage_schedule_image(*, stage_id: UUID, name: str) -> str | None:
+    response = service.get_stage_schedule(stage_id)
     if response.status_code == 200:
         schedule = schemas.ScheduleDetails.parse_obj(response.json())
 
         data = schedule_html(schedule=schedule, title=name, is_dark=True)
 
-        response = requests.post(IMAGE_URL, data={"html": data}, stream=True)
+        response = requests.post(f"{settings().HTML_TO_IMAGE_SERVICE}/image", data={"html": data}, stream=True)
+
         image_url = ImageUrl.parse_obj(response.json())
 
         img_data = requests.get(image_url.url).content
 
-        pathlib.Path("generated_data").mkdir(parents=True, exist_ok=True)
-        with open(f'generated_data/{name}table.png', 'wb') as handler:
-            handler.write(img_data)
-        if test:
-            with open("generated_data/table.g.html", "w", encoding="utf-8") as file:
-                file.write(data)
+        if settings().ENVIRONMENT == Environment.development:
+            pathlib.Path("generated_data").mkdir(parents=True, exist_ok=True)
+            with open(f'generated_data/{name}table.png', 'wb') as handler:
+                handler.write(img_data)
+                with open("generated_data/table.g.html", "w", encoding="utf-8") as file:
+                    file.write(data)
 
         return image_url.url
 
 
 if __name__ == '__main__':
-    get_schedule_image("9f1703de-cce5-41f5-b9b4-1f2d041578f0", "ثالث برمجيات صباحي", test=True)
+    get_stage_schedule_image(stage_id=UUID("9f1703de-cce5-41f5-b9b4-1f2d041578f0"), name="ثالث برمجيات صباحي")
