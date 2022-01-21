@@ -1,4 +1,5 @@
 import logging
+import uuid
 from enum import Enum
 
 import aiogram.utils.markdown as md
@@ -9,14 +10,14 @@ from aiogram.contrib.middlewares.logging import LoggingMiddleware
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Text
 from aiogram.dispatcher.filters.state import State, StatesGroup
-from aiogram.types import ParseMode, CallbackQuery, InlineQuery
+from aiogram.types import ParseMode, CallbackQuery, InlineQuery, InlineQueryResultArticle, InputTextMessageContent, \
+    InlineQueryResultPhoto
 from aiogram.utils.executor import start_webhook
 
 from app import schemas
 from app.core.config import settings
 from bot_app import service
 from bot_app.schedule_html import get_schedule_image
-from bot_app.service import get_stages
 from i18n import translate
 
 logging.basicConfig(level=logging.INFO)
@@ -80,8 +81,6 @@ async def process_branch(message: types.Message, state: FSMContext):
     stages = service.get_stages(message.text)
     for stage in stages:
         markup.add(stage.name)
-
-    await message.reply("اختر المرحلة", reply_markup=markup)
 
     await Form.next()
 
@@ -185,33 +184,33 @@ async def inline_echo(inline_query: InlineQuery):
     # but for example i'll generate it based on text because I know, that
     # only text will be passed in this example
     text = inline_query.query
-    # if "teacher" in text or "استاذ" in text:
-    #     teachers = requests.get(url=f"{settings().FAST_API_HOST}/user?")
-    #
-    #     items = []
-    #     for teacher in teachers:
-    #         items.append(
-    #             InlineQueryResultArticle(
-    #                 id=str(teacher.id),
-    #                 title=teacher.name,
-    #                 input_message_content=InputTextMessageContent(f"m. {teacher.name}"),
-    #             )
-    #         )
-    #     # don't forget to set cache_time=1 for testing (default is 300s or 5m)
-    #     await bot.answer_inline_query(inline_query.id, results=items, cache_time=1)
-    # else:
-    #
-    #     item = InlineQueryResultPhoto(
-    #         id=str(uuid.uuid4()),
-    #         title=f'Result {text!r}',
-    #         caption="جدول فارغ",
-    #         # input_message_content=input_content,
-    #         photo_url="https://masreplay.s3.amazonaws.com/fa3a06cf-6e00-41bb-a113-9c3ac47b89a4",
-    #         thumb_url="https://masreplay.s3.amazonaws.com/fa3a06cf-6e00-41bb-a113-9c3ac47b89a4",
-    #     )
-    #
-    #     # don't forget to set cache_time=1 for testing (default is 300s or 5m)
-    #     await bot.answer_inline_query(inline_query.id, results=[item], cache_time=1)
+    if "teacher" in text or "استاذ" in text:
+        teachers: list[schemas.User] = requests.get(url=f"{settings().FAST_API_HOST}/user").json()
+
+        items = []
+        for teacher in teachers:
+            items.append(
+                InlineQueryResultArticle(
+                    id=str(teacher.id),
+                    title=teacher.name,
+                    input_message_content=InputTextMessageContent(f"m. {teacher.name}"),
+                )
+            )
+        # don't forget to set cache_time=1 for testing (default is 300s or 5m)
+        await bot.answer_inline_query(inline_query.id, results=items, cache_time=1)
+    else:
+
+        item = InlineQueryResultPhoto(
+            id=str(uuid.uuid4()),
+            title=f'Result {text!r}',
+            caption="جدول فارغ",
+            # input_message_content=input_content,
+            photo_url="https://masreplay.s3.amazonaws.com/fa3a06cf-6e00-41bb-a113-9c3ac47b89a4",
+            thumb_url="https://masreplay.s3.amazonaws.com/fa3a06cf-6e00-41bb-a113-9c3ac47b89a4",
+        )
+
+        # don't forget to set cache_time=1 for testing (default is 300s or 5m)
+        await bot.answer_inline_query(inline_query.id, results=[item], cache_time=1)
 
 
 # You can use state '*' if you need to handle all states
