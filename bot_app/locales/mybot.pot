@@ -1,0 +1,27 @@
+# Translations template for CSUOT.
+# Copyright (C) 2022 ConstructorTeam
+# This file is distributed under the same license as the CSUOT project.
+# FIRST AUTHOR <masreplay@gmail.com>, 2022.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2022-01-21 16:06+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: test.py:66
+msgid "Hello, <b>{user}</b>!"
+msgstr "Hello, <b>{user}</b>!"
+
+#: test.py:72
+msgid "Your current language: <i>{language}</i>"
+msgstr "Your current language: <i>{language}</i>"
+

@@ -1,0 +1,29 @@
+# Translations template for PROJECT.
+# Copyright (C) 2022 ConstructorTeam
+# This file is distributed under the same license as the CSUOT project.
+# FIRST AUTHOR <masreplay@gmail.com>, 2022.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2022-01-21 16:06+0300\n"
+"PO-Revision-Date: 2022-01-21 16:15+0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5);\n"
+"Generated-By: Babel 2.9.1\n"
+"X-Generator: Poedit 3.0.1\n"
+
+#: test.py:66
+#, fuzzy
+msgid "Hello, <b>{user}</b>!"
+msgstr "مرحبا، <b>{user}</b>!"
+
+#: test.py:72
+msgid "Your current language: <i>{language}</i>"
+msgstr "لغتك الحالية: <i>{language}</i>"

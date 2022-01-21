@@ -77,7 +77,7 @@ class LessonScheduleDetails(LessonBase):
     stages: list[Stage]
     teacher: TeacherSchedule | None
     subject: SubjectSchedule
-    room: ClassroomSchedule | None = Field(...)
+    room: ClassroomSchedule | None
 
 
 class CardScheduleDetails(CardBase):

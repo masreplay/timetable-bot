@@ -14,7 +14,7 @@ def get_stages(branch_name: str) -> schemas.Paging[schemas.Stage]:
 
 
 def get_stage_by_name(*, branch_name: str, stage_name: str) -> schemas.Stage | None:
-    stages = get_stages(branch_name)
+    stages = get_stages(branch_name).results
     return next(filter(lambda stage: stage.name == stage_name, stages), None)
 
 

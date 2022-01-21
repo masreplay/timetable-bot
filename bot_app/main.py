@@ -7,6 +7,7 @@ import requests
 from aiogram import Bot, Dispatcher, types
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.contrib.middlewares.logging import LoggingMiddleware
+from aiogram.contrib.middlewares.i18n import I18nMiddleware
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Text
 from aiogram.dispatcher.filters.state import State, StatesGroup
@@ -27,6 +28,7 @@ bot = Bot(token=settings().TELEGRAM_BOT_API_TOKEN)
 storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
 dp.middleware.setup(LoggingMiddleware())
+dp.middleware.setup(I18nMiddleware())
 
 
 # States
@@ -80,8 +82,11 @@ async def process_branch(message: types.Message, state: FSMContext):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, selective=True)
 
     stages = service.get_stages(message.text)
+    print(stages)
     for stage in stages.results:
         markup.add(stage.name)
+
+    await message.reply(f"اختر الفرع", reply_markup=markup)
 
     await Form.next()
 
@@ -107,7 +112,7 @@ async def process_stage(message: types.Message, state: FSMContext):
     await bot.send_photo(
         chat_id=message.chat.id,
         caption=md.text(
-            md.text(f"جدول: {md.link(name, f'https://127.0.0.0/v1/schedule/stages/{selected_stage.id}')}"),
+            md.text(f"جدول: {md.link(name, f'{settings().FAST_API_HOST}/schedule/stages/{selected_stage.id}')}"),
             sep='\n',
         ),
         photo=url,

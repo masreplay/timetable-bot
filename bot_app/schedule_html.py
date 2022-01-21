@@ -2,6 +2,7 @@ import pathlib
 from uuid import UUID
 
 import requests
+from aiogram.dispatcher.webhook import SendMessage
 from pydantic.color import Color
 
 from app import schemas
@@ -160,8 +161,10 @@ def card_into_table(*, card: schemas.CardScheduleDetails, color: Color):
     if card.lesson.teacher:
         tags.append(f'<p style="font-family: Tajawal;">{card.lesson.teacher.name}</p>')
 
-    cprint(f"{subject_name} - {card.lesson.teacher.name if card.lesson.teacher else ''} - {card.lesson.room.name}",
-           bg_color=color)
+    cprint(
+        f"{subject_name} - {card.lesson.teacher.name if card.lesson.teacher else ''} "
+        f"- {card.lesson.room.name if card.lesson.room else ''}",
+        bg_color=color)
     return "".join(tags)
 
 
