@@ -28,7 +28,6 @@ bot = Bot(token=settings().TELEGRAM_BOT_API_TOKEN)
 storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
 dp.middleware.setup(LoggingMiddleware())
-dp.middleware.setup(I18nMiddleware())
 
 
 # States
@@ -148,37 +147,37 @@ async def cmd_about(message: types.Message):
     )
 
 
-@dp.callback_query_handler(lambda c: c.data == 'credits')
-async def process_credits(call: CallbackQuery):
-    await bot.answer_callback_query(call.id)
-    await bot.edit_message_text(
-        text=md.text(translate("ar", "credits")),
-        message_id=call.message.message_id,
-        chat_id=call.message.chat.id,
-    )
-
-
-@dp.callback_query_handler(lambda c: c.data == 'technologies')
-async def process_technologies(call: CallbackQuery):
-    await bot.answer_callback_query(call.id)
-    await bot.edit_message_text(
-        text=md.text(translate("ar", "technologies")),
-        message_id=call.message.message_id,
-        chat_id=call.message.chat.id,
-        parse_mode=ParseMode.MARKDOWN,
-    )
-
-
-@dp.callback_query_handler(lambda c: c.data == 'how_does_it_work')
-async def process_credits(call: CallbackQuery):
-    await bot.answer_callback_query(call.id)
-    await bot.edit_message_text(
-        text=md.text(translate("ar", "how_does_it_work")),
-        message_id=call.message.message_id,
-        chat_id=call.message.chat.id,
-        parse_mode=ParseMode.MARKDOWN,
-    )
-
+# @dp.callback_query_handler(lambda c: c.data == 'credits')
+# async def process_credits(call: CallbackQuery):
+#     await bot.answer_callback_query(call.id)
+#     await bot.edit_message_text(
+#         text=md.text(translate("ar", "credits")),
+#         message_id=call.message.message_id,
+#         chat_id=call.message.chat.id,
+#     )
+#
+#
+# @dp.callback_query_handler(lambda c: c.data == 'technologies')
+# async def process_technologies(call: CallbackQuery):
+#     await bot.answer_callback_query(call.id)
+#     await bot.edit_message_text(
+#         text=md.text(translate("ar", "technologies")),
+#         message_id=call.message.message_id,
+#         chat_id=call.message.chat.id,
+#         parse_mode=ParseMode.MARKDOWN,
+#     )
+#
+#
+# @dp.callback_query_handler(lambda c: c.data == 'how_does_it_work')
+# async def process_credits(call: CallbackQuery):
+#     await bot.answer_callback_query(call.id)
+#     await bot.edit_message_text(
+#         text=md.text(translate("ar", "how_does_it_work")),
+#         message_id=call.message.message_id,
+#         chat_id=call.message.chat.id,
+#         parse_mode=ParseMode.MARKDOWN,
+#     )
+#
 
 @dp.inline_handler()
 async def inline_echo(inline_query: InlineQuery):
