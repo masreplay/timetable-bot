@@ -47,6 +47,7 @@ class Settings(BaseSettings):
     HTML_TO_IMAGE_SERVICE: str
 
     TELEGRAM_BOT_API_TOKEN: str
+    FRONTEND_URL: str
 
     # webserver settings
     WEBAPP_HOST = '0.0.0.0'
@@ -89,6 +90,7 @@ class Settings(BaseSettings):
             host = new.get('HEROKU_APP_HOST')
             new['FAST_API_HOST'] = f'{host}{version}'
             return new
+
 
     WEBHOOK_PATH: str
 
