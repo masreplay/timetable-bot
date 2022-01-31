@@ -1,4 +1,5 @@
 import pathlib
+from random import Random
 from uuid import UUID
 
 import requests
@@ -10,7 +11,7 @@ from app.core.config import settings
 from app.schemas.enums import Environment
 from asc_scrapper.test import ImageUrl
 from bot_app import service
-from colors.color_utils import decide_text_color, reduce_color_lightness, cprint
+from colors.color_utils import decide_text_color, reduce_color_lightness, cprint, primaries
 
 
 def schedule_html(*, schedule: schemas.ScheduleDetails, title: str, is_dark: bool):
@@ -134,8 +135,9 @@ def generate_table(schedule: schemas.ScheduleDetails, is_dark: bool = True):
 
             if card:
                 teacher: schemas.TeacherSchedule | None = card.lesson.teacher
-                color: Color = Color(teacher.color if teacher else "#ffffff")
-                color = reduce_color_lightness(color, 0.75)
+                # color = Color(teacher.color if teacher else "#ffffff")
+                # color = reduce_color_lightness(color, 0.75)
+                color = Color(Random().choice(primaries).shades[200].as_hex() + "0f")
                 font_color = decide_text_color(color)
                 row.append(
                     f'<td '
@@ -153,7 +155,6 @@ def generate_table(schedule: schemas.ScheduleDetails, is_dark: bool = True):
 
 def card_into_table(*, card: schemas.CardScheduleDetails, color: Color):
     subject_name = card.lesson.subject.name
-    # classroom = lesson.c
     tags = [f"<p>{subject_name}</p>"]
     if card.lesson.room:
         tags.append(f"<p><b>{card.lesson.room.name}</b></p>")
@@ -173,23 +174,22 @@ def get_stage_schedule_image(*, stage_id: UUID, name: str) -> str | None:
     if response.status_code == 200:
         schedule = schemas.ScheduleDetails.parse_obj(response.json())
 
-        data = schedule_html(schedule=schedule, title=name, is_dark=True)
+        data = schedule_html(schedule=schedule, title=name, is_dark=False)
 
-        response = requests.post(f"{settings().HTML_TO_IMAGE_SERVICE}/image", data={"html": data}, stream=True)
-
-        image_url = ImageUrl.parse_obj(response.json())
-
-        img_data = requests.get(image_url.url).content
+        # image
+        # response = requests.post(f"{settings().HTML_TO_IMAGE_SERVICE}/image", data={"html": data}, stream=True)
+        # image_url = ImageUrl.parse_obj(response.json())
+        # img_data = requests.get(image_url.url).content
 
         if settings().ENVIRONMENT == Environment.development:
             pathlib.Path("generated_data").mkdir(parents=True, exist_ok=True)
             with open(f'generated_data/{name}table.png', 'wb') as handler:
-                handler.write(img_data)
+                # handler.write(img_data)
                 with open("generated_data/table.g.html", "w", encoding="utf-8") as file:
                     file.write(data)
 
-        return image_url.url
+        # return image_url.url
 
 
 if __name__ == '__main__':
-    get_stage_schedule_image(stage_id=UUID("9f1703de-cce5-41f5-b9b4-1f2d041578f0"), name="ثالث برمجيات صباحي")
+    get_stage_schedule_image(stage_id=UUID("0ca31629-cea3-4568-8bd4-c9fb77f77114"), name="ثالث برمجيات صباحي")
