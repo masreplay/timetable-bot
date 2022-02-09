@@ -101,7 +101,7 @@ def schedule_html(*, schedule: schemas.ScheduleDetails, title: str, is_dark: boo
 </head>
 
 <body>
-    <div style="background-color: {"#202b36" if is_dark else "white"}; padding: 1%;">
+    <div style="background-color: {"#000000" if is_dark else "white"}; padding: 1%;">
         <h1 style="color: white; text-align: center;">{title}</h1>
         <table>
             <thead>
@@ -113,7 +113,7 @@ def schedule_html(*, schedule: schemas.ScheduleDetails, title: str, is_dark: boo
                     {"".join([f'<th style="color: #ffffff">{period.time}</th>' for period in schedule.periods])}
                 </tr>
             </thead>
-            <tbody>{generate_table(schedule=schedule)}</tbody>
+            <tbody>{generate_table(schedule=schedule, is_dark=is_dark)}</tbody>
         </table>
         <h3 style="color: white; text-align: right;">@ConstructorTeam</h1>
     </div>
@@ -122,7 +122,7 @@ def schedule_html(*, schedule: schemas.ScheduleDetails, title: str, is_dark: boo
 </html>"""
 
 
-def generate_table(schedule: schemas.ScheduleDetails, is_dark: bool = True):
+def generate_table(schedule: schemas.ScheduleDetails, is_dark: bool):
     card_tags = ""
     on_background_color = "#ffffff" if is_dark else "#000000"
 
@@ -169,17 +169,16 @@ def card_into_table(*, card: schemas.CardScheduleDetails, color: Color):
     return "".join(tags)
 
 
-def get_stage_schedule_image(*, stage_id: UUID, name: str) -> str | None:
+def get_stage_schedule_image(*, stage_id: UUID, name: str, is_dark: bool = False) -> str | None:
     response = service.get_stage_schedule(stage_id)
     if response.status_code == 200:
         schedule = schemas.ScheduleDetails.parse_obj(response.json())
 
-        data = schedule_html(schedule=schedule, title=name, is_dark=False)
+        data = schedule_html(schedule=schedule, title=name, is_dark=is_dark)
 
-        # image
-        # response = requests.post(f"{settings().HTML_TO_IMAGE_SERVICE}/image", data={"html": data}, stream=True)
-        # image_url = ImageUrl.parse_obj(response.json())
-        # img_data = requests.get(image_url.url).content
+        response = requests.post(f"{settings().HTML_TO_IMAGE_SERVICE}/image", data={"html": data}, stream=True)
+        image_url = ImageUrl.parse_obj(response.json())
+        img_data = requests.get(image_url.url).content
 
         if settings().ENVIRONMENT == Environment.development:
             pathlib.Path("generated_data").mkdir(parents=True, exist_ok=True)
@@ -188,7 +187,7 @@ def get_stage_schedule_image(*, stage_id: UUID, name: str) -> str | None:
                 with open("generated_data/table.g.html", "w", encoding="utf-8") as file:
                     file.write(data)
 
-        # return image_url.url
+        return image_url.url
 
 
 if __name__ == '__main__':

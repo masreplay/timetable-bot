@@ -1,4 +1,3 @@
-
 import logging
 import uuid
 from enum import Enum
@@ -107,11 +106,12 @@ async def process_stage(message: types.Message, state: FSMContext):
 
     url = get_stage_schedule_image(stage_id=selected_stage.id, name=name)
 
+    schedule_web_link = f"{settings().FAST_API_HOST}/schedule/stages/{selected_stage.id}"
     # And send message
     await bot.send_photo(
         chat_id=message.chat.id,
         caption=md.text(
-            md.text(f"جدول: {md.link(name, f'{settings().FAST_API_HOST}/schedule/stages/{selected_stage.id}')}"),
+            md.text(f"جدول: {md.bold(md.link(name, schedule_web_link))}"),
             sep='\n',
         ),
         photo=url,
