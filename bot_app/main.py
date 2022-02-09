@@ -104,9 +104,9 @@ async def process_stage(message: types.Message, state: FSMContext):
 
     name = f'{selected_stage.name}'
 
-    url = get_stage_schedule_image(stage_id=selected_stage.id, name=name)
+    url = get_stage_schedule_image(stage_id=selected_stage.id, name=name, is_dark=True)
 
-    schedule_web_link = f"{settings().FAST_API_HOST}/schedule/stages/{selected_stage.id}"
+    schedule_web_link = f"{settings().FRONTEND_URL}/schedule/stages/{selected_stage.id}"
     # And send message
     await bot.send_photo(
         chat_id=message.chat.id,

@@ -3,7 +3,6 @@ from random import Random
 from uuid import UUID
 
 import requests
-from aiogram.dispatcher.webhook import SendMessage
 from pydantic.color import Color
 
 from app import schemas
@@ -11,10 +10,13 @@ from app.core.config import settings
 from app.schemas.enums import Environment
 from asc_scrapper.test import ImageUrl
 from bot_app import service
-from colors.color_utils import decide_text_color, reduce_color_lightness, cprint, primaries
+from colors.color_utils import decide_text_color, cprint, primaries
 
 
 def schedule_html(*, schedule: schemas.ScheduleDetails, title: str, is_dark: bool):
+    """
+    Template body of schedule
+    """
     col_width = 100 / (len(schedule.periods) + 1)
     row_height = 100 / (len(schedule.days) + 1)
     style = f"""<style>
@@ -123,6 +125,9 @@ def schedule_html(*, schedule: schemas.ScheduleDetails, title: str, is_dark: boo
 
 
 def generate_table(schedule: schemas.ScheduleDetails, is_dark: bool):
+    """
+    HTML Table body period cross days
+    """
     card_tags = ""
     on_background_color = "#ffffff" if is_dark else "#000000"
 
@@ -142,7 +147,7 @@ def generate_table(schedule: schemas.ScheduleDetails, is_dark: bool):
                 row.append(
                     f'<td '
                     f'style="background-color: {color}; color: {font_color}">'
-                    f'{card_into_table(card=card, color=color)}</td>'
+                    f'{card_table(card=card, color=color)}</td>'
                 )
             else:
                 row.append(f"<td></td>")
@@ -153,7 +158,10 @@ def generate_table(schedule: schemas.ScheduleDetails, is_dark: bool):
     return card_tags
 
 
-def card_into_table(*, card: schemas.CardScheduleDetails, color: Color):
+def card_table(*, card: schemas.CardScheduleDetails, color: Color):
+    """
+    HTML Table's card
+    """
     subject_name = card.lesson.subject.name
     tags = [f"<p>{subject_name}</p>"]
     if card.lesson.room:
@@ -170,6 +178,9 @@ def card_into_table(*, card: schemas.CardScheduleDetails, color: Color):
 
 
 def get_stage_schedule_image(*, stage_id: UUID, name: str, is_dark: bool = False) -> str | None:
+    """
+    Generate schedule image from stage id
+    """
     response = service.get_stage_schedule(stage_id)
     if response.status_code == 200:
         schedule = schemas.ScheduleDetails.parse_obj(response.json())
@@ -183,7 +194,7 @@ def get_stage_schedule_image(*, stage_id: UUID, name: str, is_dark: bool = False
         if settings().ENVIRONMENT == Environment.development:
             pathlib.Path("generated_data").mkdir(parents=True, exist_ok=True)
             with open(f'generated_data/{name}table.png', 'wb') as handler:
-                # handler.write(img_data)
+                handler.write(img_data)
                 with open("generated_data/table.g.html", "w", encoding="utf-8") as file:
                     file.write(data)
 

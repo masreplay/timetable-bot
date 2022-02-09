@@ -83,7 +83,7 @@ class Settings(BaseSettings):
         version = "/v1"
 
         if environment == Environment.development:
-            new['FAST_API_HOST'] = f"http://localhost:8000/#{version}"
+            new['FAST_API_HOST'] = f"http://127.0.0.1:8000{version}"
             return new
 
         else:
