@@ -13,6 +13,7 @@ class ScheduleTheme:
     primary_color: str
     on_primary_color: str
 
+    divider_color: str
     font_name: str = "Tajawal"
 
 
@@ -28,8 +29,10 @@ def random_dark(shade: int = 200, reduce: float = 0.95) -> str:
 
 # material shade 200 , reduce 0.95 or shade only 400
 DARK_THEME = ScheduleTheme(background_color="#1f1f1f", on_background_color="#ffffff",
-                           primary_color="#FFF700", on_primary_color="#000000")
+                           primary_color="#FFF700", on_primary_color="#000000",
+                           divider_color="#dddddd")
 
 # material shade 200
 LIGHT_THEME = ScheduleTheme(background_color="#ffffff", on_background_color="#000000",
-                            primary_color="#FFF700", on_primary_color="#000000")
+                            primary_color="#FFF700", on_primary_color="#000000",
+                            divider_color="#dddddd")
