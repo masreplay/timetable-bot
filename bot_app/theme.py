@@ -1,12 +1,12 @@
 from dataclasses import dataclass
 
+from pydantic import BaseModel
 from pydantic.color import Color
 
 from colors.color_utils import reduce_color_lightness, random_primary
 
 
-@dataclass
-class ScheduleTheme:
+class ScheduleTheme(BaseModel):
     background_color: str
     on_background_color: str
 
@@ -15,6 +15,11 @@ class ScheduleTheme:
 
     divider_color: str
     font_name: str = "Tajawal"
+
+
+class NamedTheme(BaseModel):
+    name: str
+    theme: ScheduleTheme
 
 
 def random_light() -> str:
@@ -36,3 +41,8 @@ DARK_THEME = ScheduleTheme(background_color="#1f1f1f", on_background_color="#fff
 LIGHT_THEME = ScheduleTheme(background_color="#ffffff", on_background_color="#000000",
                             primary_color="#FFF700", on_primary_color="#000000",
                             divider_color="#dddddd")
+
+THEMES = [
+    NamedTheme(name="Dark", theme=DARK_THEME),
+    NamedTheme(name="Light", theme=LIGHT_THEME),
+]
