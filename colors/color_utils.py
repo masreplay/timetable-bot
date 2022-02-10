@@ -1,4 +1,4 @@
-from random import randint
+from random import randint, choice
 from typing import Any
 
 from colors.primaries import *
@@ -64,14 +64,14 @@ def reduce_color_lightness(in_color: Color, in_amount: float) -> Color:
     ))
 
 
-def random_primary(shade: int = 300) -> Color:
+def random_primary(shade: int = 200) -> Color:
     assert shade in [50, 100, 200, 300, 400, 500, 600, 700, 800, 900], "Choose shade from range"
-    return primaries[randint(0, len(primaries) - 1)].shades[shade]
+    return choice(primaries).shades[shade]
 
 
 def random_accent(shade: int = 200) -> Color:
     assert shade in [100, 200, 400, 700], "Choose shade from range"
-    return accents[randint(0, len(accents) - 1)].shades[shade]
+    return choice(accents).shades[shade]
 
 
 def get_color_escape(color: Color, background=False) -> str:

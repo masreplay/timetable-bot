@@ -6,3 +6,4 @@ asc_scrapper/generated_data
 asc_scrapper/asc_data
 asc_schedule.json
 /bot_app/generated_data/
+inject_table.py
