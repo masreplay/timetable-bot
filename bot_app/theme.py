@@ -16,15 +16,15 @@ class ScheduleTheme:
 
     font_name: str = "Tajawal"
 
-    @staticmethod
-    def random_color(shade: int = 200) -> str:
-        return Random().choice(primaries).shades[shade].as_hex()
 
-    @staticmethod
-    def random_dark(shade: int = 200, reduce: float = 0.95) -> str:
-        assert (reduce <= 1)
-        color = ScheduleTheme.random_color(shade)
-        return reduce_color_lightness(Color(color), reduce).as_hex()
+def random_color(shade: int = 200) -> str:
+    return Random().choice(primaries).shades[shade].as_hex()
+
+
+def random_dark(shade: int = 200, reduce: float = 0.95) -> str:
+    assert (reduce <= 1)
+    color = random_color(shade)
+    return reduce_color_lightness(Color(color), reduce).as_hex()
 
 
 # material shade 200 , reduce 0.95 or shade only 400
