@@ -11,7 +11,7 @@ from app.schemas.enums import Environment
 from asc_scrapper.test import ImageUrl
 from bot_app import service
 from bot_app.theme import ScheduleTheme, DARK_THEME, LIGHT_THEME
-from colors.color_utils import decide_text_color, cprint, primaries, reduce_color_lightness
+from colors.color_utils import decide_text_color, cprint, primaries
 
 
 def schedule_template_html(*, schedule: schemas.ScheduleDetails, title: str, theme: ScheduleTheme, creators_name: str):
@@ -141,8 +141,9 @@ def generate_table(*, schedule: schemas.ScheduleDetails, theme: ScheduleTheme):
             if card:
                 teacher: schemas.TeacherSchedule | None = card.lesson.teacher
                 # color = Color(teacher.color if teacher else "#ffffff")
+
                 # color = reduce_color_lightness(color, 0.75)
-                color = Color(Random().choice(primaries).shades[200].as_hex())
+
                 font_color = decide_text_color(color)
                 row.append(
                     f'<td '
