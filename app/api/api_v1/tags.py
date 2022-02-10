@@ -12,6 +12,7 @@ class Tags(str, Enum):
     stages = "stages"
     buildings = "buildings"
     rooms = "rooms"
+    theme = "theme"
     floors = "floors"
     subjects = "subjects"
     lessons = "lessons"
