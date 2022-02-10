@@ -54,6 +54,7 @@ class TeacherSchedule(BaseModel):
     id: UUID
     name: str
     color: str
+    color_light: str
 
 
 class FloorSchedule(FloorBase):
