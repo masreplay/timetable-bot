@@ -118,7 +118,7 @@ def schedule_template_html(*, schedule: schemas.ScheduleDetails, title: str, the
             </thead>
             <tbody>{generate_table(schedule=schedule, theme=theme)}</tbody>
         </table>
-        <h3 style="color: {theme.on_background_color}; text-align: right;">{creators_name}</h1>
+        <h3 style="color: {theme.on_background_color}; text-align: right;">{creators_name}</h3>
     </div>
 </body>
 
