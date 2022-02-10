@@ -10,6 +10,6 @@ router = APIRouter()
 @router.get("/", response_model=list[NamedTheme])
 def read_theme() -> Any:
     """
-    Retrieve theme.
+    Retrieve themes.
     """
     return THEMES
