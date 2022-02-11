@@ -1,5 +1,4 @@
 import pathlib
-from random import Random
 from uuid import UUID
 
 import requests
@@ -11,7 +10,7 @@ from app.schemas.enums import Environment
 from asc_scrapper.test import ImageUrl
 from bot_app import service
 from bot_app.theme import ScheduleTheme, DARK_THEME, LIGHT_THEME
-from colors.color_utils import decide_text_color, cprint, primaries
+from colors.color_utils import decide_text_color, cprint
 
 
 def schedule_html_template(*, schedule: schemas.ScheduleDetails, title: str, theme: ScheduleTheme, creators_name: str):
