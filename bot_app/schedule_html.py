@@ -140,7 +140,7 @@ def generate_table(*, schedule: schemas.ScheduleDetails, theme: ScheduleTheme):
             if card:
                 teacher: schemas.TeacherSchedule | None = card.lesson.teacher
 
-                color = Color(teacher.color_light if False else teacher.color_dark)
+                color: Color = Color(teacher.color_light) if teacher else Color("#ffffff")
                 font_color = decide_text_color(color)
                 row.append(
                     f'<td '
