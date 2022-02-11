@@ -35,7 +35,7 @@ def read_stage_ui(
             raise HTTPException(status_code=204, detail="Stage not found")
         schedule = crud.schedule.get(db=db, stage_id=stage_id)
     else:
-        stages = crud.stage.get_multi(db=db,limit=100)
+        stages = crud.stage.get_multi(db=db, limit=100)
         if stages.count == 0:
             raise HTTPException(status_code=204, detail="Stage not found")
         stage = choice(stages.results)
