@@ -4,6 +4,7 @@ from uuid import UUID
 from pydantic import validator, BaseModel
 from sqlmodel import SQLModel, Field
 
+from app.schemas.base import CardContent
 from app.schemas.card import CardBase
 from app.schemas.day import DayBase
 from app.schemas.floor import FloorBase
@@ -50,11 +51,8 @@ class ClassroomSchedule(RoomBase):
     id: UUID
 
 
-class TeacherSchedule(BaseModel):
+class TeacherSchedule(CardContent):
     id: UUID
-    name: str
-    color: str
-    color_light: str
 
 
 class FloorSchedule(FloorBase):

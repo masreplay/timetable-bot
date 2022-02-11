@@ -14,7 +14,7 @@ from bot_app.theme import ScheduleTheme, DARK_THEME, LIGHT_THEME
 from colors.color_utils import decide_text_color, cprint, primaries
 
 
-def schedule_template_html(*, schedule: schemas.ScheduleDetails, title: str, theme: ScheduleTheme, creators_name: str):
+def schedule_html_template(*, schedule: schemas.ScheduleDetails, title: str, theme: ScheduleTheme, creators_name: str):
     """
     Template body of schedule
     """
@@ -140,10 +140,8 @@ def generate_table(*, schedule: schemas.ScheduleDetails, theme: ScheduleTheme):
 
             if card:
                 teacher: schemas.TeacherSchedule | None = card.lesson.teacher
-                # color = Color(teacher.color if teacher else "#ffffff")
 
-                # color = reduce_color_lightness(color, 0.75)
-
+                color = Color(teacher.color_light if False else teacher.color_dark)
                 font_color = decide_text_color(color)
                 row.append(
                     f'<td '
@@ -188,7 +186,7 @@ def get_stage_schedule_image(*, stage_id: UUID, name: str, is_dark: bool = False
     if response.status_code == 200:
         schedule = schemas.ScheduleDetails.parse_obj(response.json())
 
-        data = schedule_template_html(schedule=schedule, title=name, theme=theme, creators_name="@ConstructorTeam")
+        data = schedule_html_template(schedule=schedule, title=name, theme=theme, creators_name="@ConstructorTeam")
 
         response = requests.post(f"{settings().HTML_TO_IMAGE_SERVICE}/image", data={"html": data}, stream=True)
         image_url = ImageUrl.parse_obj(response.json())
