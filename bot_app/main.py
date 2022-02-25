@@ -104,14 +104,16 @@ async def process_stage(message: types.Message, state: FSMContext):
 
     name = f'{selected_stage.name}'
 
-    url = get_stage_schedule_image(stage_id=selected_stage.id, name=name, is_dark=True)
+    url = service.get_schedule_image_url(stage_id=selected_stage.id)
 
-    schedule_web_link = f"{settings().FRONTEND_URL}/schedule/stages/{selected_stage.id}"
+    schedule_web_link = f"{settings().FRONTEND_URL}schedule/stages/{selected_stage.id}"
     # And send message
     await bot.send_photo(
         chat_id=message.chat.id,
         caption=md.text(
-            md.text(f"جدول: {md.bold(md.link(name, schedule_web_link))}"),
+            md.text(f"جدول: {md.link(name, schedule_web_link)} \n"
+                    f"بوت غير رسمي وليس تابع لإدارة قسم علوم الحاسوب البوت تحت الصيانة لا تقم بتحويل ا"
+                    f"لصور او ارسالها الى ان يتم نشره بشكل رسمي الجدول من https://uotcs.edupage.org/timetable/"),
             sep='\n',
         ),
         photo=url,
