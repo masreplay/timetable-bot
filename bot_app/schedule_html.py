@@ -13,7 +13,13 @@ from bot_app.theme import ScheduleTheme, DARK_THEME, LIGHT_THEME
 from colors.color_utils import decide_text_color, cprint
 
 
-def schedule_html_template(*, schedule: schemas.ScheduleDetails, title: str, theme: ScheduleTheme, creators_name: str):
+def schedule_html_template(
+    *,
+    schedule: schemas.ScheduleDetails,
+    title: str,
+    theme: ScheduleTheme,
+    creators_name: str,
+):
     """
     Template body of schedule
     """
@@ -134,19 +140,24 @@ def generate_table(*, schedule: schemas.ScheduleDetails, theme: ScheduleTheme):
         row = []
         for period in schedule.periods:
             card: schemas.CardScheduleDetails = next(
-                filter(lambda card: card.period_id == period.id and card.day_id == day.id,
-                       schedule.cards), None)
+                filter(
+                    lambda card: card.period_id == period.id and card.day_id == day.id,
+                    schedule.cards,
+                ),
+                None,
+            )
 
             if card:
                 teacher: schemas.TeacherSchedule | None = card.lesson.teacher
 
-                color: Color = Color(
-                    teacher.color_light) if teacher else Color("#ffffff")
+                color: Color = (
+                    Color(teacher.color_light) if teacher else Color("#ffffff")
+                )
                 font_color = decide_text_color(color)
                 row.append(
-                    f'<td '
+                    f"<td "
                     f'style="background-color: {color}; color: {font_color}">'
-                    f'{card_table(card=card, color=color)}</td>'
+                    f"{card_table(card=card, color=color)}</td>"
                 )
             else:
                 row.append(f"<td></td>")
@@ -167,16 +178,19 @@ def card_table(*, card: schemas.CardScheduleDetails, color: Color):
         tags.append(f"<p><b>{card.lesson.room.name}</b></p>")
 
     if card.lesson.teacher:
-        tags.append(f'<p>{card.lesson.teacher.name}</p>')
+        tags.append(f"<p>{card.lesson.teacher.name}</p>")
 
     cprint(
         f"{subject_name} - {card.lesson.teacher.name if card.lesson.teacher else ''} "
         f"- {card.lesson.room.name if card.lesson.room else ''}",
-        bg_color=color)
+        bg_color=color,
+    )
     return "".join(tags)
 
 
-def get_stage_schedule_image(*, stage_id: UUID, name: str, is_dark: bool = False) -> str | None:
+def get_stage_schedule_image(
+    *, stage_id: UUID, name: str, is_dark: bool = False
+) -> str | None:
     """
     Generate schedule image from stage id
     """
@@ -187,17 +201,21 @@ def get_stage_schedule_image(*, stage_id: UUID, name: str, is_dark: bool = False
         schedule = schemas.ScheduleDetails.parse_obj(response.json())
 
         data = schedule_html_template(
-            schedule=schedule, title=name, theme=theme, creators_name="@ConstructorTeam")
+            schedule=schedule, title=name, theme=theme, creators_name="@ConstructorTeam"
+        )
 
         response = requests.post(
-            f"{settings().HTML_TO_IMAGE_SERVICE}/image", data={"html": data}, stream=True)
+            f"{settings().HTML_TO_IMAGE_SERVICE}/image",
+            data={"html": data},
+            stream=True,
+        )
         image_url = ImageUrl.parse_obj(response.json())
         img_data = requests.get(image_url.url).content
 
         if settings().ENVIRONMENT == Environment.development:
             print(image_url.url)
             pathlib.Path("generated_data").mkdir(parents=True, exist_ok=True)
-            with open(f'generated_data/{name}table.png', 'wb') as handler:
+            with open(f"generated_data/{name}table.png", "wb") as handler:
                 handler.write(img_data)
                 with open("generated_data/table.g.html", "w", encoding="utf-8") as file:
                     file.write(data)
@@ -205,8 +223,9 @@ def get_stage_schedule_image(*, stage_id: UUID, name: str, is_dark: bool = False
         return image_url.url
 
 
-if __name__ == '__main__':
-    get_stage_schedule_image(stage_id=UUID(
-        "0ca31629-cea3-4568-8bd4-c9fb77f77114"), name="ثالث برمجيات صباحي")
+if __name__ == "__main__":
+    get_stage_schedule_image(
+        stage_id=UUID("0ca31629-cea3-4568-8bd4-c9fb77f77114"), name="ثالث برمجيات صباحي"
+    )
     # get_stage_schedule_image(stage_id=UUID("0ca31629-cea3-4568-8bd4-c9fb77f77114"), name="ثالث برمجيات صباحي",
     #                          is_dark=True)
