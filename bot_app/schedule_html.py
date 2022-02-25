@@ -140,7 +140,8 @@ def generate_table(*, schedule: schemas.ScheduleDetails, theme: ScheduleTheme):
             if card:
                 teacher: schemas.TeacherSchedule | None = card.lesson.teacher
 
-                color: Color = Color(teacher.color_light) if teacher else Color("#ffffff")
+                color: Color = Color(
+                    teacher.color_light) if teacher else Color("#ffffff")
                 font_color = decide_text_color(color)
                 row.append(
                     f'<td '
@@ -185,9 +186,11 @@ def get_stage_schedule_image(*, stage_id: UUID, name: str, is_dark: bool = False
     if response.status_code == 200:
         schedule = schemas.ScheduleDetails.parse_obj(response.json())
 
-        data = schedule_html_template(schedule=schedule, title=name, theme=theme, creators_name="@ConstructorTeam")
+        data = schedule_html_template(
+            schedule=schedule, title=name, theme=theme, creators_name="@ConstructorTeam")
 
-        response = requests.post(f"{settings().HTML_TO_IMAGE_SERVICE}/image", data={"html": data}, stream=True)
+        response = requests.post(
+            f"{settings().HTML_TO_IMAGE_SERVICE}/image", data={"html": data}, stream=True)
         image_url = ImageUrl.parse_obj(response.json())
         img_data = requests.get(image_url.url).content
 
@@ -203,6 +206,7 @@ def get_stage_schedule_image(*, stage_id: UUID, name: str, is_dark: bool = False
 
 
 if __name__ == '__main__':
-    get_stage_schedule_image(stage_id=UUID("0ca31629-cea3-4568-8bd4-c9fb77f77114"), name="ثالث برمجيات صباحي")
+    get_stage_schedule_image(stage_id=UUID(
+        "0ca31629-cea3-4568-8bd4-c9fb77f77114"), name="ثالث برمجيات صباحي")
     # get_stage_schedule_image(stage_id=UUID("0ca31629-cea3-4568-8bd4-c9fb77f77114"), name="ثالث برمجيات صباحي",
     #                          is_dark=True)

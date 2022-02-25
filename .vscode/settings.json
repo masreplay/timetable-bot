@@ -1,0 +1,5 @@
+{
+  "python.linting.enabled": true,
+  "python.analysis.useImportHeuristic": true,
+  "python.formatting.provider": "black"
+}

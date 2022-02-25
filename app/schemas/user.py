@@ -14,7 +14,8 @@ from app.schemas.enums import UserGender, UserScrapeFrom
 # Shared properties
 class UserBase(CardContent):
     en_name: str | None = Field(index=True)
-    email: EmailStr | None = Field(default=None, sa_column_kwargs=sa_column_kwargs(unique=True))
+    email: EmailStr | None = Field(
+        default=None, sa_column_kwargs=sa_column_kwargs(unique=True))
     uot_url: constr(regex=url_regex) | None = Field(default=None)
     image: constr(regex=url_regex) | None = Field(default=None)
     is_active: bool | None = True
@@ -23,7 +24,8 @@ class UserBase(CardContent):
 
     asc_job_title: str | None = Field()
     asc_name: str | None = Field()
-    scrape_from: UserScrapeFrom | None = Field(default=None, sa_column=Column(Enum(UserScrapeFrom)))
+    scrape_from: UserScrapeFrom | None = Field(
+        default=None, sa_column=Column(Enum(UserScrapeFrom)))
 
     # relations
     role_id: UUID | None = Field(foreign_key="role.id")
@@ -33,8 +35,9 @@ class UserBase(CardContent):
 class UserCreate(UserBase):
     password: str | None = Field(None, min_length=8, max_length=16)
 
-
 # Properties to receive via API on update
+
+
 class UserUpdate(UserBase):
     password: str | None = Field(None, min_length=8, max_length=16)
 
