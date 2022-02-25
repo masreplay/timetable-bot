@@ -1,8 +1,10 @@
 from typing import Any
+from typing import TypeVar, Generic
 from uuid import UUID
 
 from pydantic import validator, BaseModel
-from sqlmodel import SQLModel, Field
+from pydantic.generics import GenericModel
+from sqlmodel import SQLModel
 
 from app.schemas.base import CardContent
 from app.schemas.card import CardBase
@@ -14,6 +16,8 @@ from app.schemas.period import PeriodBase
 from app.schemas.room import RoomBase
 from app.schemas.stage import Stage
 from app.schemas.subject import SubjectBase
+
+ModelType = TypeVar('ModelType')
 
 
 class SubjectSchedule(SubjectBase):
@@ -87,16 +91,16 @@ class CardScheduleDetails(CardBase):
 
 
 class ScheduleDetails(BaseModel):
+    stage: Stage
     cards: list[CardScheduleDetails]
     days: list[DaySchedule]
     periods: list[PeriodSchedule]
 
 
-# Generic will destroy the performance
+# Don't use Generic will destroy the performance
 class ScheduleBase(SQLModel):
     days: list[DaySchedule]
     periods: list[PeriodSchedule]
-
     cards: list[CardSchedule]
 
     buildings: list[BuildingSchedule]

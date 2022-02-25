@@ -2,7 +2,7 @@ from pydantic.color import Color
 
 from asc_scrapper.crud import *
 from asc_scrapper.schemas import *
-from colors.color_utils import decide_text_color, reduce_color_lightness, cprint
+from ui.colors.color_utils import decide_text_color, reduce_color_lightness, cprint
 
 
 def schedule_html(*, periods: list[Period], days: list[Day], cards: list[Card], title: str,

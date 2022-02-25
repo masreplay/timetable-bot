@@ -10,7 +10,6 @@ from app.schemas import enums
 from app.schemas.enums import UserType, CollageShifts
 from app.schemas.permissions import default_permissions
 from asc_scrapper.crud import AscCRUD
-from bot_app.theme import ScheduleTheme
 from uot_scraper.match_teachers import get_combine_teachers, MergedTeacher
 
 # asc ids to uuid

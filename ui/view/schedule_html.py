@@ -8,17 +8,15 @@ from app import schemas
 from app.core.config import settings
 from app.schemas.enums import Environment
 from asc_scrapper.test import ImageUrl
-from bot_app import service
-from bot_app.theme import ScheduleTheme, DARK_THEME, LIGHT_THEME
-from colors.color_utils import decide_text_color, cprint
+from ui.color import Theme
+
+from ui.colors.color_utils import decide_text_color, cprint
 
 
 def schedule_html_template(
-    *,
-    schedule: schemas.ScheduleDetails,
-    title: str,
-    theme: ScheduleTheme,
-    creators_name: str,
+        *,
+        schedule: schemas.ScheduleDetails,
+        theme: Theme
 ):
     """
     Template body of schedule
@@ -27,7 +25,7 @@ def schedule_html_template(
     row_height = 100 / (len(schedule.days) + 1)
     style = f"""<style>
         table {{
-            border: 1px solid #ddd;
+            border: 1px solid {theme.colors.outline};
             border-collapse: separate;
             border-left: 0;
             border-radius: 10px;
@@ -56,7 +54,7 @@ def schedule_html_template(
         }}
 
         th {{
-            color: {theme.on_background_color};
+            color: {theme.colors.background};
         }}
 
         tr {{
@@ -73,11 +71,11 @@ def schedule_html_template(
             word-wrap:break-word;
             text-align: middle;
             vertical-align: middle;
-            border-left: 1px solid #ddd;
+            border-left: 1px solid {theme.colors.outline};
         }}
 
         td {{
-            border-top: 1px solid #ddd;
+            border-top: 1px solid {theme.colors.outline};
             text-align: center;
         }}
 
@@ -109,8 +107,8 @@ def schedule_html_template(
 </head>
 
 <body>
-    <div style="background-color: {theme.background_color}; padding: 1%;">
-        <h1 style="color: {theme.on_background_color}; text-align: center;">{title}</h1>
+    <div style="background-color: {theme.colors.background}; padding: 1%;">
+        <h1 style="color: {theme.colors.on_background}; text-align: center;">{schedule.stage.name}</h1>
         <table>
             <thead>
                 <colgroup>
@@ -118,19 +116,19 @@ def schedule_html_template(
                 </colgroup>
                 <tr>
                     <th></th>
-                    {"".join([f'<th style="color: {theme.on_background_color}">{period.time}</th>' for period in schedule.periods])}
+                    {"".join([f'<th style="color: {theme.colors.on_background}">{period.time}</th>' for period in schedule.periods])} 
                 </tr>
             </thead>
             <tbody>{generate_table(schedule=schedule, theme=theme)}</tbody>
         </table>
-        <h3 style="color: {theme.on_background_color}; text-align: right;">{creators_name}</h3>
+        <h3 style="color: {theme.colors.on_background}; text-align: right;">@ConstructorTeam</h3>
     </div>
 </body>
 
 </html>"""
 
 
-def generate_table(*, schedule: schemas.ScheduleDetails, theme: ScheduleTheme):
+def generate_table(*, schedule: schemas.ScheduleDetails, theme: Theme):
     """
     HTML Table body period cross days
     """
@@ -162,7 +160,7 @@ def generate_table(*, schedule: schemas.ScheduleDetails, theme: ScheduleTheme):
             else:
                 row.append(f"<td></td>")
 
-        card_tags += f'<tr><td style="color: {theme.on_background_color}"><h2>{day.name}</h2></td>{"".join(row)}</tr>'
+        card_tags += f'<tr><td style="color: {theme.colors.on_background}"><h2>{day.name}</h2></td>{"".join(row)}</tr>'
         row.clear()
 
     return card_tags
@@ -189,43 +187,37 @@ def card_table(*, card: schemas.CardScheduleDetails, color: Color):
 
 
 def get_stage_schedule_image(
-    *, stage_id: UUID, name: str, is_dark: bool = False
+        *, schedule: schemas.ScheduleDetails, theme: Theme
 ) -> str | None:
     """
     Generate schedule image from stage id
+
+    :return: str schedule image url or null
     """
 
-    theme = DARK_THEME if is_dark else LIGHT_THEME
-    response = service.get_stage_schedule(stage_id)
-    if response.status_code == 200:
-        schedule = schemas.ScheduleDetails.parse_obj(response.json())
+    html = schedule_html_template(
+        schedule=schedule, theme=theme
+    )
 
-        data = schedule_html_template(
-            schedule=schedule, title=name, theme=theme, creators_name="@ConstructorTeam"
-        )
+    response = requests.post(
+        f"{settings().HTML_TO_IMAGE_SERVICE}/image",
+        data={"html": html},
+        stream=True,
+    )
 
-        response = requests.post(
-            f"{settings().HTML_TO_IMAGE_SERVICE}/image",
-            data={"html": data},
-            stream=True,
-        )
-        image_url = ImageUrl.parse_obj(response.json())
-        img_data = requests.get(image_url.url).content
+    image_url = ImageUrl.parse_obj(response.json())
+    img_data = requests.get(image_url.url).content
 
-        if settings().ENVIRONMENT == Environment.development:
-            print(image_url.url)
-            pathlib.Path("generated_data").mkdir(parents=True, exist_ok=True)
-            with open(f"generated_data/{name}table.png", "wb") as handler:
-                handler.write(img_data)
-                with open("generated_data/table.g.html", "w", encoding="utf-8") as file:
-                    file.write(data)
+    if settings().ENVIRONMENT == Environment.development:
+        print(image_url.url)
+        pathlib.Path("generated_data").mkdir(parents=True, exist_ok=True)
+        with open(f"generated_data/{schedule.stage.name}table.png", "wb") as handler:
+            handler.write(img_data)
+            with open("generated_data/table.g.html", "w", encoding="utf-8") as file:
+                file.write(html)
 
-        return image_url.url
+    return image_url.url
 
 
 if __name__ == "__main__":
-    get_stage_schedule_image(
-        stage_id=UUID("0ca31629-cea3-4568-8bd4-c9fb77f77114"), name="ثالث برمجيات صباحي"
-    )
-    # get_stage_schedule_image(stage_id=UUID("0ca31629-cea3-4568-8bd4-c9fb77f77114"), name="ثالث برمجيات صباحي",
-    #                          is_dark=True)
+    pass

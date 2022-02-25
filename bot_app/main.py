@@ -17,7 +17,7 @@ from aiogram.utils.executor import start_webhook
 from app import schemas
 from app.core.config import settings
 from bot_app import service
-from bot_app.schedule_html import get_stage_schedule_image
+from ui.view.schedule_html import get_stage_schedule_image
 from i18n import translate
 
 logging.basicConfig(level=logging.INFO)

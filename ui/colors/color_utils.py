@@ -1,8 +1,8 @@
-from random import randint, choice
+from random import choice
 from typing import Any
 
-from colors.primaries import *
-from colors.accent import *
+from ui.colors.accent import *
+from ui.colors.primaries import *
 
 primaries: list[MaterialColor] = [
     red,

@@ -1,7 +1,6 @@
 from pydantic.color import Color
 
-from colors.primaries import MaterialAccentColor
-
+from ui.colors.primaries import MaterialAccentColor
 
 _pink_accent_primary_value = '#FF4081'
 _purple_accent_primary_value = '#E040FB'
@@ -28,7 +27,7 @@ red_accent = MaterialAccentColor(
         400: Color('#FF1744'),
         700: Color('#D50000'),
     },
-);
+)
 
 pink_accent = MaterialAccentColor(
     primary_color=_pink_accent_primary_value,

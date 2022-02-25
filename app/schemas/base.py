@@ -5,15 +5,12 @@ from pydantic import constr
 from sqlmodel import SQLModel, Field
 
 from app.core.utils.regex import color_regex
-from bot_app.theme import random_dark, random_light
+from ui.colors.generate_color import random_light, random_dark
 
 
 class BaseSchema(SQLModel):
     id: UUID = Field(default_factory=uuid4, primary_key=True)
     created_at: datetime = Field(default_factory=datetime.utcnow)
-    # TODO: Add
-    # updated_at: datetime | None = Field(None)
-    # updated_by: UUID | None = Field(None)
 
 
 class CardContent(SQLModel):

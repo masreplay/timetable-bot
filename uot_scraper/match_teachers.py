@@ -4,8 +4,7 @@ from pydantic.color import Color
 from app.schemas.user import UserGender, UserScrapeFrom
 from asc_scrapper import schemas as asc_schemas
 from asc_scrapper.crud import AscCRUD
-from asc_scrapper.schemas import Teacher
-from colors.color_utils import random_primary, colored_text
+from ui.colors.color_utils import random_primary, colored_text
 from uot_scraper.db import get_teachers
 
 

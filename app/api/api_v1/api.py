@@ -1,6 +1,5 @@
 from app.api.api_v1.endpoints import (users, roles, periods, auth, job_titles, stages, departments, branches, buildings,
-                                      rooms, floors, subjects, lessons, cards, days, schedule, asc_version, theme,
-                                      models, test)
+                                      rooms, floors, subjects, lessons, cards, days, schedule, asc_version, models)
 from app.api.api_v1.tags import Tags
 from app.core.utils.utils import APIPermissionsRouter
 from app.open_api_to_files.main import get_models_zip
@@ -9,7 +8,6 @@ api_router = APIPermissionsRouter()
 
 api_router.include_router(schedule.router, prefix="/schedule", tags=[Tags.schedules])
 api_router.include_router(stages.router, prefix="/stages", tags=[Tags.stages])
-api_router.include_router(theme.router, prefix="/theme", tags=[Tags.theme])
 api_router.include_router(asc_version.router, prefix="/asc", tags=[Tags.asc])
 api_router.include_router(auth.router, prefix="/auth", tags=[Tags.auth])
 api_router.include_router(periods.router, prefix="/periods", tags=[Tags.periods])
@@ -25,7 +23,6 @@ api_router.include_router(cards.router, prefix="/cards", tags=[Tags.cards])
 api_router.include_permissions_router(days.router, prefix="/days", tags=[Tags.days])
 
 api_router.include_permissions_router(models.router, prefix="/models")
-api_router.include_router(test.router, prefix="/test")
 
 api_router.include_router(users.router, prefix="/users",
                           tags=[Tags.users, Tags.teachers, Tags.employees, Tags.students, Tags.others])
