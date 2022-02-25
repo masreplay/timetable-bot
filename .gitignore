@@ -5,6 +5,7 @@ asc_scrapper/generated_data
 **/__pycache__
 asc_scrapper/asc_data
 asc_schedule.json
+asc_schedule2.json
 /bot_app/generated_data/
 inject_table.py
 *.pyc
