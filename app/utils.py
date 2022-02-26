@@ -1,6 +1,5 @@
 from datetime import datetime, timedelta
 
-
 from jose import jwt
 
 from app.core.config import settings
@@ -23,5 +22,3 @@ def verify_password_reset_token(token: str) -> str | None:
         return decoded_token["email"]
     except jwt.JWTError:
         return None
-
-

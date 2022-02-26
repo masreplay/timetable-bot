@@ -7,6 +7,15 @@ from app.db.init_db import InitializeDatabaseWithASC
 from app.schemas.enums import CollageShifts
 
 
+def find_between(s: str, first: str, last: str):
+    try:
+        start = s.index(first) + len(first)
+        end = s.index(last, start)
+        return s[start:end]
+    except ValueError:
+        return ""
+
+
 class InitializeDatabaseWithASCV2(InitializeDatabaseWithASC):
     def init_classes(self):
         computer_science_department = crud.department.create(
@@ -36,7 +45,7 @@ class InitializeDatabaseWithASCV2(InitializeDatabaseWithASC):
             ),
             schemas.Branch(
                 id=uuid4(),
-                name="ذكاء اصطناعي",
+                name="ذكاء إصطناعي  ",
                 en_name="Artificial Intelligence",
                 abbr="AI",
                 vision=None,
@@ -107,12 +116,19 @@ class InitializeDatabaseWithASCV2(InitializeDatabaseWithASC):
                         )
                     ).id
                 else:
-                    name = re.sub(' +', ' ', class_.name)
+                    name: str = re.sub(' +', ' ', class_.name)
 
-                    name = name.split()
-                    level = levels[name[0]]
-                    shift = shifts[name[-1]]
-                    branch: schemas.Branch = list(filter(lambda b: b.name == branch, branches))[0]
+                    name_split: list[str] = name.split()
+                    level_name: str = name_split[0]
+                    shift_name: str = name_split[-1]
+
+                    level: int = levels[level_name]
+                    shift: str = shifts[shift_name]
+
+                    branch_name = find_between(name, level_name, shift_name).rstrip().lstrip()
+                    print(f"name, level_name, shift_name{branch_name}")
+
+                    branch: schemas.Branch = list(filter(lambda b: b.name == branch_name, branches))[0]
 
                     self.stages_ids[class_.id] = crud.stage.create(
                         db=self.db, obj_in=schemas.StageCreate(
