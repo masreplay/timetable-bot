@@ -1,10 +1,8 @@
-import io
 from typing import Any
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session
-from starlette.responses import StreamingResponse
 
 from app import schemas, crud
 from app.db.db import get_db
@@ -39,7 +37,7 @@ def read_schedule(
 
     stage = crud.stage.get(db=db, id=stage_id)
     if not stage:
-        raise HTTPException(status_code=204, detail="Stage not found")
+        raise HTTPException(status_code=404, detail="Stage not found")
     return crud.schedule.get(db=db, stage_id=stage_id, stage=stage)
 
 

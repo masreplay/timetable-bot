@@ -45,7 +45,7 @@ class InitializeDatabaseWithASCV2(InitializeDatabaseWithASC):
             ),
             schemas.Branch(
                 id=uuid4(),
-                name="ذكاء إصطناعي  ",
+                name="ذكاء إصطناعي",
                 en_name="Artificial Intelligence",
                 abbr="AI",
                 vision=None,
