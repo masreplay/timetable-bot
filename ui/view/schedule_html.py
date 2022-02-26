@@ -1,5 +1,4 @@
 import pathlib
-from uuid import UUID
 
 import requests
 from pydantic.color import Color
@@ -9,7 +8,6 @@ from app.core.config import settings
 from app.schemas.enums import Environment
 from asc_scrapper.test import ImageUrl
 from ui.color import Theme
-
 from ui.colors.color_utils import decide_text_color, cprint
 
 
@@ -121,7 +119,7 @@ def schedule_html_template(
             </thead>
             <tbody>{generate_table(schedule=schedule, theme=theme)}</tbody>
         </table>
-        <h3 style="color: {theme.colors.on_background}; text-align: right;">@ConstructorTeam</h3>
+        <h3 style="color: {theme.colors.on_background}; text-align: right;">{schedule.information.creators_telegram_id}</h3>
     </div>
 </body>
 

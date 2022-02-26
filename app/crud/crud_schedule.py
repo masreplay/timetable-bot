@@ -1,10 +1,13 @@
+from datetime import datetime
 from uuid import UUID
 
 from sqlmodel import select, Session
 
 from app import schemas, models
 from app.schemas.enums import UserType
+from app.schemas.rights import Rights
 from app.schemas.schedule import ScheduleDetails
+from app.schemas.schedule_information import get_schedule_information
 
 
 class CRUDSchedule:
@@ -12,6 +15,13 @@ class CRUDSchedule:
     def get(self, db: Session, stage_id: UUID, stage: schemas.Stage) -> ScheduleDetails:
         return ScheduleDetails(
             stage=stage,
+            information=get_schedule_information(
+                validate_from=datetime.now().date(),
+                validate_to=datetime.now().date(),
+                collage_name="TODO",
+                branch_name="TODO",
+            ),
+            rights=Rights(),
             cards=db.exec(
                 select(models.Card).where(
                     models.Card.lesson.has(

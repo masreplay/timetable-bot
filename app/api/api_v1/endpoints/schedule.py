@@ -48,7 +48,6 @@ def get_schedule_image_url(
         language: Language | None = Language.ar,
         directionality: Directionality | None = Directionality.ltr,
         db: Session = Depends(get_db),
-
 ) -> Any:
     """
     Download schedule Image.

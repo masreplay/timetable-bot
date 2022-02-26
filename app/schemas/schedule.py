@@ -1,4 +1,5 @@
-from typing import Any
+from datetime import date
+from typing import Any, Optional
 from typing import TypeVar, Generic
 from uuid import UUID
 
@@ -13,7 +14,9 @@ from app.schemas.floor import FloorBase
 from app.schemas.lesson import LessonBase
 from app.schemas.named_object import IdObject
 from app.schemas.period import PeriodBase
+from app.schemas.rights import Rights
 from app.schemas.room import RoomBase
+from app.schemas.schedule_information import ScheduleInformation
 from app.schemas.stage import Stage
 from app.schemas.subject import SubjectBase
 
@@ -92,6 +95,8 @@ class CardScheduleDetails(CardBase):
 
 class ScheduleDetails(BaseModel):
     stage: Stage
+    information: ScheduleInformation
+    rights: Optional[Rights]
     cards: list[CardScheduleDetails]
     days: list[DaySchedule]
     periods: list[PeriodSchedule]

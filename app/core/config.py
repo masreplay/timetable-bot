@@ -15,6 +15,12 @@ class Settings(BaseSettings):
     DATABASE_URL: str
     TRANSLATION_KEY: str
 
+    CREATORS_NAME: str 
+    CREATORS_TELEGRAM_ID: str
+    CREATORS_TELEGRAM_URL: str
+    BOT_TELEGRAM_ID: str
+    BOT_TELEGRAM_URL: str
+
     RESPONSIBLE_USERS: list[EmailStr] = []
 
     @validator("RESPONSIBLE_USERS", pre=True)
@@ -90,7 +96,6 @@ class Settings(BaseSettings):
             host = new.get('HEROKU_APP_HOST')
             new['FAST_API_HOST'] = f'{host}{version}'
             return new
-
 
     WEBHOOK_PATH: str
 
