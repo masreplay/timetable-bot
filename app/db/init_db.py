@@ -12,21 +12,20 @@ from app.schemas.permissions import default_permissions
 from asc_scrapper.crud import AscCRUD
 from uot_scraper.match_teachers import get_combine_teachers, MergedTeacher
 
-# asc ids to uuid
-building_ids: dict[str, UUID] = {}
-rooms_ids: dict[str, UUID] = {}
-periods_ids: dict[str, UUID] = {}
-lessons_ids: dict[str, UUID] = {}
-subjects_ids: dict[str, UUID] = {}
-stages_ids: dict[str, UUID] = {}
-teachers_ids: dict[str, UUID] = {}
-cards_ids: dict[str, UUID] = {}
-days_ids: dict[str, UUID] = {}
-
 
 class InitializeDatabaseWithASC:
     db: Session
     asc: AscCRUD
+
+    building_ids: dict[str, UUID] = {}
+    rooms_ids: dict[str, UUID] = {}
+    periods_ids: dict[str, UUID] = {}
+    lessons_ids: dict[str, UUID] = {}
+    subjects_ids: dict[str, UUID] = {}
+    stages_ids: dict[str, UUID] = {}
+    teachers_ids: dict[str, UUID] = {}
+    cards_ids: dict[str, UUID] = {}
+    days_ids: dict[str, UUID] = {}
 
     def __init__(self, db: Session, asc_crud: AscCRUD):
         self.db = db
@@ -36,7 +35,7 @@ class InitializeDatabaseWithASC:
         buildings = self.asc.get_all(asc_schemas.Building)
 
         for building in buildings:
-            building_ids[building.id] = crud.building.create(
+            self.building_ids[building.id] = crud.building.create(
                 db=self.db,
                 obj_in=schemas.BuildingCreate(
                     name=building.name,
@@ -47,7 +46,7 @@ class InitializeDatabaseWithASC:
     def init_subjects(self):
         subjects = self.asc.get_all(asc_schemas.Subject)
         for subject in subjects:
-            subjects_ids[subject.id] = crud.subject.create(
+            self.subjects_ids[subject.id] = crud.subject.create(
                 db=self.db,
                 obj_in=schemas.SubjectCreate(
                     name=subject.name,
@@ -145,7 +144,7 @@ class InitializeDatabaseWithASC:
         for class_ in classes:
             if class_.name not in ["", " "]:
                 if len(class_.name.split()) < 3:
-                    stages_ids[class_.id] = crud.stage.create(
+                    self.stages_ids[class_.id] = crud.stage.create(
                         db=self.db, obj_in=schemas.StageCreate(
                             name=class_.name,
                             shift=CollageShifts.morning,
@@ -156,12 +155,12 @@ class InitializeDatabaseWithASC:
                 else:
                     name = re.sub(' +', ' ', class_.name)
 
-                    level, branch, shift = name.split()
+                    level, branch, branch2, shift = name.split()
                     level = levels[level]
                     shift = shifts[shift]
                     branch: schemas.Branch = list(filter(lambda b: b.name == branch, branches))[0]
 
-                    stages_ids[class_.id] = crud.stage.create(
+                    self.stages_ids[class_.id] = crud.stage.create(
                         db=self.db, obj_in=schemas.StageCreate(
                             shift=shift,
                             level=level,
@@ -172,28 +171,28 @@ class InitializeDatabaseWithASC:
     def init_lessons(self):
         lessons = self.asc.get_all(asc_schemas.Lesson)
         for lesson in lessons:
-            print(f"rooms_ids {rooms_ids[lesson.classroom_id] if lesson.classroom_id else None}")
+            print(f"self.rooms_ids {self.rooms_ids[lesson.classroom_id] if lesson.classroom_id else None}")
             lesson_id = crud.lesson.create(
                 db=self.db,
                 obj_in=schemas.LessonCreate(
-                    room_id=rooms_ids[lesson.classroom_id] if lesson.classroom_id else None,
-                    subject_id=subjects_ids[lesson.subjectid],
-                    teacher_id=teachers_ids[lesson.teacherids[0]] if lesson.teacherids else None,
+                    room_id=self.rooms_ids[lesson.classroom_id] if lesson.classroom_id else None,
+                    subject_id=self.subjects_ids[lesson.subjectid],
+                    teacher_id=self.teachers_ids[lesson.teacherids[0]] if lesson.teacherids else None,
                 )
             ).id
-            lessons_ids[lesson.id] = lesson_id
+            self.lessons_ids[lesson.id] = lesson_id
             for stage_id in lesson.classids:
-                self.db.add(models.StageLesson(stage_id=stages_ids.get(stage_id), lesson_id=lesson_id))
+                self.db.add(models.StageLesson(stage_id=self.stages_ids.get(stage_id), lesson_id=lesson_id))
 
     def init_rooms(self):
         rooms = self.asc.get_all(asc_schemas.Classroom)
         for room in rooms:
-            rooms_ids[room.id] = crud.room.create(
+            self.rooms_ids[room.id] = crud.room.create(
                 db=self.db,
                 obj_in=schemas.RoomCreate(
                     name=room.name,
                     color=room.color,
-                    building_id=building_ids.get(room.buildingid),
+                    building_id=self.building_ids.get(room.buildingid),
                     type=enums.RoomType.classroom
                 )
             ).id
@@ -201,7 +200,7 @@ class InitializeDatabaseWithASC:
     def init_periods(self):
         periods = self.asc.get_all(asc_schemas.Period)
         for period in periods:
-            periods_ids[period.id] = crud.period.create(db=self.db, obj_in=schemas.PeriodCreate(
+            self.periods_ids[period.id] = crud.period.create(db=self.db, obj_in=schemas.PeriodCreate(
                 start_time=period.starttime,
                 end_time=period.endtime,
             )).id
@@ -210,7 +209,7 @@ class InitializeDatabaseWithASC:
         days: list[asc_schemas.Day] = self.asc.get_all(asc_schemas.Day)
         for day in days:
             if day.name not in ["Any day", "Every day"]:
-                days_ids[day.vals[0]] = crud.day.create(
+                self.days_ids[day.vals[0]] = crud.day.create(
                     db=self.db,
                     obj_in=schemas.DayCreate(
                         name=day.name
@@ -220,12 +219,12 @@ class InitializeDatabaseWithASC:
     def init_cards(self):
         cards: list[asc_schemas.Card] = self.asc.get_all(asc_schemas.Card)
         for card in cards:
-            cards_ids[card.id] = crud.card.create(
+            self.cards_ids[card.id] = crud.card.create(
                 db=self.db,
                 obj_in=schemas.CardCreate(
-                    period_id=periods_ids[card.period],
-                    day_id=days_ids[card.days],
-                    lesson_id=lessons_ids[card.lessonid],
+                    period_id=self.periods_ids[card.period],
+                    day_id=self.days_ids[card.days],
+                    lesson_id=self.lessons_ids[card.lessonid],
                 )
             ).id
 
@@ -321,7 +320,7 @@ class InitializeDatabaseWithASC:
                     gender=teacher.gender,
                 ))
                 crud.user.update_job_titles(self.db, id=user.id, job_titles=[teacher_jt])
-                teachers_ids[teacher.id] = user.id
+                self.teachers_ids[teacher.id] = user.id
 
             # Update Mr. osama job titles
             for teacher_email in settings().RESPONSIBLE_USERS:

@@ -7,7 +7,7 @@ from app import schemas, crud
 from app.api import deps
 from app.api.deps import UserRole
 from app.db.db import get_db
-from app.db.init_db import InitializeDatabaseWithASC
+from app.db.init_db_v2 import InitializeDatabaseWithASCV2
 from app.schemas import Message
 from asc_scrapper.crud import AscCRUD
 
@@ -22,7 +22,7 @@ async def seed_db(
 ):
     user, permissions = user_permissions
     json_data = json.load(upload_file.file)
-    asc_init = InitializeDatabaseWithASC(
+    asc_init = InitializeDatabaseWithASCV2(
         db=db,
         asc_crud=AscCRUD(data=json_data)
     )
