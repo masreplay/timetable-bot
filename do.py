@@ -1,4 +1,4 @@
-from app.core.config import settings, WEBHOOK_URL
+from app.core.config import settings
 
 
 def set_hook():
@@ -10,7 +10,7 @@ def set_hook():
         if not settings().heroku_app_name:
             print('You have forgot to set HEROKU_APP_NAME')
             quit()
-        await bot.set_webhook(WEBHOOK_URL)
+        await bot.set_webhook(settings().WEBHOOK_URL)
         print(await bot.get_webhook_info())
 
     asyncio.run(hook_set())
