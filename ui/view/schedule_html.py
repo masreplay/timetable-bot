@@ -114,11 +114,12 @@ def schedule_html_template(
                 </colgroup>
                 <tr>
                     <th></th>
-                    {"".join([f'<th style="color: {theme.colors.on_background}">{period.time}</th>' for period in schedule.periods])} 
+                    {"".join([f'<th بstyle="color: {theme.colors.on_background}">{period.time}</th>' for period in schedule.periods])} 
                 </tr>
             </thead>
             <tbody>{generate_table(schedule=schedule, theme=theme)}</tbody>
         </table>
+        <h3 style="color: {theme.colors.on_background}; text-align: left;">{schedule.information.get_validate_date}</h3>
         <h3 style="color: {theme.colors.on_background}; text-align: right;">{schedule.information.creators_telegram_id}</h3>
     </div>
 </body>
@@ -169,7 +170,7 @@ def card_table(*, card: schemas.CardScheduleDetails, color: Color):
     HTML Table's card
     """
     subject_name = card.lesson.subject.name
-    tags = [f"<p>{subject_name}</p>"]
+    tags = [f"<h3>{subject_name}</h3>"]
     if card.lesson.room:
         tags.append(f"<p><b>{card.lesson.room.name}</b></p>")
 

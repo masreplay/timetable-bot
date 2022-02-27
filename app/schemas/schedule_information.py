@@ -20,6 +20,10 @@ class ScheduleInformation(BaseModel):
     bot_telegram_id: str
     bot_telegram_url: str
 
+    @property
+    def get_validate_date(self) -> str:
+        return f"{self.validate_from} - {self.validate_to}"
+
 
 def get_schedule_information(
         validate_from: date,

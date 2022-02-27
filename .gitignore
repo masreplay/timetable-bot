@@ -1,11 +1,13 @@
 venv
 .env
+env.bat
 asc_scrapper/generated_data
 #**/[Tt]est*
 **/__pycache__
 asc_scrapper/asc_data
 asc_schedule.json
 asc_schedule2.json
+asc_schedule3.json
 /bot_app/generated_data/
 inject_table.py
 *.pyc
