@@ -57,7 +57,7 @@ class Settings(BaseSettings):
 
     # webserver settings
     WEBAPP_HOST = '0.0.0.0'
-    WEBAPP_PORT: int
+    PORT: int
 
     HEROKU_APP_NAME: str
 
