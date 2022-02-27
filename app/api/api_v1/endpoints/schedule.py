@@ -57,6 +57,7 @@ def get_schedule_image_url(
         raise HTTPException(status_code=404, detail="Stage not found")
 
     schedule = crud.schedule.get(db=db, stage_id=stage_id, stage=stage)
+
     url = get_stage_schedule_image(
         schedule=schedule,
         theme=Theme(

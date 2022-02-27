@@ -205,9 +205,9 @@ def get_stage_schedule_image(
     )
 
     image_url = ImageUrl.parse_obj(response.json())
-    img_data = requests.get(image_url.url).content
 
     if settings().ENVIRONMENT == Environment.development:
+        img_data = requests.get(image_url.url).content
         print(image_url.url)
         pathlib.Path("generated_data").mkdir(parents=True, exist_ok=True)
         with open(f"generated_data/{schedule.stage.name}table.png", "wb") as handler:
