@@ -1,9 +1,7 @@
-from app.core.config import settings
-
-
 def set_hook():
     import asyncio
     from aiogram import Bot
+    from app.core.config import settings
     bot = Bot(token=settings().telegram_bot_api_token)
 
     async def hook_set():
