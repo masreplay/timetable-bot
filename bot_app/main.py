@@ -252,6 +252,7 @@ def main():
         webhook_path=settings().WEBHOOK_PATH,
         skip_updates=True,
         on_startup=on_startup,
+        route_name="test",
         host=settings().WEBAPP_HOST
     )
 

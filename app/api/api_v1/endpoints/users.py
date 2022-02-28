@@ -7,7 +7,6 @@ from sqlmodel import Session
 from app import schemas, crud
 from app.db.db import get_db
 from app.schemas import enums
-from app.schemas.enums import StaffType
 from app.schemas.paging import LimitSkipParams, Paging
 
 router = APIRouter(
