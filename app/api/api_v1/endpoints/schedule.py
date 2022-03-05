@@ -44,7 +44,7 @@ def read_schedule(
 @router.get("/image", response_model=ImageUrl)
 def get_schedule_image_url(
         stage_id: UUID,
-        theme: ColorThemeType | None = ColorThemeType.light,
+        theme: ColorThemeType | None = ColorThemeType.dark,
         language: Language | None = Language.ar,
         directionality: Directionality | None = Directionality.ltr,
         db: Session = Depends(get_db),

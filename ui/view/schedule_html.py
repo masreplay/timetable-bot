@@ -114,13 +114,15 @@ def schedule_html_template(
                 </colgroup>
                 <tr>
                     <th></th>
-                    {"".join([f'<th بstyle="color: {theme.colors.on_background}">{period.time}</th>' for period in schedule.periods])} 
+                    {"".join([f'<th style="color: {theme.colors.on_background}">{period.time}</th>' for period in schedule.periods])} 
                 </tr>
             </thead>
             <tbody>{generate_table(schedule=schedule, theme=theme)}</tbody>
         </table>
-        <h3 style="color: {theme.colors.on_background}; text-align: left;">{schedule.information.get_validate_date}</h3>
-        <h3 style="color: {theme.colors.on_background}; text-align: right;">{schedule.information.creators_telegram_id}</h3>
+        <div style="display: flex; justify-content: space-between; flex-direction: row-reverse">
+            <h3 style="color: {theme.colors.on_background}">{schedule.information.get_validate_date}</h3>
+            <h3 style="color: {theme.colors.on_background}">Telegram: {schedule.information.bot_telegram_id}</h3>
+        </div>
     </div>
 </body>
 
@@ -148,7 +150,7 @@ def generate_table(*, schedule: schemas.ScheduleDetails, theme: Theme):
                 teacher: schemas.TeacherSchedule | None = card.lesson.teacher
 
                 color: Color = (
-                    Color(teacher.color_light) if teacher else Color("#ffffff")
+                    Color(teacher.color_dark) if teacher else Color("#ffffff")
                 )
                 font_color = decide_text_color(color)
                 row.append(
