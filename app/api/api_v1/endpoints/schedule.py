@@ -41,7 +41,6 @@ def read_schedule(
     if not stage_id and not teacher_id and not room_id and not lesson_id:
         return crud.schedule.default(db=db, stage_id=stage_id)
 
-
     stage = crud.stage.get(db=db, id=stage_id)
     return crud.schedule.get(db=db, stage_id=stage_id, teacher_id=teacher_id, stage=stage)
 
