@@ -1,7 +1,7 @@
 from typing import Any
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlmodel import Session
 
 from app import schemas, crud
@@ -28,17 +28,22 @@ def read_all_schedule(
 
 @router.get("/", response_model=ScheduleDetails)
 def read_schedule(
-        stage_id: UUID,
+        stage_id: UUID | None = Query(None),
+        teacher_id: UUID | None = None,
+        room_id: UUID | None = None,
+        lesson_id: UUID | None = None,
         db: Session = Depends(get_db),
 ) -> Any:
     """
     Retrieve Single schedule.
     """
 
+    if not stage_id and not teacher_id and not room_id and not lesson_id:
+        return crud.schedule.default(db=db, stage_id=stage_id)
+
     stage = crud.stage.get(db=db, id=stage_id)
-    if not stage:
-        raise HTTPException(status_code=404, detail="Stage not found")
-    return crud.schedule.get(db=db, stage_id=stage_id, stage=stage)
+    teacher = crud.stage.get(db=db, id=stage_id)
+    return crud.schedule.get(db=db, stage_id=stage_id, teacher_id=teacher_id, stage=stage)
 
 
 @router.get("/image", response_model=ImageUrl)

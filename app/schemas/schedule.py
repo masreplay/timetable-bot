@@ -94,7 +94,7 @@ class CardScheduleDetails(CardBase):
 
 
 class ScheduleDetails(BaseModel):
-    stage: Stage
+    stage: Stage | None
     information: ScheduleInformation
     rights: Optional[Rights]
     cards: list[CardScheduleDetails]
