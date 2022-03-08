@@ -42,7 +42,7 @@ def read_schedule(
         return crud.schedule.default(db=db, stage_id=stage_id)
 
     stage = crud.stage.get(db=db, id=stage_id)
-    return crud.schedule.get(db=db, stage_id=stage_id, teacher_id=teacher_id, stage=stage)
+    return crud.schedule.get(db=db, stage_id=stage_id, teacher_id=teacher_id,room_id=room_id, stage=stage)
 
 
 @router.get("/image", response_model=ImageUrl)

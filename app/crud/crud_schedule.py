@@ -13,7 +13,13 @@ from app.schemas.schedule_information import get_schedule_information
 
 class CRUDSchedule:
     # noinspection PyTypeChecker
-    def get(self, db: Session, stage_id: UUID, teacher_id: UUID, stage: schemas.Stage | None) -> ScheduleDetails:
+    def get(
+            self, db: Session,
+            stage_id: UUID | None,
+            teacher_id: UUID | None,
+            room_id: UUID | None,
+            stage: schemas.Stage | None,
+    ) -> ScheduleDetails:
         return ScheduleDetails(
             stage=stage,
             information=get_schedule_information(
@@ -38,7 +44,7 @@ class CRUDSchedule:
     def default(self, db: Session, stage_id: UUID) -> ScheduleDetails:
         stages: list = crud.stage.get_multi(db=db, skip=0, limit=1).results
         stage: schemas.Stage = next(iter(stages), None)
-        return self.get(db=db, stage_id=stage_id, stage=stage)
+        return self.get(db=db, stage_id=stage_id, teacher_id=None, room_id=None, stage=stage)
 
     def get_multi(self, db: Session) -> schemas.Schedule:
         return schemas.Schedule(
