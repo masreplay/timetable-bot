@@ -32,8 +32,7 @@ class CRUDSchedule:
             cards=db.exec(
                 select(models.Card).where(
                     models.Card.lesson.has(
-                        models.Lesson.stages.any(models.Stage.id == stage_id),
-                        # models.Lesson.teacher.id == teacher_id
+                        models.Lesson.stages.any(models.Stage.id == stage_id)
                     )
                 )
             ).all(),
@@ -41,10 +40,9 @@ class CRUDSchedule:
             periods=db.exec(select(models.Period)).all(),
         )
 
-    def default(self, db: Session, stage_id: UUID) -> ScheduleDetails:
-        stages: list = crud.stage.get_multi(db=db, skip=0, limit=1).results
-        stage: schemas.Stage = next(iter(stages), None)
-        return self.get(db=db, stage_id=stage_id, teacher_id=None, room_id=None, stage=stage)
+    def default(self, db: Session) -> ScheduleDetails:
+        stage: schemas.Stage = next(iter(crud.stage.get_multi(db=db, skip=0, limit=1).results), None)
+        return self.get(db=db, stage_id=stage.id, teacher_id=None, room_id=None, stage=stage)
 
     def get_multi(self, db: Session) -> schemas.Schedule:
         return schemas.Schedule(
