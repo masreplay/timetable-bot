@@ -108,7 +108,7 @@ async def process_stage(message: types.Message, state: FSMContext):
 
     schedule_web_link = f"{settings().FRONTEND_URL}schedule/stages/{selected_stage.id}"
     # And send message
-    await bot.send_photo(
+    a = await bot.send_photo(
         chat_id=message.chat.id,
         caption=md.text(
             md.text(f"جدول: {md.link(name, schedule_web_link)}"),
@@ -118,7 +118,7 @@ async def process_stage(message: types.Message, state: FSMContext):
         reply_markup=markup,
         parse_mode=ParseMode.MARKDOWN,
     )
-
+    await bot.pin_chat_message(chat_id=message.chat.id,message_id=a.message_id)
     # Finish conversation
 
     await state.finish()

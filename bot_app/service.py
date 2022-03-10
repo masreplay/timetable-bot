@@ -23,6 +23,7 @@ def get_schedule_image_url(stage_id: UUID) -> str:
         url=f"{settings().FAST_API_HOST}/schedule/image",
         params={"stage_id": stage_id}
     )
+    print("testablity"+ImageUrl.parse_obj(response.json()).url)
     return ImageUrl.parse_obj(response.json()).url
 
 
