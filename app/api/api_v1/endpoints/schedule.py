@@ -36,6 +36,7 @@ def read_schedule(
 ) -> Any:
     """
     Retrieve Single schedule.
+    q2
     """
 
     if not stage_id and not teacher_id and not room_id and not lesson_id:
@@ -48,7 +49,7 @@ def read_schedule(
 @router.get("/image", response_model=ImageUrl)
 def get_schedule_image_url(
         stage_id: UUID,
-        theme: ColorThemeType | None = ColorThemeType.dark,
+        theme: ColorThemeType | None = ColorThemeType.light,
         language: Language | None = Language.ar,
         directionality: Directionality | None = Directionality.ltr,
         db: Session = Depends(get_db),
@@ -60,7 +61,7 @@ def get_schedule_image_url(
     if not stage:
         raise HTTPException(status_code=404, detail="Stage not found")
 
-    schedule = crud.schedule.get(db=db, stage_id=stage_id, stage=stage, teacher_id=None,room_id=None)
+    schedule = crud.schedule.get(db=db, stage_id=stage_id, stage=stage, teacher_id=None, room_id=None)
 
     url = get_stage_schedule_image(
         schedule=schedule,

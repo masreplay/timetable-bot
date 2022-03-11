@@ -33,7 +33,6 @@ class CRUDSchedule:
                 select(models.Card).where(
                     models.Card.lesson.has(
                         models.Lesson.stages.any(models.Stage.id == stage_id),
-                        # models.Lesson.teacher.id == teacher_id
                     )
                 )
             ).all(),
