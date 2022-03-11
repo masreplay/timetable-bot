@@ -10,5 +10,6 @@ asc_schedule2.json
 asc_schedule3.json
 /bot_app/generated_data/
 inject_table.py
+/generated_data/**
 *.pyc
 test.bat
