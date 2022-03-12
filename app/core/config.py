@@ -56,7 +56,7 @@ class Settings(BaseSettings):
     FRONTEND_URL: str
 
     # webserver settings
-    WEBAPP_HOST = '0.0.0.0'
+    WEBAPP_HOST = 'localhost'
     PORT: int
 
     HEROKU_APP_NAME: str

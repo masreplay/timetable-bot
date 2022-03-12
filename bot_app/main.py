@@ -118,7 +118,7 @@ async def process_stage(message: types.Message, state: FSMContext):
         reply_markup=markup,
         parse_mode=ParseMode.MARKDOWN,
     )
-    await bot.pin_chat_message(chat_id=message.chat.id,message_id=a.message_id)
+    await bot.pin_chat_message(chat_id=message.chat.id, message_id=a.message_id)
     # Finish conversation
 
     await state.finish()
@@ -247,13 +247,13 @@ async def on_shutdown(_):
 
 def main():
     logging.basicConfig(level=logging.INFO)
+
     start_webhook(
         dispatcher=dp,
-        webhook_path=settings().WEBHOOK_PATH,
+        webhook_path="/path/to/api",
         skip_updates=True,
-        on_startup=on_startup,
-        route_name="test",
-        host=settings().WEBAPP_HOST
+        host="0.0.0.0",
+        port="3001",
     )
 
 

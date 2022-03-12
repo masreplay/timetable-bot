@@ -1,13 +1,23 @@
 version: '3.10'
 
 services:
-  csuot:
+  csuot-bot:
     build: .
-    command: uvicorn app.main:app --host 0.0.0.0 --port 80
+    command: ado start
+    ports:
+      - "3001:3001"
     volumes:
       - .:/code
+    depends_on:
+      - csuot
+
+  csuot:
+    build: .
+    command: uvicorn app.main:app --host 0.0.0.0 --port 5000
     ports:
-      - "80:80"
+      - "5000:5000"
+    volumes:
+      - .:/code
     depends_on:
       - migration
 
