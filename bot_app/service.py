@@ -5,11 +5,10 @@ import requests
 from app import schemas
 from app.core.config import settings
 
-# Fixme: implement error handler and handel base url as subclass from requests.Session
-from asc_scrapper.test import ImageUrl
-
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
+
+from app.schemas.schemas import ImageUrl
 
 session = requests.Session()
 session.trust_env = False
