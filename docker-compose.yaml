@@ -3,9 +3,12 @@ version: '3.10'
 services:
   csuot:
     build: .
-    command: bash -c "ado start; alembic upgrade head"
+    command: >
+      sh -c "ado start &&
+             uvicorn app.main:app --host 0.0.0.0 --port 80 &&x
+             alembic upgrade head"
     ports:
-      - "8080:8080"
+      - "80:80"
     volumes:
       - .:/code
     depends_on:
