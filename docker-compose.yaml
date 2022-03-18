@@ -5,7 +5,7 @@ services:
     build: .
     command: >
       sh -c "ado start &&
-             uvicorn app.main:app --host 0.0.0.0 --port 80 &&x
+             uvicorn app.main:app --host 0.0.0.0 --port 80 &&
              alembic upgrade head"
     ports:
       - "80:80"
