@@ -1,31 +1,13 @@
 version: '3.10'
 
 services:
-  csuot-bot:
-    build: .
-    command: ado start
-    volumes:
-      - .:/code
-    depends_on:
-      - csuot
-
   csuot:
     build: .
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8080
+    command: bash -c "ado start; alembic upgrade head"
     ports:
       - "8080:8080"
     volumes:
       - .:/code
-    depends_on:
-      - migration
-
-  migration:
-    build: .
-    command: alembic upgrade head
-    volumes:
-      - .:/code
-    links:
-      - db
     depends_on:
       - db
 
