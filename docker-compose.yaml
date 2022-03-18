@@ -1,26 +1,47 @@
 version: '3.10'
 
 services:
-  csuot:
-    build: .
-    command: sh -c "alembic upgrade head && ado start && uvicorn app.main:app --host 0.0.0.0 --port 80"
-    ports:
-      - "80:80"
-    volumes:
-      - .:/code
-    depends_on:
-      - db
-
   db:
     image: postgres:12.0-alpine
     volumes:
       - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
     environment:
       - POSTGRES_USER=username
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=csuot
-    expose:
-      - 5432
+
+  bot:
+    build: .
+    command: ado start
+    volumes:
+      - .:/code
+    ports:
+      - "8001:80"
+    depends_on:
+      - web
+
+  web:
+    build: .
+    command: bash -c "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=pgadmin4@pgadmin.org
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
 
 volumes:
   postgres_data:

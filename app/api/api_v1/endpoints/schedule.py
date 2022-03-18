@@ -7,7 +7,7 @@ from sqlmodel import Session
 from app import schemas, crud
 from app.db.db import get_db
 from app.schemas.schedule import ScheduleDetails
-from asc_scrapper.test import ImageUrl
+from app.schemas.schemas import ImageUrl
 from ui.color import Theme, ColorThemeType, colors_theme
 from ui.directionality import Directionality
 from ui.language import Language

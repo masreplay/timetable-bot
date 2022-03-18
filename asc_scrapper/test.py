@@ -11,10 +11,6 @@ from asc_scrapper.schedule_html import schedule_html
 IMAGE_URL = f"{settings().HTML_TO_IMAGE_SERVICE}/image"
 
 
-class ImageUrl(BaseModel):
-    url: str
-
-
 def get_schedule_image(name: str, test: bool = True) -> str | None:
     json_file = open("../asc_scrapper/asc_schedule.json", encoding="utf8")
     data = json.load(json_file)

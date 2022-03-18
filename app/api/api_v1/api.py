@@ -2,7 +2,6 @@ from app.api.api_v1.endpoints import (users, roles, periods, auth, job_titles, s
                                       rooms, floors, subjects, lessons, cards, days, schedule, asc_version, models)
 from app.api.api_v1.tags import Tags
 from app.core.utils.utils import APIPermissionsRouter
-from app.open_api_to_files.main import get_models_zip
 
 api_router = APIPermissionsRouter()
 
