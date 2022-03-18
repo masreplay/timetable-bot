@@ -17,7 +17,6 @@ from aiogram.utils.executor import start_webhook
 from app import schemas
 from app.core.config import settings
 from bot_app import service
-from ui.view.schedule_html import get_stage_schedule_image
 from i18n import translate
 
 logging.basicConfig(level=logging.INFO)
@@ -246,11 +245,25 @@ async def on_shutdown(_):
 
 
 def main():
+    main_pooling()
+
+
+def main_pooling():
+    from aiogram.utils import executor
+
+    logging.basicConfig(level=logging.DEBUG)
+    executor.start_polling(
+        dp,
+        skip_updates=False,
+    )
+
+
+def main_webhook():
     logging.basicConfig(level=logging.INFO)
 
     start_webhook(
         dispatcher=dp,
-        webhook_path="/path/to/api",
+        webhook_path="/",
         skip_updates=True,
         host="0.0.0.0",
         port="3001",
@@ -258,6 +271,4 @@ def main():
 
 
 if __name__ == '__main__':
-    from aiogram.utils import executor
-
-    executor.start_polling(dp, skip_updates=True)
+    main()
