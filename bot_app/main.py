@@ -61,8 +61,8 @@ async def cmd_schedule(message: types.Message):
     await Form.branch.set()
 
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, selective=True)
-    response = requests.get(url=f"{settings().FAST_API_HOST}/branches")
-    items: list[schemas.Branch] = schemas.Paging[schemas.Branch].parse_obj(response.json()).results
+    items: list[schemas.Branch] = service.get_branches()
+    print("testofalltest")
 
     for i in range(0, len(items), 2):
         try:
@@ -134,7 +134,7 @@ async def cmd_schedule(message: types.Message):
 async def cmd_about(message: types.Message):
     buttons = types.InlineKeyboardMarkup(resize_keyboard=True, selective=True)
 
-    buttons.add(types.InlineKeyboardButton('منو سوة هذا الاختراع؟', callback_data='credits'))
+    buttons.add(types.InlineKeyboardButton('منو سوة هذا البرنامج؟', callback_data='credits'))
     buttons.add(types.InlineKeyboardButton('شنو الطريقة السوينا بيها؟', callback_data='technologies'))
     buttons.add(types.InlineKeyboardButton('شلون يشتغل؟', callback_data='how_does_it_work'))
 
@@ -146,46 +146,8 @@ async def cmd_about(message: types.Message):
     )
 
 
-# @dp.callback_query_handler(lambda c: c.data == 'credits')
-# async def process_credits(call: CallbackQuery):
-#     await bot.answer_callback_query(call.id)
-#     await bot.edit_message_text(
-#         text=md.text(translate("ar", "credits")),
-#         message_id=call.message.message_id,
-#         chat_id=call.message.chat.id,
-#     )
-#
-#
-# @dp.callback_query_handler(lambda c: c.data == 'technologies')
-# async def process_technologies(call: CallbackQuery):
-#     await bot.answer_callback_query(call.id)
-#     await bot.edit_message_text(
-#         text=md.text(translate("ar", "technologies")),
-#         message_id=call.message.message_id,
-#         chat_id=call.message.chat.id,
-#         parse_mode=ParseMode.MARKDOWN,
-#     )
-#
-#
-# @dp.callback_query_handler(lambda c: c.data == 'how_does_it_work')
-# async def process_credits(call: CallbackQuery):
-#     await bot.answer_callback_query(call.id)
-#     await bot.edit_message_text(
-#         text=md.text(translate("ar", "how_does_it_work")),
-#         message_id=call.message.message_id,
-#         chat_id=call.message.chat.id,
-#         parse_mode=ParseMode.MARKDOWN,
-#     )
-#
-
 @dp.inline_handler()
 async def inline_echo(inline_query: InlineQuery):
-    # id affects both preview and content,
-    # so it has to be unique for each result
-    # (Unique identifier for this result, 1-64 Bytes)
-    # you can set your unique id's
-    # but for example i'll generate it based on text because I know, that
-    # only text will be passed in this example
     text = inline_query.query
     if "teacher" in text or "استاذ" in text:
         teachers: list[schemas.User] = requests.get(url=f"{settings().FAST_API_HOST}/user").json()
@@ -254,7 +216,7 @@ def main_pooling():
     logging.basicConfig(level=logging.DEBUG)
     executor.start_polling(
         dp,
-        skip_updates=False,
+        skip_updates=True,
     )
 
 
