@@ -85,17 +85,10 @@ class Settings(BaseSettings):
     @root_validator(pre=True)
     def assemble_fast_api_host(cls, values):
         new = dict(values)
-        environment: Environment = new.get('ENVIRONMENT')
         version = "/v1"
 
-        if environment == Environment.development:
-            new['FAST_API_HOST'] = f"http://127.0.0.1:8000{version}"
-            return new
-
-        else:
-            host = new.get('HEROKU_APP_HOST')
-            new['FAST_API_HOST'] = f'{host}{version}'
-            return new
+        new['FAST_API_HOST'] = f"http://localhost:8080{version}"
+        return new
 
     WEBHOOK_PATH: str
 
