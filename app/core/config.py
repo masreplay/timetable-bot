@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     DATABASE_URL: str
     TRANSLATION_KEY: str
 
-    CREATORS_NAME: str 
+    CREATORS_NAME: str
     CREATORS_TELEGRAM_ID: str
     CREATORS_TELEGRAM_URL: str
     BOT_TELEGRAM_ID: str
@@ -81,6 +81,14 @@ class Settings(BaseSettings):
         return new
 
     FAST_API_HOST: str
+
+    @root_validator(pre=True)
+    def assemble_fast_api_host(cls, values):
+        new = dict(values)
+        version = "/v1"
+
+        new['FAST_API_HOST'] = f"http://localhost:8080{version}"
+        return new
 
     WEBHOOK_PATH: str
 
