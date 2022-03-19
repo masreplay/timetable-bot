@@ -3,7 +3,7 @@ import uuid
 from enum import Enum
 
 import aiogram.utils.markdown as md
-import requests
+
 from aiogram import Bot, Dispatcher, types
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.contrib.middlewares.logging import LoggingMiddleware
@@ -150,7 +150,7 @@ async def cmd_about(message: types.Message):
 async def inline_echo(inline_query: InlineQuery):
     text = inline_query.query
     if "teacher" in text or "استاذ" in text:
-        teachers: list[schemas.User] = requests.get(url=f"{settings().FAST_API_HOST}/user").json()
+        teachers: list[schemas.User] = []
 
         items = []
         for teacher in teachers:
