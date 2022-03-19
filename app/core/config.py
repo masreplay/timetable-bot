@@ -55,13 +55,12 @@ class Settings(BaseSettings):
     TELEGRAM_BOT_API_TOKEN: str
     FRONTEND_URL: str
 
-    # webserver settings
-    WEBAPP_HOST = 'localhost'
-    PORT: int
-
-    HEROKU_APP_NAME: str
+    FAST_API_HOST: str
 
     ENVIRONMENT: Environment
+
+    WEBAPP_HOST = 'localhost'
+    HEROKU_APP_NAME: str
 
     @validator("ENVIRONMENT", pre=True)
     def cast_environment(cls, v: str | None) -> Environment:
@@ -78,16 +77,6 @@ class Settings(BaseSettings):
         new = dict(values)
         name = new.get('HEROKU_APP_NAME')
         new['HEROKU_APP_HOST'] = f'https://{name}.herokuapp.com'
-        return new
-
-    FAST_API_HOST: str
-
-    @root_validator(pre=True)
-    def assemble_fast_api_host(cls, values):
-        new = dict(values)
-        version = "/v1"
-
-        new['FAST_API_HOST'] = f"http://localhost:8080{version}"
         return new
 
     WEBHOOK_PATH: str
