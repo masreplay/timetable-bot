@@ -3,7 +3,6 @@ import uuid
 from enum import Enum
 
 import aiogram.utils.markdown as md
-
 from aiogram import Bot, Dispatcher, types
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.contrib.middlewares.logging import LoggingMiddleware
@@ -12,7 +11,8 @@ from aiogram.dispatcher.filters import Text
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.types import ParseMode, InlineQuery, InlineQueryResultArticle, InputTextMessageContent, \
     InlineQueryResultPhoto
-from aiogram.utils.executor import start_webhook
+from aiogram.utils import executor
+from aiogram.utils.callback_data import CallbackData
 
 from app import schemas
 from app.core.config import settings
@@ -21,7 +21,9 @@ from i18n import translate
 
 logging.basicConfig(level=logging.INFO)
 
-bot = Bot(token=settings().TELEGRAM_BOT_API_TOKEN)
+API_TOKEN = settings().TELEGRAM_BOT_API_TOKEN
+
+bot = Bot(token=API_TOKEN)
 
 storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
@@ -29,9 +31,16 @@ dp.middleware.setup(LoggingMiddleware())
 
 
 # States
-class Form(StatesGroup):
+class StageScheduleForm(StatesGroup):
     branch = State()
     stage = State()
+
+
+class Form(StatesGroup):
+    teachers = State()
+    classrooms = State()
+    classes = State()
+    lessons = State()
 
 
 class Commands(str, Enum):
@@ -41,6 +50,10 @@ class Commands(str, Enum):
     test = "test"
 
 
+# https://github.com/aiogram/aiogram/blob/dev-2.x/examples/callback_data_factory.py
+classrooms_cb = CallbackData('select', 'id', 'action')  # classrooms:<id>:<action>
+
+
 @dp.message_handler(commands=Commands.start)
 async def cmd_schedule(message: types.Message):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, selective=True)
@@ -48,7 +61,7 @@ async def cmd_schedule(message: types.Message):
     markup.add("مرحلة دراسية 🏬")
     markup.add("استاذ 🧑‍🏫")
     markup.add("مادة 📔")
-    await Form.next()
+    await StageScheduleForm.next()
     await message.reply("اختر نوع الجدول", reply_markup=markup)
 
 
@@ -58,69 +71,62 @@ async def cmd_schedule(message: types.Message):
     Get branch
     """
 
-    await Form.branch.set()
+    await StageScheduleForm.branch.set()
 
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, selective=True)
-    items: list[schemas.Branch] = service.get_branches()
-    print("testofalltest")
+    markup = types.InlineKeyboardMarkup(resize_keyboard=True, selective=True, row_width=2)
+    branches: list[schemas.Branch] = service.get_branches()
 
-    for i in range(0, len(items), 2):
-        try:
-            markup.add(items[i].name, items[i + 1].name)
-        except IndexError:
-            markup.add(items[i].name)
-
+    markup.add(*[
+        types.InlineKeyboardButton(text=branch.name,
+                                   callback_data=classrooms_cb.new(id=str(branch.id), action='branch'))
+        for branch in branches
+    ])
     await message.reply(f"اختر الفرع", reply_markup=markup)
 
 
-@dp.message_handler(state=Form.branch)
-async def process_branch(message: types.Message, state: FSMContext):
-    await state.update_data(branch=message.text)
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, selective=True)
+@dp.callback_query_handler(classrooms_cb.filter(action='branch'), state=StageScheduleForm.branch)
+async def process_branch(query: types.CallbackQuery, callback_data: dict[str, str]):
+    branch_id = callback_data['id']
+    markup = types.InlineKeyboardMarkup(resize_keyboard=True, selective=True, row_width=2)
 
-    stages = service.get_stages(message.text)
-    print(stages)
-    for stage in stages.results:
-        markup.add(stage.name)
+    stages: list[schemas.Stage] = service.get_stages(branch_id).results
+    markup.add(*[
+        types.InlineKeyboardButton(text=stage.name, callback_data=classrooms_cb.new(id=str(stage.id), action='stage'))
+        for stage in stages
+    ])
 
-    await message.reply(f"اختر الفرع", reply_markup=markup)
+    await query.message.reply(f"اختر المرحلة", reply_markup=markup)
 
-    await Form.next()
+    await StageScheduleForm.next()
 
 
-@dp.message_handler(state=Form.stage)
-async def process_stage(message: types.Message, state: FSMContext):
-    await state.update_data(stage=message.text)
+@dp.callback_query_handler(classrooms_cb.filter(action='stage'), state=StageScheduleForm.stage)
+async def process_stage(query: types.CallbackQuery, callback_data: dict[str, str]):
+    stage_id = callback_data['id']
 
-    await message.reply('...جاري تحويل الصورة', reply_markup=types.ReplyKeyboardRemove())
+    await query.message.reply('...جاري تحويل الصورة', reply_markup=types.ReplyKeyboardRemove())
     # Remove keyboard
-    markup = types.ReplyKeyboardRemove()
+    markup = types.InlineKeyboardMarkup()
 
-    async with state.proxy() as data:
-        branch_name = data["branch"]
-        stage_name = data["stage"]
-        selected_stage = service.get_stage_by_name(branch_name=branch_name, stage_name=stage_name)
-
-    name = f'{selected_stage.name}'
     try:
-        url = service.get_schedule_image_url(stage_id=selected_stage.id)
+        image_url = service.get_schedule_image_url(stage_id=stage_id)
+        name = f'{image_url.name}'
 
-        schedule_web_link = f"{settings().FRONTEND_URL}schedule/stages/{selected_stage.id}"
+        schedule_web_link = f"{settings().FRONTEND_URL}schedule/stages/{stage_id}"
         # And send message
         a = await bot.send_photo(
-            chat_id=message.chat.id,
+            chat_id=query.message.chat.id,
             caption=md.text(
                 md.text(f"جدول: {md.link(name, schedule_web_link)}"),
                 sep='\n',
             ),
-            photo=url,
+            photo=image_url.url,
             reply_markup=markup,
             parse_mode=ParseMode.MARKDOWN,
         )
-        await bot.pin_chat_message(chat_id=message.chat.id, message_id=a.message_id)
+        await bot.pin_chat_message(chat_id=query.message.chat.id, message_id=a.message_id)
     except Exception as e:
-        await bot.send_message(chat_id=message.chat.id, text="حدث خطأ")
-    await state.finish()
+        await bot.send_message(chat_id=query.message.chat.id, text="حدث خطأ")
 
 
 @dp.message_handler(commands='teachers')
@@ -207,28 +213,10 @@ async def on_shutdown(_):
 
 
 def main():
-    main_pooling()
-
-
-def main_pooling():
-    from aiogram.utils import executor
-
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(level=logging.INFO)
     executor.start_polling(
         dp,
         skip_updates=True,
-    )
-
-
-def main_webhook():
-    logging.basicConfig(level=logging.INFO)
-
-    start_webhook(
-        dispatcher=dp,
-        webhook_path="/",
-        skip_updates=True,
-        host="0.0.0.0",
-        port="3001",
     )
 
 

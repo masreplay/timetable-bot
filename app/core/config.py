@@ -58,6 +58,13 @@ class Settings(BaseSettings):
     FAST_API_HOST: str
 
     ENVIRONMENT: Environment
+    IS_DEVELOPMENT: bool = False
+
+    @root_validator(pre=True)
+    def is_development(cls, values):
+        new = dict(values)
+        new['IS_DEVELOPMENT'] = new['ENVIRONMENT'] == Environment.development
+        return new
 
     WEBAPP_HOST = 'localhost'
     HEROKU_APP_NAME: str

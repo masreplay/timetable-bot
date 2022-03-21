@@ -15,10 +15,10 @@ retry = Retry(connect=1, backoff_factor=0.5)
 adapter = HTTPAdapter(max_retries=retry)
 
 
-def get_stages(branch_name: str) -> schemas.Paging[schemas.Stage]:
+def get_stages(branch_id: str) -> schemas.Paging[schemas.Stage]:
     response = session.get(
         url=f"{settings().FAST_API_HOST}/stages",
-        params=dict(branch_name=branch_name),
+        params=dict(branch_id=branch_id),
     )
 
     return schemas.Paging[schemas.Stage].parse_obj(response.json())
@@ -29,12 +29,12 @@ def get_branches() -> list[schemas.Branch]:
     return schemas.Paging[schemas.Branch].parse_obj(response.json()).results
 
 
-def get_schedule_image_url(stage_id: UUID) -> str:
+def get_schedule_image_url(stage_id: str) -> ImageUrl:
     response = session.get(
         url=f"{settings().FAST_API_HOST}/schedule/image",
         params=dict(stage_id=stage_id)
     )
-    return ImageUrl.parse_obj(response.json()).url
+    return ImageUrl.parse_obj(response.json())
 
 
 def get_stage_by_name(*, branch_name: str, stage_name: str) -> schemas.Stage | None:

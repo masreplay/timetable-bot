@@ -72,7 +72,9 @@ def get_schedule_image_url(
         ),
     )
     if url:
-        print(f"urlurlurl {url}")
-        return ImageUrl(url=url)
+        return ImageUrl(
+            url=url,
+            name=schedule.stage.name
+        )
     else:
         raise HTTPException(status_code=400, detail="Error")
