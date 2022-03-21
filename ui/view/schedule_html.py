@@ -1,5 +1,6 @@
 import pathlib
 
+import requests
 from pydantic.color import Color
 
 from app import schemas
@@ -199,24 +200,24 @@ def get_stage_schedule_image(
         schedule=schedule, theme=theme
     )
 
-    # response = requests.post(
-    #     f"{settings().HTML_TO_IMAGE_SERVICE}/image",
-    #     data={"html": html},
-    #     stream=True,
-    # )
-    #
-    # image_url = ImageUrl.parse_obj(response.json())
-    # img_data = requests.get(image_url.url).content
-    #
-    # if settings().ENVIRONMENT == Environment.development:
-    #     print(image_url.url)
-    #     pathlib.Path("generated_data").mkdir(parents=True, exist_ok=True)
-    #     with open(f"generated_data/{schedule.stage.name}table.png", "wb") as handler:
-    #         handler.write(img_data)
-    #         with open("generated_data/table.g.html", "w", encoding="utf-8") as file:
-    #             file.write(html)
-    #
-    # return image_url.url
+    response = requests.post(
+        f"{settings().HTML_TO_IMAGE_SERVICE}/image",
+        data={"html": html},
+        stream=True,
+    )
+
+    image_url = ImageUrl.parse_obj(response.json())
+    img_data = requests.get(image_url.url).content
+
+    if settings().ENVIRONMENT == Environment.development:
+        print(image_url.url)
+        pathlib.Path("generated_data").mkdir(parents=True, exist_ok=True)
+        with open(f"generated_data/{schedule.stage.name}table.png", "wb") as handler:
+            handler.write(img_data)
+            with open("generated_data/table.g.html", "w", encoding="utf-8") as file:
+                file.write(html)
+
+    return image_url.url
 
     return None
 

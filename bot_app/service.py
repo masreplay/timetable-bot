@@ -1,4 +1,5 @@
 from uuid import UUID
+from collections.abc import Mapping
 
 import requests
 from requests.adapters import HTTPAdapter

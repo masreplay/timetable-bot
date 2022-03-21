@@ -102,24 +102,24 @@ async def process_stage(message: types.Message, state: FSMContext):
         selected_stage = service.get_stage_by_name(branch_name=branch_name, stage_name=stage_name)
 
     name = f'{selected_stage.name}'
+    try:
+        url = service.get_schedule_image_url(stage_id=selected_stage.id)
 
-    url = service.get_schedule_image_url(stage_id=selected_stage.id)
-
-    schedule_web_link = f"{settings().FRONTEND_URL}schedule/stages/{selected_stage.id}"
-    # And send message
-    a = await bot.send_photo(
-        chat_id=message.chat.id,
-        caption=md.text(
-            md.text(f"جدول: {md.link(name, schedule_web_link)}"),
-            sep='\n',
-        ),
-        photo=url,
-        reply_markup=markup,
-        parse_mode=ParseMode.MARKDOWN,
-    )
-    await bot.pin_chat_message(chat_id=message.chat.id, message_id=a.message_id)
-    # Finish conversation
-
+        schedule_web_link = f"{settings().FRONTEND_URL}schedule/stages/{selected_stage.id}"
+        # And send message
+        a = await bot.send_photo(
+            chat_id=message.chat.id,
+            caption=md.text(
+                md.text(f"جدول: {md.link(name, schedule_web_link)}"),
+                sep='\n',
+            ),
+            photo=url,
+            reply_markup=markup,
+            parse_mode=ParseMode.MARKDOWN,
+        )
+        await bot.pin_chat_message(chat_id=message.chat.id, message_id=a.message_id)
+    except Exception as e:
+        await bot.send_message(chat_id=message.chat.id, text="حدث خطأ")
     await state.finish()
 
 

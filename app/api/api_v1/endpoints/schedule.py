@@ -71,4 +71,8 @@ def get_schedule_image_url(
             language=language
         ),
     )
-    return ImageUrl(url=url)
+    if url:
+        print(f"urlurlurl {url}")
+        return ImageUrl(url=url)
+    else:
+        raise HTTPException(status_code=400, detail="Error")
