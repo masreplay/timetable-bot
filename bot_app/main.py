@@ -1,6 +1,5 @@
 import logging
 import uuid
-from enum import Enum
 
 import aiogram.utils.markdown as md
 from aiogram import Bot, Dispatcher, types
@@ -8,7 +7,6 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.contrib.middlewares.logging import LoggingMiddleware
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Text
-from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.types import ParseMode, InlineQuery, InlineQueryResultArticle, InputTextMessageContent, \
     InlineQueryResultPhoto
 from aiogram.utils import executor
@@ -17,6 +15,9 @@ from aiogram.utils.callback_data import CallbackData
 from app import schemas
 from app.core.config import settings
 from bot_app import service
+from bot_app.commands import Commands
+from bot_app.states import StageScheduleForm
+from bot_app.status import MESSAGE_500_INTERNAL_SERVER_ERROR
 from i18n import translate
 
 logging.basicConfig(level=logging.INFO)
@@ -29,27 +30,6 @@ storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
 dp.middleware.setup(LoggingMiddleware())
 
-
-# States
-class StageScheduleForm(StatesGroup):
-    branch = State()
-    stage = State()
-
-
-class Form(StatesGroup):
-    teachers = State()
-    classrooms = State()
-    classes = State()
-    lessons = State()
-
-
-class Commands(str, Enum):
-    start = "start"
-    schedule = "schedule"
-    cancel = "cancel"
-    test = "test"
-
-
 # https://github.com/aiogram/aiogram/blob/dev-2.x/examples/callback_data_factory.py
 classrooms_cb = CallbackData('select', 'id', 'action')  # classrooms:<id>:<action>
 
@@ -60,6 +40,7 @@ async def cmd_schedule(message: types.Message):
 
     markup.add("مرحلة دراسية 🏬")
     markup.add("استاذ 🧑‍🏫")
+    markup.add("مادة 📔")
     markup.add("مادة 📔")
     await StageScheduleForm.next()
     await message.reply("اختر نوع الجدول", reply_markup=markup)
@@ -104,29 +85,28 @@ async def process_branch(query: types.CallbackQuery, callback_data: dict[str, st
 async def process_stage(query: types.CallbackQuery, callback_data: dict[str, str], state: FSMContext):
     stage_id = callback_data['id']
 
-    await query.message.reply('...جاري تحويل الصورة', reply_markup=types.ReplyKeyboardRemove())
+    await query.message.reply('جاري ارسال الجدول...', reply_markup=types.ReplyKeyboardRemove())
     # Remove keyboard
     markup = types.InlineKeyboardMarkup()
 
     try:
-        image_url = service.get_schedule_image_url(stage_id=stage_id)
-        name = f'{image_url.name}'
+        name, url = service.get_schedule_image_url(stage_id=stage_id)
 
-        schedule_web_link = f"{settings().FRONTEND_URL}schedule/stages/{stage_id}"
-        # And send message
+        schedule_front_url = f"{settings().FRONTEND_URL}/schedule/stages/{stage_id}"
+
         message = await bot.send_photo(
             chat_id=query.message.chat.id,
             caption=md.text(
-                md.text(f"جدول: {md.link(name, schedule_web_link)}"),
+                md.text(f"جدول: {md.link(name, schedule_front_url)}"),
                 sep='\n',
             ),
-            photo=image_url.url,
+            photo=url,
             reply_markup=markup,
             parse_mode=ParseMode.MARKDOWN,
         )
         await bot.pin_chat_message(chat_id=query.message.chat.id, message_id=message.message_id)
-    except Exception as e:
-        await bot.send_message(chat_id=query.message.chat.id, text="حدث خطأ")
+    except:
+        await bot.send_message(chat_id=query.message.chat.id, text=MESSAGE_500_INTERNAL_SERVER_ERROR)
     finally:
         await state.finish()
 
@@ -186,7 +166,7 @@ async def inline_echo(inline_query: InlineQuery):
         await bot.answer_inline_query(inline_query.id, results=[item], cache_time=1)
 
 
-# You can use state '*' if you need to handle all states
+# You can use state '*' if you need to handle all states.py
 @dp.message_handler(state='*', commands='cancel')
 @dp.message_handler(Text(equals='cancel', ignore_case=True), state='*')
 async def cancel_handler(message: types.Message, state: FSMContext):
