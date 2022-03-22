@@ -101,7 +101,7 @@ async def process_branch(query: types.CallbackQuery, callback_data: dict[str, st
 
 
 @dp.callback_query_handler(classrooms_cb.filter(action='stage'), state=StageScheduleForm.stage)
-async def process_stage(query: types.CallbackQuery, callback_data: dict[str, str]):
+async def process_stage(query: types.CallbackQuery, callback_data: dict[str, str], state: FSMContext):
     stage_id = callback_data['id']
 
     await query.message.reply('...جاري تحويل الصورة', reply_markup=types.ReplyKeyboardRemove())
@@ -114,7 +114,7 @@ async def process_stage(query: types.CallbackQuery, callback_data: dict[str, str
 
         schedule_web_link = f"{settings().FRONTEND_URL}schedule/stages/{stage_id}"
         # And send message
-        a = await bot.send_photo(
+        message = await bot.send_photo(
             chat_id=query.message.chat.id,
             caption=md.text(
                 md.text(f"جدول: {md.link(name, schedule_web_link)}"),
@@ -124,9 +124,11 @@ async def process_stage(query: types.CallbackQuery, callback_data: dict[str, str
             reply_markup=markup,
             parse_mode=ParseMode.MARKDOWN,
         )
-        await bot.pin_chat_message(chat_id=query.message.chat.id, message_id=a.message_id)
+        await bot.pin_chat_message(chat_id=query.message.chat.id, message_id=message.message_id)
     except Exception as e:
         await bot.send_message(chat_id=query.message.chat.id, text="حدث خطأ")
+    finally:
+        await state.finish()
 
 
 @dp.message_handler(commands='teachers')
