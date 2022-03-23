@@ -1,3 +1,5 @@
+from enum import Enum
+
 from aiogram.dispatcher.filters.state import State, StatesGroup
 
 
@@ -6,8 +8,13 @@ class StageScheduleForm(StatesGroup):
     stage = State()
 
 
-class Form(StatesGroup):
-    teachers = State()
-    classrooms = State()
-    classes = State()
-    subjects = State()
+class ScheduleTypeForm(StatesGroup):
+    type = State()
+    choose = State()
+
+
+class ScheduleType(str, Enum):
+    stages = "stages"
+    teachers = "teachers"
+    classrooms = "classrooms"
+    subjects = "subjects"

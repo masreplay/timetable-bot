@@ -61,12 +61,13 @@ def test_token(current_user: schemas.User = Depends(deps.get_current_user)) -> A
     return current_user
 
 
-@router.get("/permissions/", response_model=schemas.Role)
+@router.get("/permissions/")
 def my_permissions(permissions=Depends(deps.users_permission_handler)) -> Any:
     """
     Return my permissions
     """
-    return permissions
+
+    return {"role": permissions[-1], "user": permissions[0]}
 
 
 @router.post("/reset-password/", response_model=schemas.Message)
