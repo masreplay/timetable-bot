@@ -20,3 +20,4 @@ class Tags(str, Enum):
     days = "days"
     users = "users"
     roles = "roles"
+    telegram = "telegram"

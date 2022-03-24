@@ -1,5 +1,6 @@
 from app.api.api_v1.endpoints import (users, roles, periods, auth, job_titles, stages, departments, branches, buildings,
-                                      rooms, floors, subjects, lessons, cards, days, schedule, asc_version)
+                                      rooms, floors, subjects, lessons, cards, days, schedule, asc_version,
+                                      telegram_user)
 from app.api.api_v1.tags import Tags
 from app.core.utils.utils import APIPermissionsRouter
 
@@ -22,3 +23,4 @@ api_router.include_router(cards.router, prefix="/cards", tags=[Tags.cards])
 api_router.include_permissions_router(days.router, prefix="/days", tags=[Tags.days])
 api_router.include_router(users.router, prefix="/users", tags=[Tags.users])
 api_router.include_permissions_router(roles.router, prefix="/roles", tags=[Tags.roles])
+api_router.include_router(telegram_user.router, prefix="/telegram", tags=[Tags.telegram])

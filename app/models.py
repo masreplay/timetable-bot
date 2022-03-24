@@ -20,7 +20,7 @@ from app.schemas.role import RoleBase
 from app.schemas.room import RoomBase
 from app.schemas.stage import StageBase
 from app.schemas.subject import SubjectBase
-from app.schemas.telegram import TelegramUserBase
+from app.schemas.telegram_user import TelegramUserBase
 from app.schemas.user import UserBase
 
 

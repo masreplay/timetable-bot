@@ -6,8 +6,7 @@ from pydantic import BaseModel, Field
 from sqlmodel import SQLModel
 
 
-class TelegramUserBase(SQLModel):
-    is_blocked: bool = Field(False)
+class TelegramUser(SQLModel):
     id: int
     is_bot: bool
     first_name: str
@@ -32,7 +31,7 @@ class TelegramEntity(BaseModel):
 
 class TelegramModel(BaseModel):
     message_id: int
-    from_: TelegramUserBase = Field(..., alias='from')
+    from_: TelegramUser = Field(..., alias='from')
     chat: TelegramChat
     date: int
     text: str

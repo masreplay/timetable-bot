@@ -3,6 +3,7 @@ from .crud_asc_version import CRUDAscVersion
 from .crud_branch import branch
 from .crud_schedule import CRUDSchedule
 from .crud_stage import stage
+from .crud_telegram_user import CRUDTelegramUser
 from .crud_user import user
 from .. import schemas, models
 from ..schemas import (RoleCreate, PeriodCreate, JobTitleCreate, DepartmentCreate, BuildingCreate,
@@ -36,3 +37,4 @@ lesson: LessonCRUD = LessonCRUD(models.Lesson, schemas.Lesson)
 day: DayCRUD = DayCRUD(models.Day, schemas.Day)
 schedule: CRUDSchedule = CRUDSchedule()
 asc_version: CRUDAscVersion = CRUDAscVersion()
+telegram_user: CRUDTelegramUser = CRUDTelegramUser(models.TelegramUser, schemas.TelegramUser)

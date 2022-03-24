@@ -6,8 +6,8 @@ from pydantic.generics import GenericModel
 
 
 class LimitSkipParams(BaseModel):
-    skip: int = Query(0, ge=0, description="Page skip")
-    limit: int = Query(50, ge=1, le=100, description="Page size limit")
+    skip: int = Query(0, ge=0)
+    limit: int = Query(50, ge=1, le=100)
 
 
 ModelType = TypeVar('ModelType')
