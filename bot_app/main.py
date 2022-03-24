@@ -5,7 +5,7 @@ from aiogram import Bot, Dispatcher
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.utils import executor
 
-from bot_app import middlewares
+from bot_app import middlewares, filters
 
 from app.core.config import settings
 
@@ -17,6 +17,7 @@ bot = Bot(token=API_TOKEN)
 storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
 middlewares.setup(dispatcher=dp)
+filters.setup(dispatcher=dp)
 
 from bot_app.handlers import *
 
