@@ -6,29 +6,14 @@ from aiogram.types import ParseMode
 from app import schemas
 from app.core.config import settings
 from bot_app import service
-from bot_app.handlers import schedule_type_cb, classrooms_cb
+from bot_app.handlers import classrooms_cb
 from bot_app.main import dp, bot
-from bot_app.states import ScheduleTypeForm, ScheduleType, StageScheduleForm
+from bot_app.states import ScheduleType, StageScheduleForm
 from bot_app.status import MESSAGE_500_INTERNAL_SERVER_ERROR
 
 
-@dp.callback_query_handler(schedule_type_cb.filter(type=ScheduleType.stages), state=ScheduleTypeForm.choose)
-async def process_stage_schedule(query: types.CallbackQuery, _):
-    await StageScheduleForm.branch.set()
-
-    markup = types.InlineKeyboardMarkup(resize_keyboard=True, selective=True, row_width=2)
-    branches: list[schemas.Branch] = service.get_branches()
-
-    markup.add(*[
-        types.InlineKeyboardButton(text=branch.name,
-                                   callback_data=classrooms_cb.new(id=str(branch.id), action='branch'))
-        for branch in branches
-    ])
-    await query.message.reply(f"اختر الفرع", reply_markup=markup)
-
-
-@dp.callback_query_handler(schedule_type_cb.filter(type=ScheduleType.stages), state=ScheduleTypeForm.choose)
-async def process_stage_schedule(query: types.CallbackQuery, callback_data: dict[str, str]):
+@dp.callback_query_handler(lambda c: c.data == ScheduleType.stages)
+async def process_stage_schedule(query: types.CallbackQuery):
     await StageScheduleForm.branch.set()
 
     markup = types.InlineKeyboardMarkup(resize_keyboard=True, selective=True, row_width=2)
@@ -67,17 +52,17 @@ async def process_stage(query: types.CallbackQuery, callback_data: dict[str, str
     markup = types.InlineKeyboardMarkup()
 
     try:
-        name, url = service.get_schedule_image_url(stage_id=stage_id)
+        image_url = service.get_schedule_image_url(stage_id=stage_id)
 
         schedule_front_url = f"{settings().FRONTEND_URL}/schedule/stages/{stage_id}"
 
         message = await bot.send_photo(
             chat_id=query.message.chat.id,
             caption=md.text(
-                md.text(f"جدول: {md.link(name, schedule_front_url)}"),
+                md.text(f"جدول: {md.link(image_url.name, schedule_front_url)}"),
                 sep='\n',
             ),
-            photo=url,
+            photo=image_url.url,
             reply_markup=markup,
             parse_mode=ParseMode.MARKDOWN,
         )

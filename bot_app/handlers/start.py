@@ -12,17 +12,14 @@ from aiogram.utils.callback_data import CallbackData
 from app import schemas
 from bot_app.commands import Commands
 from bot_app.main import dp, bot
-from bot_app.states import ScheduleTypeForm, ScheduleType
+from bot_app.states import ScheduleType
 from i18n import translate
 
 classrooms_cb = CallbackData('select', 'id', 'action')  # classrooms:<id>:<action>
-schedule_type_cb = CallbackData('schedule', 'type')  # schedule:<type>
 
 
 @dp.message_handler(commands=Commands.start)
 async def cmd_start(message: types.Message):
-    await ScheduleTypeForm.type.set()
-
     markup = types.InlineKeyboardMarkup(resize_keyboard=True, selective=True, row_width=2)
 
     schedule_type: dict[ScheduleType, str] = {
@@ -31,11 +28,10 @@ async def cmd_start(message: types.Message):
         ScheduleType.subjects: "مادة",
         ScheduleType.classrooms: "قاعة",
     }
-    for key, value in schedule_type.items():
-        markup.add(types.InlineKeyboardButton(text=value, callback_data=schedule_type_cb.new(type=key)))
+    for callback, name in schedule_type.items():
+        markup.add(types.InlineKeyboardButton(text=name, callback_data=callback))
 
     await message.reply("اختر نوع الجدول", reply_markup=markup)
-    await ScheduleTypeForm.next()
 
 
 @dp.message_handler(commands='about')
@@ -56,9 +52,7 @@ async def cmd_about(message: types.Message):
 
 @dp.callback_query_handler(lambda c: c.data == 'credits')
 async def process_credits(call: types.CallbackQuery):
-    await call.message.send_copy(
-        chat_id=call.message.chat.id,
-    )
+    await call.message.delete()
 
 
 @dp.inline_handler()
