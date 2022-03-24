@@ -6,7 +6,7 @@ from requests.packages.urllib3.util.retry import Retry
 
 from app import schemas
 from app.core.config import settings
-from app.schemas.schemas import ImageUrl
+from app.schemas.image_url import ImageUrl
 
 session = requests.Session()
 session.trust_env = False

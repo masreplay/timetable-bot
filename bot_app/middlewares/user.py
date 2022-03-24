@@ -7,6 +7,8 @@ class PermissionsMiddleware(BaseMiddleware):
     async def on_pre_process_message(self, message: types.Message, data: dict):
         print(message.from_user.id == 1)
         print(message.from_user)
+        print(message)
+        print(message.chat)
         if message.from_user.id in []:
             await message.reply(text="Hello, me!", reply=False)
 

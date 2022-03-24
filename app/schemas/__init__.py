@@ -13,9 +13,11 @@ from app.schemas.permissions import Permissions, PermissionGroup
 from app.schemas.role import Role, RoleCreate, RoleUpdate
 from app.schemas.room import Room, RoomCreate, RoomUpdate
 from app.schemas.schedule import Schedule, ScheduleSchemas, CardScheduleDetails, ScheduleDetails, TeacherSchedule, \
-    DaySchedule, PeriodSchedule, SubjectSchedule,LessonScheduleDetails
+    DaySchedule, PeriodSchedule, SubjectSchedule, LessonScheduleDetails
 from app.schemas.stage import Stage, StageCreate, StageUpdate
 from app.schemas.subject import Subject, SubjectCreate, SubjectUpdate
 from app.schemas.user import User, UserCreate, UserUpdate
 from app.schemas.user_token import Token, TokenPayload
 from app.schemas.paging import Paging
+from app.schemas.telegram_user import TelegramUser, TelegramUserCreate, TelegramUserUpdate
+

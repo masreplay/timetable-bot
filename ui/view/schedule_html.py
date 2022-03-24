@@ -6,7 +6,7 @@ from pydantic.color import Color
 from app import schemas
 from app.core.config import settings
 from app.schemas.enums import Environment
-from app.schemas.schemas import ImageUrl
+from app.schemas.image_url import ImageUrl
 from ui.color import Theme
 from ui.colors.color_utils import decide_text_color, cprint
 
