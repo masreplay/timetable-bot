@@ -2,4 +2,5 @@
 Import all submodules here
 """
 
-from .schedule_type import *
+from .start import *
+from .stages_schedule import *

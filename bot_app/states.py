@@ -8,11 +8,6 @@ class StageScheduleForm(StatesGroup):
     stage = State()
 
 
-class ScheduleTypeForm(StatesGroup):
-    type = State()
-    choose = State()
-
-
 class ScheduleType(str, Enum):
     stages = "stages"
     teachers = "teachers"
