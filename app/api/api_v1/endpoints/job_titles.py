@@ -13,12 +13,13 @@ router = APIRouter()
 @router.get("/", response_model=Paging[schemas.JobTitle])
 def read_job_titles(
         db: Session = Depends(get_db),
-        paging: LimitSkipParams = Depends(),
+        skip: int = Query(0, ge=0),
+        limit: int = Query(50, ge=1, le=100),
 ) -> Any:
     """
     Retrieve job_titles.
     """
-    job_titles = crud.job_title.get_multi(db, skip=paging.skip, limit=paging.limit)
+    job_titles = crud.job_title.get_multi(db, skip=skip, limit=limit)
     return job_titles
 
 

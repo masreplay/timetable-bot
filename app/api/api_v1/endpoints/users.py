@@ -17,15 +17,16 @@ router = APIRouter(
 @router.get("/", response_model=Paging[schemas.User])
 def read_users(
         db: Session = Depends(get_db),
-        paging: LimitSkipParams = Depends(),
+        skip: int = Query(0, ge=0),
+        limit: int = Query(50, ge=1, le=100),
         query: str | None = None,
         role_id: UUID | None = None,
-        user_type: list[enums.StaffType] = Query(None)
+        user_type: list[enums.StaffType] = Query(None),
 ) -> Any:
     """
     Retrieve users.
     """
-    users = crud.user.get_filter(db, skip=paging.skip, limit=paging.limit, query=query, role_id=role_id,
+    users = crud.user.get_filter(db, skip=skip, limit=limit, query=query, role_id=role_id,
                                  user_types=user_type)
     return users
 

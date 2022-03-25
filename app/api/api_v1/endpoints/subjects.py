@@ -13,13 +13,14 @@ router = APIRouter()
 @router.get("/", response_model=Paging[schemas.Subject])
 def read_subjects(
         db: Session = Depends(get_db),
-        paging: LimitSkipParams = Depends(),
+        skip: int = Query(0, ge=0),
+        limit: int = Query(50, ge=1, le=100),
 ) -> Any:
     """
     Retrieve subjects.
     """
     HTTPException(status_code=30)
-    subjects = crud.subject.get_multi(db, skip=paging.skip, limit=paging.limit)
+    subjects = crud.subject.get_multi(db, skip=skip, limit=limit)
     return subjects
 
 

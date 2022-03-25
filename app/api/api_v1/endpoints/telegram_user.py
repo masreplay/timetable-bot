@@ -14,13 +14,14 @@ router = APIRouter()
 @router.get("/", response_model=Paging[schemas.TelegramUser])
 def read_telegram_users(
         db: Session = Depends(get_db),
-        paging: LimitSkipParams = Depends(),
+        skip: int = Query(0, ge=0),
+        limit: int = Query(50, ge=1, le=100),
 ) -> Any:
     """
     Retrieve telegram_users.
     """
 
-    telegram_users = crud.telegram_user.get_multi(db, skip=paging.skip, limit=paging.limit)
+    telegram_users = crud.telegram_user.get_multi(db, skip=skip, limit=limit)
     return telegram_users
 
 

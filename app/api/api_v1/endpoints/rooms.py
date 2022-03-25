@@ -13,12 +13,13 @@ router = APIRouter()
 @router.get("/", response_model=Paging[schemas.Room])
 def read_rooms(
         db: Session = Depends(get_db),
-        paging: LimitSkipParams = Depends(),
+        skip: int = Query(0, ge=0),
+        limit: int = Query(50, ge=1, le=100),
 ) -> Any:
     """
     Retrieve rooms.
     """
-    rooms = crud.room.get_multi(db, skip=paging.skip, limit=paging.limit)
+    rooms = crud.room.get_multi(db, skip=skip, limit=limit)
     return rooms
 
 
