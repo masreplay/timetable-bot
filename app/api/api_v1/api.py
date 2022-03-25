@@ -4,6 +4,7 @@ from app.api.api_v1.endpoints import (users, roles, periods, auth, job_titles, s
 from app.api.api_v1.tags import Tags
 from app.core.utils.utils import APIPermissionsRouter
 from openapi_formatter.openapi import generate_formatted_openapi
+from fastapi.responses import FileResponse
 
 api_router = APIPermissionsRouter()
 
@@ -30,3 +31,4 @@ api_router.include_router(telegram_user.router, prefix="/telegram", tags=[Tags.t
 @api_router.get("/openapi2.json")
 def get_openapi():
     generate_formatted_openapi()
+    return FileResponse("openapi_formatter/openapi.json")

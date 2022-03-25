@@ -17,7 +17,7 @@ def download_file(url):
 def generate_formatted_openapi():
     download_file(f"{settings().FAST_API_HOST}/openapi.json")
 
-    file_path = Path("./openapi.json")
+    file_path = Path("openapi_formatter/openapi.json")
     openapi_content = json.loads(file_path.read_text())
 
     for path_data in openapi_content["paths"].values():
