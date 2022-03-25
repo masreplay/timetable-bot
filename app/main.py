@@ -1,5 +1,7 @@
+import json
 import logging
 import time
+from pathlib import Path
 
 from fastapi import FastAPI, Request
 from fastapi.logger import logger
@@ -8,8 +10,18 @@ from starlette.middleware.cors import CORSMiddleware
 from app.api.api_v1 import api
 from app.core.config import settings
 from app.db.initial_db import main as init_db_seed
+from fastapi.routing import APIRoute
+
+
+def custom_generate_unique_id(route: APIRoute):
+    try:
+        return f"{route.tags[0]}-{route.name}"
+    except:
+        return f"default-{route.name}"
+
 
 app = FastAPI(
+    generate_unique_id_function=custom_generate_unique_id,
     title="CS UOT App",
     version="1",
     openapi_url=f"{settings().API_V1_STR}/openapi.json",
@@ -39,7 +51,9 @@ async def add_process_time_header(request: Request, call_next):
 # CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[str(origin) for origin in settings().BACKEND_CORS_ORIGINS],
+    allow_origins=["*"]
+    if settings().is_development
+    else [str(origin) for origin in settings().BACKEND_CORS_ORIGINS],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
