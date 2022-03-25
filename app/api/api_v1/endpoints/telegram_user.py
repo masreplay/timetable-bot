@@ -50,7 +50,7 @@ def update_telegram_user(
     """
     telegram_user = crud.telegram_user.get(db=db, id=id)
     if not telegram_user:
-        raise HTTPException(status_code=404, detail="user not found")
+        raise HTTPException(status_code=404, detail="User not found")
     telegram_user = crud.telegram_user.update(db=db, db_obj=telegram_user, obj_in=telegram_user_in)
     return telegram_user
 
@@ -66,7 +66,7 @@ def read_telegram_user(
     """
     telegram_user = crud.telegram_user.get(db=db, id=id)
     if not telegram_user:
-        raise HTTPException(status_code=404, detail="user not found")
+        raise HTTPException(status_code=404, detail="User not found")
     return telegram_user
 
 
@@ -81,6 +81,6 @@ def delete_telegram_user(
     """
     telegram_user = crud.telegram_user.get(db=db, id=id)
     if not telegram_user:
-        raise HTTPException(status_code=404, detail="user not found")
+        raise HTTPException(status_code=404, detail="User not found")
     telegram_user = crud.telegram_user.remove(db=db, id=id)
     return telegram_user
