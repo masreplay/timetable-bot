@@ -7,7 +7,7 @@ from sqlmodel import Session
 from app import schemas, crud
 from app.db.db import get_db
 from app.schemas import enums
-from app.schemas.paging import LimitSkipParams, Paging
+from app.schemas.paging import Paging
 
 router = APIRouter(
     # dependencies=[Depends(deps.users_permission_handler)]
