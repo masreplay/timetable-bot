@@ -16,10 +16,10 @@ class TelegramUser(TelegramUserBase):
 
 
 # Properties to receive via API on creation
-class TelegramUserCreate(TelegramUser):
+class TelegramUserCreate(TelegramUserBase):
     pass
 
 
 # Properties to receive via API on update
-class TelegramUserUpdate(TelegramUser):
+class TelegramUserUpdate(TelegramUserBase):
     pass

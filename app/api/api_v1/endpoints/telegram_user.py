@@ -2,7 +2,6 @@ from typing import Any
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException
-from fastapi import Request
 from sqlmodel import Session
 
 from app import schemas, crud
@@ -50,7 +49,7 @@ def update_telegram_user(
     """
     telegram_user = crud.telegram_user.get(db=db, id=id)
     if not telegram_user:
-        raise HTTPException(status_code=404, detail="telegram_user not found")
+        raise HTTPException(status_code=404, detail="user not found")
     telegram_user = crud.telegram_user.update(db=db, db_obj=telegram_user, obj_in=telegram_user_in)
     return telegram_user
 
@@ -66,7 +65,7 @@ def read_telegram_user(
     """
     telegram_user = crud.telegram_user.get(db=db, id=id)
     if not telegram_user:
-        raise HTTPException(status_code=404, detail="telegram_user not found")
+        raise HTTPException(status_code=404, detail="user not found")
     return telegram_user
 
 
@@ -81,6 +80,6 @@ def delete_telegram_user(
     """
     telegram_user = crud.telegram_user.get(db=db, id=id)
     if not telegram_user:
-        raise HTTPException(status_code=404, detail="telegram_user not found")
+        raise HTTPException(status_code=404, detail="user not found")
     telegram_user = crud.telegram_user.remove(db=db, id=id)
     return telegram_user
