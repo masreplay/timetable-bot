@@ -19,6 +19,7 @@ from app.schemas.room import RoomBase
 from app.schemas.schedule_information import ScheduleInformation
 from app.schemas.stage import Stage
 from app.schemas.subject import SubjectBase
+from bot_app.states import ScheduleType
 
 ModelType = TypeVar('ModelType')
 
@@ -93,10 +94,14 @@ class CardScheduleDetails(CardBase):
         orm_mode = True
 
 
+class ScheduleDetailsItem(BaseModel):
+    id: UUID
+    name: str | None = None
+    type: ScheduleType
+
+
 class ScheduleDetails(BaseModel):
-    stage: Stage | None
-    information: ScheduleInformation
-    rights: Optional[Rights]
+    item: ScheduleDetailsItem
     cards: list[CardScheduleDetails]
     days: list[DaySchedule]
     periods: list[PeriodSchedule]

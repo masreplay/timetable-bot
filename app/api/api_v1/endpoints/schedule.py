@@ -1,13 +1,13 @@
 from typing import Any
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session
 
 from app import schemas, crud
 from app.db.db import get_db
-from app.schemas.schedule import ScheduleDetails
 from app.schemas.image_url import ImageUrl
+from app.schemas.schedule import ScheduleDetails
 from ui.color import Theme, ColorThemeType, colors_theme
 from ui.directionality import Directionality
 from ui.language import Language
@@ -28,10 +28,10 @@ def read_all_schedule(
 
 @router.get("/", response_model=ScheduleDetails)
 def read_schedule(
-        stage_id: UUID | None = Query(None),
+        stage_id: UUID | None = None,
         teacher_id: UUID | None = None,
-        room_id: UUID | None = None,
-        lesson_id: UUID | None = None,
+        classroom_id: UUID | None = None,
+        subject_id: UUID | None = None,
         db: Session = Depends(get_db),
 ) -> Any:
     """
@@ -39,11 +39,28 @@ def read_schedule(
     q2
     """
 
-    if not stage_id and not teacher_id and not room_id and not lesson_id:
-        return crud.schedule.default(db=db)
-
-    stage = crud.stage.get(db=db, id=stage_id)
-    return crud.schedule.get(db=db, stage_id=stage_id, teacher_id=teacher_id, room_id=room_id, stage=stage)
+    if stage_id:
+        stage = crud.stage.get(db=db, id=stage_id)
+        if not stage:
+            raise HTTPException(status_code=404, detail="Stage not found")
+        return crud.schedule.get_stage_schedule(db=db, stage=stage)
+    elif teacher_id:
+        teacher = crud.user.get(db=db, id=teacher_id)
+        if not teacher:
+            raise HTTPException(status_code=404, detail="Teacher not found")
+        return crud.schedule.get_teacher_schedule(db=db, teacher=teacher)
+    elif classroom_id:
+        classroom = crud.room.get(db=db, id=classroom_id)
+        if not classroom:
+            raise HTTPException(status_code=404, detail="Classroom not found")
+        return crud.schedule.get_classroom_schedule(db=db, classroom=classroom)
+    elif subject_id:
+        subject = crud.subject.get(db=db, id=subject_id)
+        if not subject:
+            raise HTTPException(status_code=404, detail="Subject not found")
+        return crud.schedule.get_subject_schedule(db=db, subject=subject)
+    else:
+        return crud.schedule.default_stage_schedule(db=db)
 
 
 @router.get("/image", response_model=ImageUrl)
@@ -61,7 +78,7 @@ def get_schedule_image_url(
     if not stage:
         raise HTTPException(status_code=404, detail="Stage not found")
 
-    schedule = crud.schedule.get(db=db, stage_id=stage_id, stage=stage, teacher_id=None, room_id=None)
+    schedule = crud.schedule.get_stage_schedule(db=db, stage_id=stage_id, stage=stage, teacher_id=None, room_id=None)
 
     url = get_stage_schedule_image(
         schedule=schedule,

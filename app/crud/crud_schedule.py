@@ -1,38 +1,32 @@
-from datetime import datetime
-from uuid import UUID
-
 from sqlmodel import select, Session
 
 from app import schemas, models, crud
-from app.schemas import Paging
 from app.schemas.enums import UserType
-from app.schemas.rights import Rights
-from app.schemas.schedule import ScheduleDetails
-from app.schemas.schedule_information import get_schedule_information
+from app.schemas.schedule import ScheduleDetails, ScheduleDetailsItem
+from bot_app.states import ScheduleType
 
 
 class CRUDSchedule:
     # noinspection PyTypeChecker
-    def get(
-            self, db: Session,
-            stage_id: UUID | None,
-            teacher_id: UUID | None,
-            room_id: UUID | None,
-            stage: schemas.Stage | None,
+    def default_stage_schedule(self, db: Session) -> ScheduleDetails:
+        stage: schemas.Stage = next(iter(crud.stage.get_multi(db=db, skip=0, limit=1).results), None)
+        return self.get_stage_schedule(db=db, stage=stage)
+
+    def get_stage_schedule(
+            self,
+            db: Session,
+            stage: schemas.Stage,
     ) -> ScheduleDetails:
         return ScheduleDetails(
-            stage=stage,
-            information=get_schedule_information(
-                validate_from=datetime.now().date(),
-                validate_to=datetime.now().date(),
-                collage_name="TODO",
-                branch_name="TODO",
+            item=ScheduleDetailsItem(
+                id=stage.id,
+                name=stage.name,
+                type=ScheduleType.stages,
             ),
-            rights=Rights(),
             cards=db.exec(
                 select(models.Card).where(
                     models.Card.lesson.has(
-                        models.Lesson.stages.any(models.Stage.id == stage_id),
+                        models.Lesson.stages.any(models.Stage.id == stage.id),
                     )
                 )
             ).all(),
@@ -40,9 +34,56 @@ class CRUDSchedule:
             periods=db.exec(select(models.Period)).all(),
         )
 
-    def default(self, db: Session) -> ScheduleDetails:
-        stage: schemas.Stage = next(iter(crud.stage.get_multi(db=db, skip=0, limit=1).results), None)
-        return self.get(db=db, stage_id=stage.id, teacher_id=None, room_id=None, stage=stage)
+    def get_teacher_schedule(
+            self,
+            db: Session,
+            teacher: schemas.User,
+    ) -> ScheduleDetails:
+        return ScheduleDetails(
+            item=ScheduleDetailsItem(
+                id=teacher.id,
+                name=teacher.name,
+                type=ScheduleType.teachers,
+            ),
+            cards=db.query(models.Card).join(models.Lesson).join(models.User)
+                .filter(models.User.id == teacher.id).all(),
+            days=db.exec(select(models.Day)).all(),
+            periods=db.exec(select(models.Period)).all(),
+        )
+
+    def get_classroom_schedule(
+            self,
+            db: Session,
+            classroom: schemas.Room,
+    ) -> ScheduleDetails:
+        return ScheduleDetails(
+            item=ScheduleDetailsItem(
+                id=classroom.id,
+                name=classroom.name,
+                type=ScheduleType.teachers,
+            ),
+            cards=db.query(models.Card).join(models.Lesson).join(models.Room)
+                .filter(models.Room.id == classroom.id).all(),
+            days=db.exec(select(models.Day)).all(),
+            periods=db.exec(select(models.Period)).all(),
+        )
+
+    def get_subject_schedule(
+            self,
+            db: Session,
+            subject: schemas.Subject,
+    ) -> ScheduleDetails:
+        return ScheduleDetails(
+            item=ScheduleDetailsItem(
+                id=subject.id,
+                name=subject.name,
+                type=ScheduleType.teachers,
+            ),
+            cards=db.query(models.Card).join(models.Lesson).join(models.Subject)
+                .filter(models.Subject.id == subject.id).all(),
+            days=db.exec(select(models.Day)).all(),
+            periods=db.exec(select(models.Period)).all(),
+        )
 
     def get_multi(self, db: Session) -> schemas.Schedule:
         return schemas.Schedule(

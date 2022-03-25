@@ -43,7 +43,7 @@ def extract_department_teachers(department_abbr: str):
     for link in soup.findAll('a'):
         href = link['href']
         if "/index.php/s/cv/" in href and "#itemCommentsAnchor" not in href:
-            teacher_url = _base_department_url + link.get("href")
+            teacher_url = _base_department_url + link.get_stage_schedule("href")
 
             # Prevent any duplication
             if teacher_url not in teachers_urls:
