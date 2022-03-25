@@ -28,6 +28,21 @@ def get_branches() -> list[schemas.Branch]:
     return schemas.Paging[schemas.Branch].parse_obj(response.json()).results
 
 
+def get_stages_schedules_images() -> list[ImageUrl]:
+    response = session.get(url=f"{settings().FAST_API_HOST}/branches")
+    return [
+        ImageUrl(name="برمجيات ثاني صباحي",
+                 url="https://masreplay.s3.amazonaws.com/fa3a06cf-6e00-41bb-a113-9c3ac47b89a4"),
+        ImageUrl(name="وسائط ثاني مسائي",
+                 url="https://masreplay.s3.amazonaws.com/fa3a06cf-6e00-41bb-a113-9c3ac47b89a4"),
+        ImageUrl(name="برمجيات ثالث صباحي",
+                 url="https://masreplay.s3.amazonaws.com/fa3a06cf-6e00-41bb-a113-9c3ac47b89a4"),
+        ImageUrl(name="امنية ثاني مسائي",
+                 url="https://masreplay.s3.amazonaws.com/fa3a06cf-6e00-41bb-a113-9c3ac47b89a4"),
+
+    ]
+
+
 def create_user(user: schemas.TelegramUserCreate):
     response = session.post(url=f"{settings().FAST_API_HOST}/telegram", json=user.dict())
     print(response.url)

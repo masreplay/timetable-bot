@@ -5,9 +5,8 @@ from aiogram import Bot, Dispatcher
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.utils import executor
 
-from bot_app import middlewares, filters
-
 from app.core.config import settings
+from bot_app import middlewares, filters
 
 logging.basicConfig(level=logging.INFO)
 

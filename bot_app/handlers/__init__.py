@@ -2,5 +2,7 @@
 Import all submodules here
 """
 
-from .start import *
+from .about import *
 from .stages_schedule import *
+from .start import *
+from .inline import *
