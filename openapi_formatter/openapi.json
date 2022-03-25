@@ -1,0 +1,6728 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "CS UOT App",
+    "version": "1"
+  },
+  "paths": {
+    "/v1/schedule/all": {
+      "get": {
+        "tags": [
+          "schedules"
+        ],
+        "summary": "Read All Schedule",
+        "description": "Retrieve all schedules data.",
+        "operationId": "chedule_v1_schedule_all_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScheduleSchemas"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/schedule/": {
+      "get": {
+        "tags": [
+          "schedules"
+        ],
+        "summary": "Read Schedule",
+        "description": "Retrieve Single schedule.\nq2",
+        "operationId": "ule_v1_schedule__get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Stage Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "stage_id",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Teacher Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "teacher_id",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Classroom Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "classroom_id",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Subject Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "subject_id",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScheduleDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/schedule/image": {
+      "get": {
+        "tags": [
+          "schedules"
+        ],
+        "summary": "Get Schedule Image Url",
+        "description": "Download schedule Image.",
+        "operationId": "le_image_url_v1_schedule_image_get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Stage Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "stage_id",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ColorThemeType"
+                }
+              ],
+              "default": "light"
+            },
+            "name": "theme",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/Language"
+                }
+              ],
+              "default": "ar"
+            },
+            "name": "language",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/Directionality"
+                }
+              ],
+              "default": "ltr"
+            },
+            "name": "directionality",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageUrl"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/stages/": {
+      "get": {
+        "tags": [
+          "stages"
+        ],
+        "summary": "Read Stages",
+        "description": "Retrieve stages.",
+        "operationId": "ages_v1_stages__get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Skip",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "skip",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "maximum": 100.0,
+              "minimum": 1.0,
+              "type": "integer",
+              "default": 50
+            },
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Branch Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "branch_id",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Branch Name",
+              "type": "string"
+            },
+            "name": "branch_name",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Paging_Stage_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "stages"
+        ],
+        "summary": "Create Stage",
+        "description": "Create new stage.",
+        "operationId": "stage_v1_stages__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StageCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Stage"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/stages/{id}": {
+      "get": {
+        "tags": [
+          "stages"
+        ],
+        "summary": "Read Stage",
+        "description": "Get stage by ID.",
+        "operationId": "age_v1_stages__id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Stage"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "stages"
+        ],
+        "summary": "Update Stage",
+        "description": "Update a stage.",
+        "operationId": "stage_v1_stages__id__put",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StageUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Stage"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "stages"
+        ],
+        "summary": "Delete Stage",
+        "description": "Delete a stage.",
+        "operationId": "stage_v1_stages__id__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Stage"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/asc/": {
+      "post": {
+        "tags": [
+          "asc"
+        ],
+        "summary": "Seed Db",
+        "operationId": "_db_v1_asc__post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_seed_db_v1_asc__post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/v1/auth/login/access-token": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Login Access Token",
+        "description": "OAuth2 compatible token login, get an access token for future requests",
+        "operationId": "_access_token_v1_auth_login_access_token_post",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_login_access_token_v1_auth_login_access_token_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Token"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/auth/signup": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Sign Up",
+        "description": "User create new account, get an access token for future requests",
+        "operationId": "up_v1_auth_signup_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/auth/login/test.json-token": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Test Token",
+        "description": "Test access token",
+        "operationId": "token_v1_auth_login_test_json_token_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/v1/auth/permissions/": {
+      "get": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "My Permissions",
+        "description": "Return my permissions",
+        "operationId": "rmissions_v1_auth_permissions__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/v1/auth/reset-password/": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Reset Password",
+        "description": "Reset password",
+        "operationId": "_password_v1_auth_reset_password__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_reset_password_v1_auth_reset_password__post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/periods/": {
+      "get": {
+        "tags": [
+          "periods"
+        ],
+        "summary": "Read Periods",
+        "description": "Retrieve periods.",
+        "operationId": "iods_v1_periods__get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Skip",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "skip",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "maximum": 100.0,
+              "minimum": 1.0,
+              "type": "integer",
+              "default": 50
+            },
+            "name": "limit",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Paging_Period_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "periods"
+        ],
+        "summary": "Create Period",
+        "description": "Create new period.",
+        "operationId": "eriod_v1_periods__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PeriodCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Period"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/v1/periods/{id}": {
+      "get": {
+        "tags": [
+          "periods"
+        ],
+        "summary": "Read Period",
+        "description": "Get period by ID.",
+        "operationId": "iod_v1_periods__id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Period"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "periods"
+        ],
+        "summary": "Update Period",
+        "description": "Update a period.",
+        "operationId": "eriod_v1_periods__id__put",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PeriodUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Period"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "periods"
+        ],
+        "summary": "Delete Period",
+        "description": "Delete a period.",
+        "operationId": "eriod_v1_periods__id__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Period"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/v1/job_titles/": {
+      "get": {
+        "tags": [
+          "job_titles"
+        ],
+        "summary": "Read Job Titles",
+        "description": "Retrieve job_titles.",
+        "operationId": "tles_v1_job_titles__get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Skip",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "skip",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "maximum": 100.0,
+              "minimum": 1.0,
+              "type": "integer",
+              "default": 50
+            },
+            "name": "limit",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Paging_JobTitle_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "job_titles"
+        ],
+        "summary": "Create Job Title",
+        "description": "Create new job_title.",
+        "operationId": "title_v1_job_titles__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JobTitleCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/app__schemas__job_title__JobTitle"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/job_titles/{id}": {
+      "get": {
+        "tags": [
+          "job_titles"
+        ],
+        "summary": "Read Job Title",
+        "description": "Get job_title by ID.",
+        "operationId": "tle_v1_job_titles__id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/app__schemas__job_title__JobTitle"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "job_titles"
+        ],
+        "summary": "Update Job Title",
+        "description": "Update a job_title.",
+        "operationId": "title_v1_job_titles__id__put",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JobTitleUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/app__schemas__job_title__JobTitle"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "job_titles"
+        ],
+        "summary": "Delete Job Title",
+        "description": "Delete a job_title.",
+        "operationId": "title_v1_job_titles__id__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/app__schemas__job_title__JobTitle"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/departments/": {
+      "get": {
+        "tags": [
+          "departments"
+        ],
+        "summary": "Read Departments",
+        "description": "Retrieve departments.",
+        "operationId": "ents_v1_departments__get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Skip",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "skip",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "maximum": 100.0,
+              "minimum": 1.0,
+              "type": "integer",
+              "default": 50
+            },
+            "name": "limit",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Paging_Department_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "departments"
+        ],
+        "summary": "Create Department",
+        "description": "Create new department.",
+        "operationId": "tment_v1_departments__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DepartmentCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Department"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/v1/departments/{id}": {
+      "get": {
+        "tags": [
+          "departments"
+        ],
+        "summary": "Read Department",
+        "description": "Get department by ID.",
+        "operationId": "ent_v1_departments__id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Department"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "departments"
+        ],
+        "summary": "Update Department",
+        "description": "Update a department.",
+        "operationId": "tment_v1_departments__id__put",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DepartmentUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Department"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "departments"
+        ],
+        "summary": "Delete Department",
+        "description": "Delete a department.",
+        "operationId": "tment_v1_departments__id__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Department"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/v1/branches/": {
+      "get": {
+        "tags": [
+          "branches"
+        ],
+        "summary": "Read Branches",
+        "description": "Retrieve branches.",
+        "operationId": "ches_v1_branches__get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Skip",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "skip",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "maximum": 100.0,
+              "minimum": 1.0,
+              "type": "integer",
+              "default": 50
+            },
+            "name": "limit",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Paging_Branch_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "branches"
+        ],
+        "summary": "Create Branch",
+        "description": "Create new branch.",
+        "operationId": "anch_v1_branches__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BranchCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/app__schemas__branch__Branch"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/v1/branches/{id}": {
+      "get": {
+        "tags": [
+          "branches"
+        ],
+        "summary": "Read Branch",
+        "description": "Get branch by ID.",
+        "operationId": "ch_v1_branches__id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/app__schemas__branch__Branch"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "branches"
+        ],
+        "summary": "Update Branch",
+        "description": "Update a branch.",
+        "operationId": "anch_v1_branches__id__put",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BranchUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/app__schemas__branch__Branch"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "branches"
+        ],
+        "summary": "Delete Branch",
+        "description": "Delete a branch.",
+        "operationId": "anch_v1_branches__id__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/app__schemas__branch__Branch"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/v1/buildings/": {
+      "get": {
+        "tags": [
+          "buildings"
+        ],
+        "summary": "Read Buildings",
+        "description": "Retrieve buildings.",
+        "operationId": "ings_v1_buildings__get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Skip",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "skip",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "maximum": 100.0,
+              "minimum": 1.0,
+              "type": "integer",
+              "default": 50
+            },
+            "name": "limit",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Paging_Building_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "buildings"
+        ],
+        "summary": "Create Building",
+        "description": "Create new building.",
+        "operationId": "lding_v1_buildings__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BuildingCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Building"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/buildings/{id}": {
+      "get": {
+        "tags": [
+          "buildings"
+        ],
+        "summary": "Read Building",
+        "description": "Get building by ID.",
+        "operationId": "ing_v1_buildings__id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Building"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "buildings"
+        ],
+        "summary": "Update Building",
+        "description": "Update a building.",
+        "operationId": "lding_v1_buildings__id__put",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BuildingUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Building"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "buildings"
+        ],
+        "summary": "Delete Building",
+        "description": "Delete a building.",
+        "operationId": "lding_v1_buildings__id__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Building"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/rooms/": {
+      "get": {
+        "tags": [
+          "rooms"
+        ],
+        "summary": "Read Rooms",
+        "description": "Retrieve rooms.",
+        "operationId": "ooms_v1_rooms__get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Skip",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "skip",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "maximum": 100.0,
+              "minimum": 1.0,
+              "type": "integer",
+              "default": 50
+            },
+            "name": "limit",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Paging_Room_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "rooms"
+        ],
+        "summary": "Create Room",
+        "description": "Create new room.",
+        "operationId": "_room_v1_rooms__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RoomCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Room"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/rooms/{id}": {
+      "get": {
+        "tags": [
+          "rooms"
+        ],
+        "summary": "Read Room",
+        "description": "Get room by ID.",
+        "operationId": "oom_v1_rooms__id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Room"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "rooms"
+        ],
+        "summary": "Update Room",
+        "description": "Update a room.",
+        "operationId": "_room_v1_rooms__id__put",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RoomUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Room"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "rooms"
+        ],
+        "summary": "Delete Room",
+        "description": "Delete a room.",
+        "operationId": "_room_v1_rooms__id__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Room"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/floors/": {
+      "get": {
+        "tags": [
+          "floors"
+        ],
+        "summary": "Read Floors",
+        "description": "Retrieve floors.",
+        "operationId": "oors_v1_floors__get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Skip",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "skip",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "maximum": 100.0,
+              "minimum": 1.0,
+              "type": "integer",
+              "default": 50
+            },
+            "name": "limit",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Paging_Floor_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "floors"
+        ],
+        "summary": "Create Floor",
+        "description": "Create new floor.",
+        "operationId": "floor_v1_floors__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FloorCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Floor"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/floors/{id}": {
+      "get": {
+        "tags": [
+          "floors"
+        ],
+        "summary": "Read Floor",
+        "description": "Get floor by ID.",
+        "operationId": "oor_v1_floors__id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Floor"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "floors"
+        ],
+        "summary": "Update Floor",
+        "description": "Update a floor.",
+        "operationId": "floor_v1_floors__id__put",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FloorUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Floor"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "floors"
+        ],
+        "summary": "Delete Floor",
+        "description": "Delete a floor.",
+        "operationId": "floor_v1_floors__id__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Floor"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/subjects/": {
+      "get": {
+        "tags": [
+          "subjects"
+        ],
+        "summary": "Read Subjects",
+        "description": "Retrieve subjects.",
+        "operationId": "ects_v1_subjects__get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Skip",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "skip",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "maximum": 100.0,
+              "minimum": 1.0,
+              "type": "integer",
+              "default": 50
+            },
+            "name": "limit",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Paging_Subject_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "subjects"
+        ],
+        "summary": "Create Subject",
+        "description": "Create new subject.",
+        "operationId": "bject_v1_subjects__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Subject"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/subjects/{id}": {
+      "get": {
+        "tags": [
+          "subjects"
+        ],
+        "summary": "Read Subject",
+        "description": "Get subject by ID.",
+        "operationId": "ect_v1_subjects__id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Subject"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "subjects"
+        ],
+        "summary": "Update Subject",
+        "description": "Update a subject.",
+        "operationId": "bject_v1_subjects__id__put",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Subject"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "subjects"
+        ],
+        "summary": "Delete Subject",
+        "description": "Delete a subject.",
+        "operationId": "bject_v1_subjects__id__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Subject"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/lessons/": {
+      "get": {
+        "tags": [
+          "lessons"
+        ],
+        "summary": "Read Lessons",
+        "description": "Retrieve lessons.",
+        "operationId": "sons_v1_lessons__get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Skip",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "skip",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "maximum": 100.0,
+              "minimum": 1.0,
+              "type": "integer",
+              "default": 50
+            },
+            "name": "limit",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Paging_Lesson_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "lessons"
+        ],
+        "summary": "Create Lesson",
+        "description": "Create new lesson.",
+        "operationId": "esson_v1_lessons__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LessonCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Lesson"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/lessons/{id}": {
+      "get": {
+        "tags": [
+          "lessons"
+        ],
+        "summary": "Read Lesson",
+        "description": "Get lesson by ID.",
+        "operationId": "son_v1_lessons__id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Lesson"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "lessons"
+        ],
+        "summary": "Update Lesson",
+        "description": "Update a lesson.",
+        "operationId": "esson_v1_lessons__id__put",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LessonUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Lesson"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "lessons"
+        ],
+        "summary": "Delete Lesson",
+        "description": "Delete a lesson.",
+        "operationId": "esson_v1_lessons__id__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Lesson"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/cards/": {
+      "get": {
+        "tags": [
+          "cards"
+        ],
+        "summary": "Read Cards",
+        "description": "Retrieve cards.",
+        "operationId": "ards_v1_cards__get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Skip",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "skip",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "maximum": 100.0,
+              "minimum": 1.0,
+              "type": "integer",
+              "default": 50
+            },
+            "name": "limit",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Paging_Card_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "cards"
+        ],
+        "summary": "Create Card",
+        "description": "Create new card.",
+        "operationId": "_card_v1_cards__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CardCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Card"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/cards/{id}": {
+      "get": {
+        "tags": [
+          "cards"
+        ],
+        "summary": "Read Card",
+        "description": "Get card by ID.",
+        "operationId": "ard_v1_cards__id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Card"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "cards"
+        ],
+        "summary": "Update Card",
+        "description": "Update a card.",
+        "operationId": "_card_v1_cards__id__put",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CardUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Card"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "cards"
+        ],
+        "summary": "Delete Card",
+        "description": "Delete a card.",
+        "operationId": "_card_v1_cards__id__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Card"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/days/": {
+      "get": {
+        "tags": [
+          "days"
+        ],
+        "summary": "Read Days",
+        "description": "Retrieve days.",
+        "operationId": "days_v1_days__get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Skip",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "skip",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "maximum": 100.0,
+              "minimum": 1.0,
+              "type": "integer",
+              "default": 50
+            },
+            "name": "limit",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Paging_Day_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "days"
+        ],
+        "summary": "Create Day",
+        "description": "Create new day.",
+        "operationId": "e_day_v1_days__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DayCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Day"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/v1/days/{id}": {
+      "get": {
+        "tags": [
+          "days"
+        ],
+        "summary": "Read Day",
+        "description": "Get day by ID.",
+        "operationId": "day_v1_days__id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Day"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "days"
+        ],
+        "summary": "Update Day",
+        "description": "Update a day.",
+        "operationId": "e_day_v1_days__id__put",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DayUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Day"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "days"
+        ],
+        "summary": "Delete Day",
+        "description": "Delete a day.",
+        "operationId": "e_day_v1_days__id__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Day"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/v1/users/": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Read Users",
+        "description": "Retrieve users.",
+        "operationId": "sers_v1_users__get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Skip",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "skip",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "maximum": 100.0,
+              "minimum": 1.0,
+              "type": "integer",
+              "default": 50
+            },
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Query",
+              "type": "string"
+            },
+            "name": "query",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Role Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "role_id",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/StaffType"
+              }
+            },
+            "name": "user_type",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Paging_User_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Create User",
+        "description": "Create new user.",
+        "operationId": "_user_v1_users__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/users/{id}": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Read User",
+        "description": "Get user by ID.",
+        "operationId": "ser_v1_users__id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Update User",
+        "description": "Update a user.",
+        "operationId": "_user_v1_users__id__put",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Delete User",
+        "description": "Delete a user.",
+        "operationId": "_user_v1_users__id__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/roles/": {
+      "get": {
+        "tags": [
+          "roles"
+        ],
+        "summary": "Read Roles",
+        "description": "Retrieve roles.",
+        "operationId": "oles_v1_roles__get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Skip",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "skip",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "maximum": 100.0,
+              "minimum": 1.0,
+              "type": "integer",
+              "default": 50
+            },
+            "name": "limit",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Paging_Role_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "roles"
+        ],
+        "summary": "Create Role",
+        "description": "Create new role.",
+        "operationId": "_role_v1_roles__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RoleCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Role"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/v1/roles/{id}": {
+      "get": {
+        "tags": [
+          "roles"
+        ],
+        "summary": "Read Role",
+        "description": "Get role by ID.",
+        "operationId": "ole_v1_roles__id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Role"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "roles"
+        ],
+        "summary": "Update Role",
+        "description": "Update a role.",
+        "operationId": "_role_v1_roles__id__put",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RoleUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Role"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "roles"
+        ],
+        "summary": "Delete Role",
+        "description": "Delete a role.",
+        "operationId": "_role_v1_roles__id__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Role"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/v1/telegram/": {
+      "get": {
+        "tags": [
+          "telegram"
+        ],
+        "summary": "Read Telegram Users",
+        "description": "Retrieve telegram_users.",
+        "operationId": "gram_users_v1_telegram__get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Skip",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "skip",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "maximum": 100.0,
+              "minimum": 1.0,
+              "type": "integer",
+              "default": 50
+            },
+            "name": "limit",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Paging_TelegramUser_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "telegram"
+        ],
+        "summary": "Create Telegram User",
+        "description": "Create new telegram_user.",
+        "operationId": "legram_user_v1_telegram__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TelegramUserCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TelegramUser"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/telegram/{id}": {
+      "get": {
+        "tags": [
+          "telegram"
+        ],
+        "summary": "Read Telegram User",
+        "description": "Get telegram_user by ID.",
+        "operationId": "gram_user_v1_telegram__id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TelegramUser"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "telegram"
+        ],
+        "summary": "Update Telegram User",
+        "description": "Update a telegram_user.",
+        "operationId": "legram_user_v1_telegram__id__put",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TelegramUserUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TelegramUser"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "telegram"
+        ],
+        "summary": "Delete Telegram User",
+        "description": "Delete a telegram_user.",
+        "operationId": "legram_user_v1_telegram__id__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TelegramUser"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Body_login_access_token_v1_auth_login_access_token_post": {
+        "title": "Body_login_access_token_v1_auth_login_access_token_post",
+        "required": [
+          "username",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "grant_type": {
+            "title": "Grant Type",
+            "pattern": "password",
+            "type": "string"
+          },
+          "username": {
+            "title": "Username",
+            "type": "string"
+          },
+          "password": {
+            "title": "Password",
+            "type": "string"
+          },
+          "scope": {
+            "title": "Scope",
+            "type": "string",
+            "default": ""
+          },
+          "client_id": {
+            "title": "Client Id",
+            "type": "string"
+          },
+          "client_secret": {
+            "title": "Client Secret",
+            "type": "string"
+          }
+        }
+      },
+      "Body_reset_password_v1_auth_reset_password__post": {
+        "title": "Body_reset_password_v1_auth_reset_password__post",
+        "required": [
+          "token",
+          "new_password"
+        ],
+        "type": "object",
+        "properties": {
+          "token": {
+            "title": "Token",
+            "type": "string"
+          },
+          "new_password": {
+            "title": "New Password",
+            "type": "string"
+          }
+        }
+      },
+      "Body_seed_db_v1_asc__post": {
+        "title": "Body_seed_db_v1_asc__post",
+        "required": [
+          "upload_file"
+        ],
+        "type": "object",
+        "properties": {
+          "upload_file": {
+            "title": "Upload File",
+            "type": "string",
+            "format": "binary"
+          }
+        }
+      },
+      "BranchCreate": {
+        "title": "BranchCreate",
+        "required": [
+          "name",
+          "en_name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "en_name": {
+            "title": "En Name",
+            "type": "string"
+          },
+          "abbr": {
+            "title": "Abbr",
+            "type": "string"
+          },
+          "vision": {
+            "title": "Vision",
+            "type": "string"
+          },
+          "department_id": {
+            "title": "Department Id",
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "BranchUpdate": {
+        "title": "BranchUpdate",
+        "required": [
+          "name",
+          "en_name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "en_name": {
+            "title": "En Name",
+            "type": "string"
+          },
+          "abbr": {
+            "title": "Abbr",
+            "type": "string"
+          },
+          "vision": {
+            "title": "Vision",
+            "type": "string"
+          },
+          "department_id": {
+            "title": "Department Id",
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "Building": {
+        "title": "Building",
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "lng": {
+            "title": "Lng",
+            "type": "number"
+          },
+          "lat": {
+            "title": "Lat",
+            "type": "number"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "color": {
+            "title": "Color",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+            "type": "string"
+          },
+          "color_light": {
+            "title": "Color Light",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+            "type": "string"
+          },
+          "color_dark": {
+            "title": "Color Dark",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "BuildingCreate": {
+        "title": "BuildingCreate",
+        "type": "object",
+        "properties": {
+          "lng": {
+            "title": "Lng",
+            "type": "number"
+          },
+          "lat": {
+            "title": "Lat",
+            "type": "number"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "color": {
+            "title": "Color",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+            "type": "string"
+          },
+          "color_light": {
+            "title": "Color Light",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+            "type": "string"
+          },
+          "color_dark": {
+            "title": "Color Dark",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+            "type": "string"
+          }
+        }
+      },
+      "BuildingSchedule": {
+        "title": "BuildingSchedule",
+        "required": [
+          "id",
+          "name",
+          "color"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "color": {
+            "title": "Color",
+            "type": "string"
+          }
+        }
+      },
+      "BuildingUpdate": {
+        "title": "BuildingUpdate",
+        "type": "object",
+        "properties": {
+          "lng": {
+            "title": "Lng",
+            "type": "number"
+          },
+          "lat": {
+            "title": "Lat",
+            "type": "number"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "color": {
+            "title": "Color",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+            "type": "string"
+          },
+          "color_light": {
+            "title": "Color Light",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+            "type": "string"
+          },
+          "color_dark": {
+            "title": "Color Dark",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+            "type": "string"
+          }
+        }
+      },
+      "Card": {
+        "title": "Card",
+        "required": [
+          "period_id",
+          "day_id",
+          "lesson_id",
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "period_id": {
+            "title": "Period Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "day_id": {
+            "title": "Day Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "lesson_id": {
+            "title": "Lesson Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "CardCreate": {
+        "title": "CardCreate",
+        "required": [
+          "period_id",
+          "day_id",
+          "lesson_id"
+        ],
+        "type": "object",
+        "properties": {
+          "period_id": {
+            "title": "Period Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "day_id": {
+            "title": "Day Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "lesson_id": {
+            "title": "Lesson Id",
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "CardSchedule": {
+        "title": "CardSchedule",
+        "required": [
+          "period_id",
+          "day_id",
+          "lesson_id",
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "period_id": {
+            "title": "Period Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "day_id": {
+            "title": "Day Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "lesson_id": {
+            "title": "Lesson Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "CardScheduleDetails": {
+        "title": "CardScheduleDetails",
+        "required": [
+          "period_id",
+          "day_id",
+          "lesson_id",
+          "lesson"
+        ],
+        "type": "object",
+        "properties": {
+          "period_id": {
+            "title": "Period Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "day_id": {
+            "title": "Day Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "lesson_id": {
+            "title": "Lesson Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "lesson": {
+            "$ref": "#/components/schemas/LessonScheduleDetails"
+          }
+        }
+      },
+      "CardUpdate": {
+        "title": "CardUpdate",
+        "required": [
+          "period_id",
+          "day_id",
+          "lesson_id"
+        ],
+        "type": "object",
+        "properties": {
+          "period_id": {
+            "title": "Period Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "day_id": {
+            "title": "Day Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "lesson_id": {
+            "title": "Lesson Id",
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "ClassroomSchedule": {
+        "title": "ClassroomSchedule",
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "color": {
+            "title": "Color",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+            "type": "string"
+          },
+          "color_light": {
+            "title": "Color Light",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+            "type": "string"
+          },
+          "color_dark": {
+            "title": "Color Dark",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+            "type": "string"
+          },
+          "building_id": {
+            "title": "Building Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "floor_id": {
+            "title": "Floor Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "type": {
+            "$ref": "#/components/schemas/RoomType"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "CollageShifts": {
+        "title": "CollageShifts",
+        "enum": [
+          "morning",
+          "evening",
+          "both"
+        ],
+        "type": "string",
+        "description": "An enumeration."
+      },
+      "ColorThemeType": {
+        "title": "ColorThemeType",
+        "enum": [
+          "dark",
+          "light"
+        ],
+        "type": "string",
+        "description": "An enumeration."
+      },
+      "Day": {
+        "title": "Day",
+        "required": [
+          "name",
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "DayCreate": {
+        "title": "DayCreate",
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        }
+      },
+      "DaySchedule": {
+        "title": "DaySchedule",
+        "required": [
+          "name",
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "DayUpdate": {
+        "title": "DayUpdate",
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        }
+      },
+      "Department": {
+        "title": "Department",
+        "required": [
+          "name",
+          "en_name",
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "en_name": {
+            "title": "En Name",
+            "type": "string"
+          },
+          "abbr": {
+            "title": "Abbr",
+            "type": "string"
+          },
+          "vision": {
+            "title": "Vision",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "created_at": {
+            "title": "Created At",
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "DepartmentCreate": {
+        "title": "DepartmentCreate",
+        "required": [
+          "name",
+          "en_name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "en_name": {
+            "title": "En Name",
+            "type": "string"
+          },
+          "abbr": {
+            "title": "Abbr",
+            "type": "string"
+          },
+          "vision": {
+            "title": "Vision",
+            "type": "string"
+          }
+        }
+      },
+      "DepartmentUpdate": {
+        "title": "DepartmentUpdate",
+        "required": [
+          "name",
+          "en_name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "en_name": {
+            "title": "En Name",
+            "type": "string"
+          },
+          "abbr": {
+            "title": "Abbr",
+            "type": "string"
+          },
+          "vision": {
+            "title": "Vision",
+            "type": "string"
+          }
+        }
+      },
+      "Directionality": {
+        "title": "Directionality",
+        "enum": [
+          "ltr",
+          "rtl"
+        ],
+        "type": "string",
+        "description": "An enumeration."
+      },
+      "Floor": {
+        "title": "Floor",
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "FloorCreate": {
+        "title": "FloorCreate",
+        "type": "object",
+        "properties": {}
+      },
+      "FloorSchedule": {
+        "title": "FloorSchedule",
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "FloorUpdate": {
+        "title": "FloorUpdate",
+        "type": "object",
+        "properties": {}
+      },
+      "HTTPValidationError": {
+        "title": "HTTPValidationError",
+        "type": "object",
+        "properties": {
+          "detail": {
+            "title": "Detail",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            }
+          }
+        }
+      },
+      "ImageUrl": {
+        "title": "ImageUrl",
+        "required": [
+          "url"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "url": {
+            "title": "Url",
+            "type": "string"
+          }
+        }
+      },
+      "JobTitleCreate": {
+        "title": "JobTitleCreate",
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "en_name": {
+            "title": "En Name",
+            "type": "string"
+          },
+          "type": {
+            "$ref": "#/components/schemas/UserType"
+          }
+        }
+      },
+      "JobTitleUpdate": {
+        "title": "JobTitleUpdate",
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "en_name": {
+            "title": "En Name",
+            "type": "string"
+          },
+          "type": {
+            "$ref": "#/components/schemas/UserType"
+          }
+        }
+      },
+      "Language": {
+        "title": "Language",
+        "enum": [
+          "ar",
+          "en"
+        ],
+        "type": "string",
+        "description": "An enumeration."
+      },
+      "Lesson": {
+        "title": "Lesson",
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "subject_id": {
+            "title": "Subject Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "teacher_id": {
+            "title": "Teacher Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "room_id": {
+            "title": "Room Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "LessonCreate": {
+        "title": "LessonCreate",
+        "type": "object",
+        "properties": {
+          "subject_id": {
+            "title": "Subject Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "teacher_id": {
+            "title": "Teacher Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "room_id": {
+            "title": "Room Id",
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "LessonScheduleDetails": {
+        "title": "LessonScheduleDetails",
+        "required": [
+          "id",
+          "stages",
+          "subject"
+        ],
+        "type": "object",
+        "properties": {
+          "subject_id": {
+            "title": "Subject Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "teacher_id": {
+            "title": "Teacher Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "room_id": {
+            "title": "Room Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "stages": {
+            "title": "Stages",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Stage"
+            }
+          },
+          "teacher": {
+            "$ref": "#/components/schemas/TeacherSchedule"
+          },
+          "subject": {
+            "$ref": "#/components/schemas/SubjectSchedule"
+          },
+          "room": {
+            "$ref": "#/components/schemas/ClassroomSchedule"
+          }
+        }
+      },
+      "LessonScheduleSchemas": {
+        "title": "LessonScheduleSchemas",
+        "required": [
+          "id",
+          "stages"
+        ],
+        "type": "object",
+        "properties": {
+          "subject_id": {
+            "title": "Subject Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "teacher_id": {
+            "title": "Teacher Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "room_id": {
+            "title": "Room Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "stages": {
+            "title": "Stages",
+            "type": "array",
+            "items": {}
+          }
+        }
+      },
+      "LessonUpdate": {
+        "title": "LessonUpdate",
+        "type": "object",
+        "properties": {
+          "subject_id": {
+            "title": "Subject Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "teacher_id": {
+            "title": "Teacher Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "room_id": {
+            "title": "Room Id",
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "Message": {
+        "title": "Message",
+        "required": [
+          "message"
+        ],
+        "type": "object",
+        "properties": {
+          "message": {
+            "title": "Message",
+            "type": "string"
+          }
+        }
+      },
+      "NamedObject": {
+        "title": "NamedObject",
+        "required": [
+          "id",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        }
+      },
+      "Paging_Branch_": {
+        "title": "Paging[Branch]",
+        "required": [
+          "count",
+          "results"
+        ],
+        "type": "object",
+        "properties": {
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          },
+          "results": {
+            "title": "Results",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/app__schemas__branch__Branch"
+            }
+          }
+        }
+      },
+      "Paging_Building_": {
+        "title": "Paging[Building]",
+        "required": [
+          "count",
+          "results"
+        ],
+        "type": "object",
+        "properties": {
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          },
+          "results": {
+            "title": "Results",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Building"
+            }
+          }
+        }
+      },
+      "Paging_Card_": {
+        "title": "Paging[Card]",
+        "required": [
+          "count",
+          "results"
+        ],
+        "type": "object",
+        "properties": {
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          },
+          "results": {
+            "title": "Results",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Card"
+            }
+          }
+        }
+      },
+      "Paging_Day_": {
+        "title": "Paging[Day]",
+        "required": [
+          "count",
+          "results"
+        ],
+        "type": "object",
+        "properties": {
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          },
+          "results": {
+            "title": "Results",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Day"
+            }
+          }
+        }
+      },
+      "Paging_Department_": {
+        "title": "Paging[Department]",
+        "required": [
+          "count",
+          "results"
+        ],
+        "type": "object",
+        "properties": {
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          },
+          "results": {
+            "title": "Results",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Department"
+            }
+          }
+        }
+      },
+      "Paging_Floor_": {
+        "title": "Paging[Floor]",
+        "required": [
+          "count",
+          "results"
+        ],
+        "type": "object",
+        "properties": {
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          },
+          "results": {
+            "title": "Results",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Floor"
+            }
+          }
+        }
+      },
+      "Paging_JobTitle_": {
+        "title": "Paging[JobTitle]",
+        "required": [
+          "count",
+          "results"
+        ],
+        "type": "object",
+        "properties": {
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          },
+          "results": {
+            "title": "Results",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/app__schemas__job_title__JobTitle"
+            }
+          }
+        }
+      },
+      "Paging_Lesson_": {
+        "title": "Paging[Lesson]",
+        "required": [
+          "count",
+          "results"
+        ],
+        "type": "object",
+        "properties": {
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          },
+          "results": {
+            "title": "Results",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Lesson"
+            }
+          }
+        }
+      },
+      "Paging_Period_": {
+        "title": "Paging[Period]",
+        "required": [
+          "count",
+          "results"
+        ],
+        "type": "object",
+        "properties": {
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          },
+          "results": {
+            "title": "Results",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Period"
+            }
+          }
+        }
+      },
+      "Paging_Role_": {
+        "title": "Paging[Role]",
+        "required": [
+          "count",
+          "results"
+        ],
+        "type": "object",
+        "properties": {
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          },
+          "results": {
+            "title": "Results",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Role"
+            }
+          }
+        }
+      },
+      "Paging_Room_": {
+        "title": "Paging[Room]",
+        "required": [
+          "count",
+          "results"
+        ],
+        "type": "object",
+        "properties": {
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          },
+          "results": {
+            "title": "Results",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Room"
+            }
+          }
+        }
+      },
+      "Paging_Stage_": {
+        "title": "Paging[Stage]",
+        "required": [
+          "count",
+          "results"
+        ],
+        "type": "object",
+        "properties": {
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          },
+          "results": {
+            "title": "Results",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Stage"
+            }
+          }
+        }
+      },
+      "Paging_Subject_": {
+        "title": "Paging[Subject]",
+        "required": [
+          "count",
+          "results"
+        ],
+        "type": "object",
+        "properties": {
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          },
+          "results": {
+            "title": "Results",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Subject"
+            }
+          }
+        }
+      },
+      "Paging_TelegramUser_": {
+        "title": "Paging[TelegramUser]",
+        "required": [
+          "count",
+          "results"
+        ],
+        "type": "object",
+        "properties": {
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          },
+          "results": {
+            "title": "Results",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TelegramUser"
+            }
+          }
+        }
+      },
+      "Paging_User_": {
+        "title": "Paging[User]",
+        "required": [
+          "count",
+          "results"
+        ],
+        "type": "object",
+        "properties": {
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          },
+          "results": {
+            "title": "Results",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/User"
+            }
+          }
+        }
+      },
+      "Period": {
+        "title": "Period",
+        "required": [
+          "start_time",
+          "end_time",
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "start_time": {
+            "title": "Start Time",
+            "type": "string",
+            "format": "time"
+          },
+          "end_time": {
+            "title": "End Time",
+            "type": "string",
+            "format": "time"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "PeriodCreate": {
+        "title": "PeriodCreate",
+        "required": [
+          "start_time",
+          "end_time"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "start_time": {
+            "title": "Start Time",
+            "type": "string",
+            "format": "time"
+          },
+          "end_time": {
+            "title": "End Time",
+            "type": "string",
+            "format": "time"
+          }
+        }
+      },
+      "PeriodSchedule": {
+        "title": "PeriodSchedule",
+        "required": [
+          "start_time",
+          "end_time",
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "start_time": {
+            "title": "Start Time",
+            "type": "string",
+            "format": "time"
+          },
+          "end_time": {
+            "title": "End Time",
+            "type": "string",
+            "format": "time"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "PeriodUpdate": {
+        "title": "PeriodUpdate",
+        "required": [
+          "start_time",
+          "end_time"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "start_time": {
+            "title": "Start Time",
+            "type": "string",
+            "format": "time"
+          },
+          "end_time": {
+            "title": "End Time",
+            "type": "string",
+            "format": "time"
+          }
+        }
+      },
+      "PermissionGroup": {
+        "title": "PermissionGroup",
+        "type": "object",
+        "properties": {
+          "read": {
+            "title": "Read",
+            "type": "boolean",
+            "default": true
+          },
+          "create": {
+            "title": "Create",
+            "type": "boolean",
+            "default": false
+          },
+          "update": {
+            "title": "Update",
+            "type": "boolean",
+            "default": false
+          },
+          "delete": {
+            "title": "Delete",
+            "type": "boolean",
+            "default": false
+          }
+        }
+      },
+      "Permissions": {
+        "title": "Permissions",
+        "required": [
+          "users",
+          "roles",
+          "periods",
+          "job_titles",
+          "departments",
+          "branches",
+          "days",
+          "stages",
+          "buildings",
+          "rooms",
+          "floors",
+          "subjects",
+          "lessons",
+          "cards"
+        ],
+        "type": "object",
+        "properties": {
+          "users": {
+            "$ref": "#/components/schemas/PermissionGroup"
+          },
+          "roles": {
+            "$ref": "#/components/schemas/PermissionGroup"
+          },
+          "periods": {
+            "$ref": "#/components/schemas/PermissionGroup"
+          },
+          "job_titles": {
+            "$ref": "#/components/schemas/PermissionGroup"
+          },
+          "departments": {
+            "$ref": "#/components/schemas/PermissionGroup"
+          },
+          "branches": {
+            "$ref": "#/components/schemas/PermissionGroup"
+          },
+          "days": {
+            "$ref": "#/components/schemas/PermissionGroup"
+          },
+          "stages": {
+            "$ref": "#/components/schemas/PermissionGroup"
+          },
+          "buildings": {
+            "$ref": "#/components/schemas/PermissionGroup"
+          },
+          "rooms": {
+            "$ref": "#/components/schemas/PermissionGroup"
+          },
+          "floors": {
+            "$ref": "#/components/schemas/PermissionGroup"
+          },
+          "subjects": {
+            "$ref": "#/components/schemas/PermissionGroup"
+          },
+          "lessons": {
+            "$ref": "#/components/schemas/PermissionGroup"
+          },
+          "cards": {
+            "$ref": "#/components/schemas/PermissionGroup"
+          }
+        }
+      },
+      "Role": {
+        "title": "Role",
+        "required": [
+          "ar_name",
+          "en_name",
+          "permissions",
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "ar_name": {
+            "title": "Ar Name",
+            "type": "string"
+          },
+          "en_name": {
+            "title": "En Name",
+            "type": "string"
+          },
+          "permissions": {
+            "$ref": "#/components/schemas/Permissions"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "RoleCreate": {
+        "title": "RoleCreate",
+        "required": [
+          "ar_name",
+          "en_name",
+          "permissions"
+        ],
+        "type": "object",
+        "properties": {
+          "ar_name": {
+            "title": "Ar Name",
+            "type": "string"
+          },
+          "en_name": {
+            "title": "En Name",
+            "type": "string"
+          },
+          "permissions": {
+            "$ref": "#/components/schemas/Permissions"
+          }
+        }
+      },
+      "RoleUpdate": {
+        "title": "RoleUpdate",
+        "required": [
+          "ar_name",
+          "en_name",
+          "permissions"
+        ],
+        "type": "object",
+        "properties": {
+          "ar_name": {
+            "title": "Ar Name",
+            "type": "string"
+          },
+          "en_name": {
+            "title": "En Name",
+            "type": "string"
+          },
+          "permissions": {
+            "$ref": "#/components/schemas/Permissions"
+          }
+        }
+      },
+      "Room": {
+        "title": "Room",
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "color": {
+            "title": "Color",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+            "type": "string"
+          },
+          "color_light": {
+            "title": "Color Light",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+            "type": "string"
+          },
+          "color_dark": {
+            "title": "Color Dark",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+            "type": "string"
+          },
+          "building_id": {
+            "title": "Building Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "floor_id": {
+            "title": "Floor Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "type": {
+            "$ref": "#/components/schemas/RoomType"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "RoomCreate": {
+        "title": "RoomCreate",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "color": {
+            "title": "Color",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+            "type": "string"
+          },
+          "color_light": {
+            "title": "Color Light",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+            "type": "string"
+          },
+          "color_dark": {
+            "title": "Color Dark",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+            "type": "string"
+          },
+          "building_id": {
+            "title": "Building Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "floor_id": {
+            "title": "Floor Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "type": {
+            "$ref": "#/components/schemas/RoomType"
+          }
+        }
+      },
+      "RoomType": {
+        "title": "RoomType",
+        "enum": [
+          "classroom",
+          "employee",
+          "other"
+        ],
+        "type": "string",
+        "description": "An enumeration."
+      },
+      "RoomUpdate": {
+        "title": "RoomUpdate",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "color": {
+            "title": "Color",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+            "type": "string"
+          },
+          "color_light": {
+            "title": "Color Light",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+            "type": "string"
+          },
+          "color_dark": {
+            "title": "Color Dark",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+            "type": "string"
+          },
+          "building_id": {
+            "title": "Building Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "floor_id": {
+            "title": "Floor Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "type": {
+            "$ref": "#/components/schemas/RoomType"
+          }
+        }
+      },
+      "ScheduleDetails": {
+        "title": "ScheduleDetails",
+        "required": [
+          "item",
+          "cards",
+          "days",
+          "periods"
+        ],
+        "type": "object",
+        "properties": {
+          "item": {
+            "$ref": "#/components/schemas/ScheduleDetailsItem"
+          },
+          "cards": {
+            "title": "Cards",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CardScheduleDetails"
+            }
+          },
+          "days": {
+            "title": "Days",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DaySchedule"
+            }
+          },
+          "periods": {
+            "title": "Periods",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PeriodSchedule"
+            }
+          }
+        }
+      },
+      "ScheduleDetailsItem": {
+        "title": "ScheduleDetailsItem",
+        "required": [
+          "id",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "type": {
+            "$ref": "#/components/schemas/ScheduleType"
+          }
+        }
+      },
+      "ScheduleSchemas": {
+        "title": "ScheduleSchemas",
+        "required": [
+          "days",
+          "periods",
+          "cards",
+          "buildings",
+          "floors",
+          "classrooms",
+          "subjects",
+          "teachers",
+          "stages",
+          "lessons"
+        ],
+        "type": "object",
+        "properties": {
+          "days": {
+            "title": "Days",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DaySchedule"
+            }
+          },
+          "periods": {
+            "title": "Periods",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PeriodSchedule"
+            }
+          },
+          "cards": {
+            "title": "Cards",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CardSchedule"
+            }
+          },
+          "buildings": {
+            "title": "Buildings",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BuildingSchedule"
+            }
+          },
+          "floors": {
+            "title": "Floors",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FloorSchedule"
+            }
+          },
+          "classrooms": {
+            "title": "Classrooms",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ClassroomSchedule"
+            }
+          },
+          "subjects": {
+            "title": "Subjects",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubjectSchedule"
+            }
+          },
+          "teachers": {
+            "title": "Teachers",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TeacherSchedule"
+            }
+          },
+          "stages": {
+            "title": "Stages",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Stage"
+            }
+          },
+          "lessons": {
+            "title": "Lessons",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LessonScheduleSchemas"
+            }
+          }
+        }
+      },
+      "ScheduleType": {
+        "title": "ScheduleType",
+        "enum": [
+          "stages",
+          "teachers",
+          "classrooms",
+          "subjects"
+        ],
+        "type": "string",
+        "description": "An enumeration."
+      },
+      "StaffType": {
+        "title": "StaffType",
+        "enum": [
+          "employee",
+          "teacher"
+        ],
+        "type": "string",
+        "description": "An enumeration."
+      },
+      "Stage": {
+        "title": "Stage",
+        "required": [
+          "id",
+          "branch"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "shift": {
+            "$ref": "#/components/schemas/CollageShifts"
+          },
+          "level": {
+            "title": "Level",
+            "maximum": 10.0,
+            "minimum": 1.0,
+            "type": "integer"
+          },
+          "branch_id": {
+            "title": "Branch Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "branch": {
+            "$ref": "#/components/schemas/app__schemas__stage__Branch"
+          }
+        }
+      },
+      "StageCreate": {
+        "title": "StageCreate",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "shift": {
+            "$ref": "#/components/schemas/CollageShifts"
+          },
+          "level": {
+            "title": "Level",
+            "maximum": 10.0,
+            "minimum": 1.0,
+            "type": "integer"
+          },
+          "branch_id": {
+            "title": "Branch Id",
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "StageUpdate": {
+        "title": "StageUpdate",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "shift": {
+            "$ref": "#/components/schemas/CollageShifts"
+          },
+          "level": {
+            "title": "Level",
+            "maximum": 10.0,
+            "minimum": 1.0,
+            "type": "integer"
+          },
+          "branch_id": {
+            "title": "Branch Id",
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "Subject": {
+        "title": "Subject",
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "color": {
+            "title": "Color",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+            "type": "string"
+          },
+          "color_light": {
+            "title": "Color Light",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+            "type": "string"
+          },
+          "color_dark": {
+            "title": "Color Dark",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "SubjectCreate": {
+        "title": "SubjectCreate",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "color": {
+            "title": "Color",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+            "type": "string"
+          },
+          "color_light": {
+            "title": "Color Light",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+            "type": "string"
+          },
+          "color_dark": {
+            "title": "Color Dark",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+            "type": "string"
+          }
+        }
+      },
+      "SubjectSchedule": {
+        "title": "SubjectSchedule",
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "color": {
+            "title": "Color",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+            "type": "string"
+          },
+          "color_light": {
+            "title": "Color Light",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+            "type": "string"
+          },
+          "color_dark": {
+            "title": "Color Dark",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "SubjectUpdate": {
+        "title": "SubjectUpdate",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "color": {
+            "title": "Color",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+            "type": "string"
+          },
+          "color_light": {
+            "title": "Color Light",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+            "type": "string"
+          },
+          "color_dark": {
+            "title": "Color Dark",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+            "type": "string"
+          }
+        }
+      },
+      "TeacherSchedule": {
+        "title": "TeacherSchedule",
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "color": {
+            "title": "Color",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+            "type": "string"
+          },
+          "color_light": {
+            "title": "Color Light",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+            "type": "string"
+          },
+          "color_dark": {
+            "title": "Color Dark",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "TelegramUser": {
+        "title": "TelegramUser",
+        "required": [
+          "id",
+          "is_bot",
+          "first_name",
+          "last_name",
+          "username",
+          "language_code"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "is_bot": {
+            "title": "Is Bot",
+            "type": "boolean"
+          },
+          "first_name": {
+            "title": "First Name",
+            "type": "string"
+          },
+          "last_name": {
+            "title": "Last Name",
+            "type": "string"
+          },
+          "username": {
+            "title": "Username",
+            "type": "string"
+          },
+          "language_code": {
+            "title": "Language Code",
+            "type": "string"
+          },
+          "is_blocked": {
+            "title": "Is Blocked",
+            "type": "boolean",
+            "default": false
+          },
+          "nickname": {
+            "title": "Nickname",
+            "type": "string"
+          },
+          "my_schedule": {
+            "title": "My Schedule",
+            "type": "string"
+          },
+          "schedule_type": {
+            "$ref": "#/components/schemas/ScheduleType"
+          }
+        }
+      },
+      "TelegramUserCreate": {
+        "title": "TelegramUserCreate",
+        "required": [
+          "id",
+          "is_bot",
+          "first_name",
+          "last_name",
+          "username",
+          "language_code"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "is_bot": {
+            "title": "Is Bot",
+            "type": "boolean"
+          },
+          "first_name": {
+            "title": "First Name",
+            "type": "string"
+          },
+          "last_name": {
+            "title": "Last Name",
+            "type": "string"
+          },
+          "username": {
+            "title": "Username",
+            "type": "string"
+          },
+          "language_code": {
+            "title": "Language Code",
+            "type": "string"
+          },
+          "is_blocked": {
+            "title": "Is Blocked",
+            "type": "boolean",
+            "default": false
+          }
+        }
+      },
+      "TelegramUserUpdate": {
+        "title": "TelegramUserUpdate",
+        "required": [
+          "id",
+          "is_bot",
+          "first_name",
+          "last_name",
+          "username",
+          "language_code"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "is_bot": {
+            "title": "Is Bot",
+            "type": "boolean"
+          },
+          "first_name": {
+            "title": "First Name",
+            "type": "string"
+          },
+          "last_name": {
+            "title": "Last Name",
+            "type": "string"
+          },
+          "username": {
+            "title": "Username",
+            "type": "string"
+          },
+          "language_code": {
+            "title": "Language Code",
+            "type": "string"
+          },
+          "is_blocked": {
+            "title": "Is Blocked",
+            "type": "boolean",
+            "default": false
+          }
+        }
+      },
+      "Token": {
+        "title": "Token",
+        "required": [
+          "access_token",
+          "token_type"
+        ],
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "title": "Access Token",
+            "type": "string"
+          },
+          "token_type": {
+            "title": "Token Type",
+            "type": "string"
+          }
+        }
+      },
+      "User": {
+        "title": "User",
+        "required": [
+          "id",
+          "job_titles"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "color": {
+            "title": "Color",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+            "type": "string"
+          },
+          "color_light": {
+            "title": "Color Light",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+            "type": "string"
+          },
+          "color_dark": {
+            "title": "Color Dark",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+            "type": "string"
+          },
+          "en_name": {
+            "title": "En Name",
+            "type": "string"
+          },
+          "email": {
+            "title": "Email",
+            "type": "string",
+            "format": "email"
+          },
+          "uot_url": {
+            "title": "Uot Url",
+            "pattern": "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)",
+            "type": "string"
+          },
+          "image": {
+            "title": "Image",
+            "pattern": "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)",
+            "type": "string"
+          },
+          "is_active": {
+            "title": "Is Active",
+            "type": "boolean",
+            "default": true
+          },
+          "gender": {
+            "$ref": "#/components/schemas/UserGender"
+          },
+          "asc_job_title": {
+            "title": "Asc Job Title",
+            "type": "string"
+          },
+          "asc_name": {
+            "title": "Asc Name",
+            "type": "string"
+          },
+          "scrape_from": {
+            "$ref": "#/components/schemas/UserScrapeFrom"
+          },
+          "role_id": {
+            "title": "Role Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "job_titles": {
+            "title": "Job Titles",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/app__schemas__user__JobTitle"
+            }
+          }
+        }
+      },
+      "UserCreate": {
+        "title": "UserCreate",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "color": {
+            "title": "Color",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+            "type": "string"
+          },
+          "color_light": {
+            "title": "Color Light",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+            "type": "string"
+          },
+          "color_dark": {
+            "title": "Color Dark",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+            "type": "string"
+          },
+          "en_name": {
+            "title": "En Name",
+            "type": "string"
+          },
+          "email": {
+            "title": "Email",
+            "type": "string",
+            "format": "email"
+          },
+          "uot_url": {
+            "title": "Uot Url",
+            "pattern": "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)",
+            "type": "string"
+          },
+          "image": {
+            "title": "Image",
+            "pattern": "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)",
+            "type": "string"
+          },
+          "is_active": {
+            "title": "Is Active",
+            "type": "boolean",
+            "default": true
+          },
+          "gender": {
+            "$ref": "#/components/schemas/UserGender"
+          },
+          "asc_job_title": {
+            "title": "Asc Job Title",
+            "type": "string"
+          },
+          "asc_name": {
+            "title": "Asc Name",
+            "type": "string"
+          },
+          "scrape_from": {
+            "$ref": "#/components/schemas/UserScrapeFrom"
+          },
+          "role_id": {
+            "title": "Role Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "password": {
+            "title": "Password",
+            "maxLength": 16,
+            "minLength": 8,
+            "type": "string"
+          }
+        }
+      },
+      "UserGender": {
+        "title": "UserGender",
+        "enum": [
+          "male",
+          "female"
+        ],
+        "type": "string",
+        "description": "An enumeration."
+      },
+      "UserScrapeFrom": {
+        "title": "UserScrapeFrom",
+        "enum": [
+          "uot",
+          "asc",
+          "uot_asc"
+        ],
+        "type": "string",
+        "description": "An enumeration."
+      },
+      "UserType": {
+        "title": "UserType",
+        "enum": [
+          "employee",
+          "teacher",
+          "student",
+          "other"
+        ],
+        "type": "string",
+        "description": "An enumeration."
+      },
+      "UserUpdate": {
+        "title": "UserUpdate",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "color": {
+            "title": "Color",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+            "type": "string"
+          },
+          "color_light": {
+            "title": "Color Light",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+            "type": "string"
+          },
+          "color_dark": {
+            "title": "Color Dark",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+            "type": "string"
+          },
+          "en_name": {
+            "title": "En Name",
+            "type": "string"
+          },
+          "email": {
+            "title": "Email",
+            "type": "string",
+            "format": "email"
+          },
+          "uot_url": {
+            "title": "Uot Url",
+            "pattern": "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)",
+            "type": "string"
+          },
+          "image": {
+            "title": "Image",
+            "pattern": "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)",
+            "type": "string"
+          },
+          "is_active": {
+            "title": "Is Active",
+            "type": "boolean",
+            "default": true
+          },
+          "gender": {
+            "$ref": "#/components/schemas/UserGender"
+          },
+          "asc_job_title": {
+            "title": "Asc Job Title",
+            "type": "string"
+          },
+          "asc_name": {
+            "title": "Asc Name",
+            "type": "string"
+          },
+          "scrape_from": {
+            "$ref": "#/components/schemas/UserScrapeFrom"
+          },
+          "role_id": {
+            "title": "Role Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "password": {
+            "title": "Password",
+            "maxLength": 16,
+            "minLength": 8,
+            "type": "string"
+          }
+        }
+      },
+      "ValidationError": {
+        "title": "ValidationError",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "loc": {
+            "title": "Location",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        }
+      },
+      "app__schemas__branch__Branch": {
+        "title": "Branch",
+        "required": [
+          "name",
+          "en_name",
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "en_name": {
+            "title": "En Name",
+            "type": "string"
+          },
+          "abbr": {
+            "title": "Abbr",
+            "type": "string"
+          },
+          "vision": {
+            "title": "Vision",
+            "type": "string"
+          },
+          "department_id": {
+            "title": "Department Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "created_at": {
+            "title": "Created At",
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "app__schemas__job_title__JobTitle": {
+        "title": "JobTitle",
+        "required": [
+          "name",
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "en_name": {
+            "title": "En Name",
+            "type": "string"
+          },
+          "type": {
+            "$ref": "#/components/schemas/UserType"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "app__schemas__stage__Branch": {
+        "title": "Branch",
+        "required": [
+          "id",
+          "name",
+          "department"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "department": {
+            "$ref": "#/components/schemas/NamedObject"
+          }
+        }
+      },
+      "app__schemas__user__JobTitle": {
+        "title": "JobTitle",
+        "required": [
+          "id",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "OAuth2PasswordBearer": {
+        "type": "oauth2",
+        "flows": {
+          "password": {
+            "scopes": {},
+            "tokenUrl": "/v1/auth/login/access-token"
+          }
+        }
+      }
+    }
+  }
+}
