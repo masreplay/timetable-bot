@@ -36,7 +36,7 @@ Coming soon...
 
 ## HTML to Image
 
-Coming soon...
+(Checkout this repo)[https://github.com/masreplay/html-to-image/tree/master]
 
 ## aSc TimeTable scrape
 
