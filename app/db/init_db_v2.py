@@ -132,6 +132,7 @@ class InitializeDatabaseWithASCV2(InitializeDatabaseWithASC):
 
                     self.stages_ids[class_.id] = crud.stage.create(
                         db=self.db, obj_in=schemas.StageCreate(
+                            name=name,
                             shift=shift,
                             level=level,
                             branch_id=branch.id,

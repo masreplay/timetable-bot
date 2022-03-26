@@ -61,6 +61,7 @@ class StageScheduleDetails(StageBase):
 
 class Stage(StageBase):
     id: UUID
+    name: str
     branch: Branch
 
     @root_validator(pre=True)

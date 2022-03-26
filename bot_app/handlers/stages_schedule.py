@@ -5,6 +5,7 @@ from aiogram.types import ParseMode
 
 from app import schemas
 from app.core.config import settings
+from app.schemas.image_url import ImageUrl
 from bot_app import service
 from bot_app.handlers.callbackes import classrooms_cb
 from bot_app.main import dp, bot
@@ -51,8 +52,11 @@ async def process_stage(query: types.CallbackQuery, callback_data: dict[str, str
     # Remove keyboard
     markup = types.InlineKeyboardMarkup()
 
-    try:
-        image_url = service.get_schedule_image_url(stage_id=stage_id)
+    response = service.get_schedule_image_url(stage_id=stage_id)
+
+    if response.status_code == 200:
+        image_url = ImageUrl.parse_obj(response.json())
+        print(image_url)
 
         schedule_front_url = f"{settings().FRONTEND_URL}/schedule/stages/{stage_id}"
 
@@ -67,7 +71,8 @@ async def process_stage(query: types.CallbackQuery, callback_data: dict[str, str
             parse_mode=ParseMode.MARKDOWN,
         )
         await bot.pin_chat_message(chat_id=query.message.chat.id, message_id=message.message_id)
-    except:
+
+    else:
         await bot.send_message(chat_id=query.message.chat.id, text=MESSAGE_500_INTERNAL_SERVER_ERROR)
-    finally:
-        await state.finish()
+
+    await state.finish()

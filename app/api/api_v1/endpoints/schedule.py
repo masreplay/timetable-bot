@@ -36,7 +36,6 @@ def read_schedule(
 ) -> Any:
     """
     Retrieve Single schedule.
-    q2
     """
 
     if stage_id:

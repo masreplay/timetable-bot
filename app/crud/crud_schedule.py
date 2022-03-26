@@ -17,6 +17,7 @@ class CRUDSchedule:
             db: Session,
             stage: schemas.Stage,
     ) -> ScheduleDetails:
+        crud.stage.get(db=db,id=stage.id)
         return ScheduleDetails(
             item=ScheduleDetailsItem(
                 id=stage.id,

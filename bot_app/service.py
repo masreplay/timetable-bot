@@ -48,12 +48,12 @@ def create_user(user: schemas.TelegramUserCreate):
     print(response.url)
 
 
-def get_schedule_image_url(stage_id: str) -> ImageUrl:
-    response = session.get(
+def get_schedule_image_url(stage_id: str) :
+    return session.get(
         url=f"{settings().FAST_API_HOST}/schedule/image",
         params=dict(stage_id=stage_id)
     )
-    return ImageUrl.parse_obj(response.json())
+
 
 
 def get_stage_by_name(*, branch_name: str, stage_name: str) -> schemas.Stage | None:
