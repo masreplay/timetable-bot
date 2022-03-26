@@ -34,9 +34,17 @@ Coming soon...
 
 * Rename .env.development to .env and set it's value
 
+## Frontend (Vue)
+
+[Checkout this repo](https://github.com/noor3030/csuot-app)
+
+## Dashboard (Vue) 
+
+[Checkout this repo](https://github.com/noor3030/csuot-dashboard)
+
 ## HTML to Image
 
-[Checkout this repo](https://github.com/masreplay/html-to-image/tree/master)
+[Checkout this repo](https://github.com/masreplay/html-to-image)
 
 ## aSc TimeTable scrape
 
