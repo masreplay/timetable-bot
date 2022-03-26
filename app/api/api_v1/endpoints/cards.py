@@ -13,13 +13,12 @@ router = APIRouter()
 @router.get("/", response_model=Paging[schemas.Card])
 def read_cards(
         db: Session = Depends(get_db),
-        skip: int = Query(0, ge=0),
-        limit: int = Query(50, ge=1, le=100),
+        p: PagingParams = Depends(paging),
 ) -> Any:
     """
     Retrieve cards.
     """
-    cards = crud.card.get_multi(db, skip=skip, limit=limit)
+    cards = crud.card.get_multi(db, skip=p.skip, limit=p.limit)
     return cards
 
 

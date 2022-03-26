@@ -14,13 +14,12 @@ router = APIRouter()
 @router.get("/", response_model=Paging[schemas.Role])
 def read_roles(
         db: Session = Depends(get_db),
-        skip: int = Query(0, ge=0),
-        limit: int = Query(50, ge=1, le=100),
+        p: PagingParams = Depends(paging),
 ) -> Any:
     """
     Retrieve roles.
     """
-    roles = crud.role.get_multi(db, skip=skip, limit=limit)
+    roles = crud.role.get_multi(db, skip=p.skip, limit=p.limit)
     return roles
 
 

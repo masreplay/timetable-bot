@@ -15,13 +15,12 @@ router = APIRouter(dependencies=[Depends(deps.PermissionHandler("periods"))])
 @router.get("/", response_model=Paging[schemas.Period])
 def read_periods(
         db: Session = Depends(get_db),
-        skip: int = Query(0, ge=0),
-        limit: int = Query(50, ge=1, le=100),
+        p: PagingParams = Depends(paging),
 ) -> Any:
     """
     Retrieve periods.
     """
-    periods = crud.period.get_multi(db, skip=skip, limit=limit)
+    periods = crud.period.get_multi(db, skip=p.skip, limit=p.limit)
     return periods
 
 

@@ -7,7 +7,7 @@ from sqlmodel import Session
 from app import schemas, crud
 from app.db.db import get_db
 from app.schemas import enums
-from app.schemas.paging import Paging
+from app.schemas.paging import Paging, paging, PagingParams
 
 router = APIRouter(
     # dependencies=[Depends(deps.users_permission_handler)]
@@ -16,17 +16,16 @@ router = APIRouter(
 
 @router.get("/", response_model=Paging[schemas.User])
 def read_users(
-        db: Session = Depends(get_db),
-        skip: int = Query(0, ge=0),
-        limit: int = Query(50, ge=1, le=100),
-        query: str | None = None,
+        search_query: str | None = None,
         role_id: UUID | None = None,
         user_type: list[enums.StaffType] = Query(None),
+        db: Session = Depends(get_db),
+        p: PagingParams = Depends(paging),
 ) -> Any:
     """
     Retrieve users.
     """
-    users = crud.user.get_filter(db, skip=skip, limit=limit, query=query, role_id=role_id,
+    users = crud.user.get_filter(db, skip=p.skip, limit=p.limit, query=search_query, role_id=role_id,
                                  user_types=user_type)
     return users
 

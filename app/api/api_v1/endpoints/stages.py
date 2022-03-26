@@ -14,15 +14,14 @@ router = APIRouter()
 @router.get("/", response_model=Paging[schemas.Stage])
 def read_stages(
         db: Session = Depends(get_db),
-        skip: int = Query(0, ge=0),
-        limit: int = Query(50, ge=1, le=100),
+        p: PagingParams = Depends(paging),
         branch_id: UUID = Query(None),
         branch_name: str = Query(None)
 ) -> Any:
     """
     Retrieve stages.
     """
-    stages = crud.stage.get_filter(db, skip=skip, limit=limit, branch_id=branch_id,
+    stages = crud.stage.get_filter(db, skip=p.skip, limit=p.limit, branch_id=branch_id,
                                    branch_name=branch_name)
     return stages
 
