@@ -94,7 +94,7 @@ class CRUDSchedule:
             lessons=db.exec(select(models.Lesson)).all(),
             buildings=db.query(models.Building).all(),
             floors=db.exec(select(models.Floor)).all(),
-            classrooms=db.exec(select(models.Stage)).all(),
+            classrooms=db.exec(select(models.Room)).all(),
             subjects=db.exec(select(models.Subject)).all(),
             teachers=db.exec(
                 select(models.User).where(
