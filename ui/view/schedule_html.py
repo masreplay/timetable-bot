@@ -106,7 +106,7 @@ def schedule_html_template(
 
 <body>
     <div style="background-color: {theme.colors.background}; padding: 1%;">
-        <h1 style="color: {theme.colors.on_background}; text-align: center;">{schedule.stage.name}</h1>
+        <h1 style="color: {theme.colors.on_background}; text-align: center;">{schedule.item.name}</h1>
         <table>
             <thead>
                 <colgroup>
@@ -119,15 +119,17 @@ def schedule_html_template(
             </thead>
             <tbody>{generate_table(schedule=schedule, theme=theme)}</tbody>
         </table>
-        <div style="display: flex; justify-content: space-between; flex-direction: row-reverse">
-            <h3 style="color: {theme.colors.on_background}">{schedule.information.get_validate_date}</h3>
-            <h3 style="color: {theme.colors.on_background}">Telegram: {schedule.information.bot_telegram_id}</h3>
-        </div>
     </div>
 </body>
 
 </html>"""
 
+
+# </table>
+#         <!-- <div style="display: flex; justify-content: space-between; flex-direction: row-reverse">
+#             <h3 style="color: {theme.colors.on_background}">{schedule.information.get_validate_date}</h3>
+#             <h3 style="color: {theme.colors.on_background}">Telegram: {schedule.information.bot_telegram_id}</h3>
+#         </div> -->
 
 def generate_table(*, schedule: schemas.ScheduleDetails, theme: Theme):
     """
@@ -212,14 +214,12 @@ def get_stage_schedule_image(
     if settings().ENVIRONMENT == Environment.development:
         print(image_url.url)
         pathlib.Path("generated_data").mkdir(parents=True, exist_ok=True)
-        with open(f"generated_data/{schedule.stage.name}table.png", "wb") as handler:
+        with open(f"generated_data/{schedule.item.name}table.png", "wb") as handler:
             handler.write(img_data)
             with open("generated_data/table.g.html", "w", encoding="utf-8") as file:
                 file.write(html)
 
     return image_url.url
-
-    return None
 
 
 if __name__ == "__main__":
