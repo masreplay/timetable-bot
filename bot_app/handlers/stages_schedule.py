@@ -1,3 +1,5 @@
+from uuid import UUID
+
 import aiogram.utils.markdown as md
 from aiogram import types
 from aiogram.dispatcher import FSMContext
@@ -46,7 +48,7 @@ async def process_branch(query: types.CallbackQuery, callback_data: dict[str, st
 
 @dp.callback_query_handler(classrooms_cb.filter(action='stage'), state=StageScheduleForm.stage)
 async def process_stage(query: types.CallbackQuery, callback_data: dict[str, str], state: FSMContext):
-    stage_id = callback_data['id']
+    stage_id = UUID(callback_data['id'])
 
     await query.message.reply('جاري ارسال الجدول...', reply_markup=types.ReplyKeyboardRemove())
     # Remove keyboard
@@ -56,9 +58,8 @@ async def process_stage(query: types.CallbackQuery, callback_data: dict[str, str
 
     if response.status_code == 200:
         image_url = ImageUrl.parse_obj(response.json())
-        print(image_url)
 
-        schedule_front_url = f"{settings().FRONTEND_URL}/schedule/stages/{stage_id}"
+        schedule_front_url = f"{settings().FRONTEND_URL}/schedule/?stage_id={stage_id}"
 
         message = await bot.send_photo(
             chat_id=query.message.chat.id,

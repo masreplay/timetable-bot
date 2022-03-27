@@ -189,7 +189,7 @@ def card_table(*, card: schemas.CardScheduleDetails, color: Color):
     return "".join(tags)
 
 
-def get_stage_schedule_image(
+def get_schedule_image(
         *, schedule: schemas.ScheduleDetails, theme: Theme
 ) -> str | None:
     """

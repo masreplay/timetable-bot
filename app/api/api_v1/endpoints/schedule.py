@@ -11,7 +11,7 @@ from app.schemas.schedule import ScheduleDetails
 from ui.color import Theme, ColorThemeType, colors_theme
 from ui.directionality import Directionality
 from ui.language import Language
-from ui.view.schedule_html import get_stage_schedule_image
+from ui.view.schedule_html import get_schedule_image
 
 router = APIRouter()
 
@@ -26,18 +26,13 @@ def read_all_schedule(
     return crud.schedule.get_multi(db=db)
 
 
-@router.get("/", response_model=ScheduleDetails)
-def read_schedule(
+def get_schedule(
         stage_id: UUID | None = None,
         teacher_id: UUID | None = None,
         classroom_id: UUID | None = None,
         subject_id: UUID | None = None,
         db: Session = Depends(get_db),
-) -> Any:
-    """
-    Retrieve Single schedule.
-    """
-
+) -> ScheduleDetails:
     if stage_id:
         stage = crud.stage.get(db=db, id=stage_id)
         if not stage:
@@ -62,9 +57,32 @@ def read_schedule(
         return crud.schedule.default_stage_schedule(db=db)
 
 
+@router.get("/", response_model=ScheduleDetails)
+def read_schedule(
+        stage_id: UUID | None = None,
+        teacher_id: UUID | None = None,
+        classroom_id: UUID | None = None,
+        subject_id: UUID | None = None,
+        db: Session = Depends(get_db),
+) -> Any:
+    """
+    Retrieve Single schedule.
+    """
+    return get_schedule(
+        db=db,
+        stage_id=stage_id,
+        teacher_id=teacher_id,
+        classroom_id=classroom_id,
+        subject_id=subject_id,
+    )
+
+
 @router.get("/image", response_model=ImageUrl)
 def get_schedule_image_url(
-        stage_id: UUID,
+        stage_id: UUID | None = None,
+        teacher_id: UUID | None = None,
+        classroom_id: UUID | None = None,
+        subject_id: UUID | None = None,
         theme: ColorThemeType | None = ColorThemeType.light,
         language: Language | None = Language.ar,
         directionality: Directionality | None = Directionality.ltr,
@@ -73,13 +91,16 @@ def get_schedule_image_url(
     """
     Download schedule Image.
     """
-    stage = crud.stage.get(db=db, id=stage_id)
-    if not stage:
-        raise HTTPException(status_code=404, detail="Stage not found")
 
-    schedule = crud.schedule.get_stage_schedule(db=db, stage=stage)
+    schedule = get_schedule(
+        db=db,
+        stage_id=stage_id,
+        teacher_id=teacher_id,
+        classroom_id=classroom_id,
+        subject_id=subject_id,
+    )
 
-    url = get_stage_schedule_image(
+    url = get_schedule_image(
         schedule=schedule,
         theme=Theme(
             colors=colors_theme[theme],

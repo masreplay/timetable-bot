@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 
 from app import crud, schemas
 from app.api import deps
+from app.api.deps import UserRole
 from app.core import security
 from app.core.security import get_password_hash
 from app.db.db import get_db, settings
@@ -61,13 +62,13 @@ def test_token(current_user: schemas.User = Depends(deps.get_current_user)) -> A
     return current_user
 
 
-@router.get("/permissions/")
-def my_permissions(permissions=Depends(deps.users_permission_handler)) -> Any:
+@router.get("/permissions/", response_model=schemas.Role)
+def my_permissions(permissions: UserRole = Depends(deps.users_permission_handler)) -> Any:
     """
     Return my permissions
     """
 
-    return {"role": permissions[-1], "user": permissions[0]}
+    return permissions[-1]
 
 
 @router.post("/reset-password/", response_model=schemas.Message)
