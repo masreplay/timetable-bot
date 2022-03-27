@@ -1,27 +1,52 @@
-import aiogram.utils.markdown as md
 from aiogram import types
-from aiogram.dispatcher import FSMContext
-from aiogram.types import ParseMode
 
-from app import schemas
-from app.core.config import settings
-from app.schemas.image_url import ImageUrl
 from bot_app import service
-from bot_app.handlers.callbackes import classrooms_cb
+from bot_app.handlers.callbackes import teachers_cb
 from bot_app.main import dp, bot
-from bot_app.states import ScheduleType, StageScheduleForm
-from bot_app.status import MESSAGE_500_INTERNAL_SERVER_ERROR
 
 
-@dp.callback_query_handler(lambda c: c.data == ScheduleType.teachers)
-async def process_teacher_schedule(query: types.CallbackQuery):
-    await StageScheduleForm.branch.set()
-
+def get_teachers_keyboard(page: int = 1):
+    print(page)
     markup = types.InlineKeyboardMarkup(resize_keyboard=True, selective=True, row_width=2)
-    teachers = service.get_teachers()
+    teachers = service.get_teachers(page=page, per_page=14).results
 
     markup.add(*[
         types.InlineKeyboardButton(text=teacher.name, callback_data=str(teacher.id))
         for teacher in teachers
     ])
-    await query.message.reply(f"اختر الاستاذ", reply_markup=markup)
+
+    markup.row(
+        types.InlineKeyboardButton(
+            text=" ",
+            callback_data=teachers_cb.new(page=page + 1, action='teacher'),
+        ),
+        types.InlineKeyboardButton(
+            text="➡️",
+            callback_data=teachers_cb.new(page=page - 1, action='teacher'),
+        )
+    )
+    return markup
+
+
+@dp.callback_query_handler(teachers_cb.filter(action='next'))
+async def teachers_next_cb_handler(query: types.CallbackQuery, callback_data: dict[str, str]):
+    page: int = int(callback_data["page"])
+
+    await bot.edit_message_text(
+        f'teacher',
+        query.from_user.id,
+        query.message.message_id,
+        reply_markup=get_teachers_keyboard(page=page),
+    )
+
+
+@dp.callback_query_handler(teachers_cb.filter(action='previous'))
+async def teachers_previous_cb_handler(query: types.CallbackQuery, callback_data: dict[str, str]):
+    page: int = int(callback_data["page"])
+
+    await bot.edit_message_text(
+        f'teacher',
+        query.from_user.id,
+        query.message.message_id,
+        reply_markup=get_teachers_keyboard(page=page),
+    )

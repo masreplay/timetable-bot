@@ -5,6 +5,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Text
 
 from bot_app.commands import Commands
+from bot_app.handlers import teachers_cb
 from bot_app.main import dp
 from bot_app.states import ScheduleType
 
@@ -15,12 +16,18 @@ async def cmd_start(message: types.Message):
 
     schedule_type: dict[ScheduleType, str] = {
         ScheduleType.stages: "فرع",
-        ScheduleType.teachers: "استاذ",
         ScheduleType.subjects: "مادة",
         ScheduleType.classrooms: "قاعة",
     }
     for callback, name in schedule_type.items():
         markup.add(types.InlineKeyboardButton(text=name, callback_data=callback))
+
+    markup.add(
+        types.InlineKeyboardButton(
+            text="استاذ",
+            callback_data=teachers_cb.new(page=1, action='next'),
+        )
+    )
 
     await message.reply("اختر نوع الجدول", reply_markup=markup)
 

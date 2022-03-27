@@ -28,9 +28,9 @@ def get_branches() -> list[schemas.Branch]:
     return schemas.Paging[schemas.Branch].parse_obj(response.json()).results
 
 
-def get_teachers() -> list[schemas.User]:
-    response = session.get(url=f"{settings().FAST_API_HOST}/users")
-    return schemas.Paging[schemas.User].parse_obj(response.json()).results
+def get_teachers(page: int, per_page: int = 15) -> schemas.Paging[schemas.User]:
+    response = session.get(url=f"{settings().FAST_API_HOST}/users?page={page}&per_page={per_page}")
+    return schemas.Paging[schemas.User].parse_obj(response.json())
 
 
 def get_stages_schedules_images() -> list[ImageUrl]:
