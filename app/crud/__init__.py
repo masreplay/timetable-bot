@@ -9,8 +9,8 @@ from .crud_user import user
 from .. import schemas, models
 from ..schemas import (RoleCreate, PeriodCreate, JobTitleCreate, DepartmentCreate, BuildingCreate,
                        RoomCreate, RoleUpdate, PeriodUpdate, JobTitleUpdate, DepartmentUpdate, BuildingUpdate,
-                       RoomUpdate, FloorCreate, FloorUpdate, CardCreate, CardUpdate, SubjectCreate,
-                       LessonCreate, LessonUpdate, SubjectUpdate, DayCreate, DayUpdate, )
+                       RoomUpdate, FloorCreate, FloorUpdate, CardCreate, CardUpdate, LessonCreate, LessonUpdate,
+                       DayCreate, DayUpdate, )
 
 # crud types
 RoleCRUD: type = CRUDBase[models.Role, RoleCreate, RoleUpdate, schemas.Role]
