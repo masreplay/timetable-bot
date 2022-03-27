@@ -18,7 +18,6 @@ def read_subjects(
     """
     Retrieve subjects.
     """
-    HTTPException(status_code=30)
     subjects = crud.subject.get_multi(db, skip=p.skip, limit=p.limit)
     return subjects
 
