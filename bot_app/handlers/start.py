@@ -5,7 +5,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Text
 
 from bot_app.commands import Commands
-from bot_app.handlers import teachers_cb
+from bot_app.handlers import teachers_paging_cb
 from bot_app.main import dp
 from bot_app.states import ScheduleType
 
@@ -25,7 +25,7 @@ async def cmd_start(message: types.Message):
     markup.add(
         types.InlineKeyboardButton(
             text="استاذ",
-            callback_data=teachers_cb.new(page=1, action='next'),
+            callback_data=teachers_paging_cb.new(page=1, action='paging'),
         )
     )
 
