@@ -28,6 +28,11 @@ def get_branches() -> list[schemas.Branch]:
     return schemas.Paging[schemas.Branch].parse_obj(response.json()).results
 
 
+def get_teachers() -> list[schemas.User]:
+    response = session.get(url=f"{settings().FAST_API_HOST}/users")
+    return schemas.Paging[schemas.User].parse_obj(response.json()).results
+
+
 def get_stages_schedules_images() -> list[ImageUrl]:
     response = session.get(url=f"{settings().FAST_API_HOST}/branches")
     return [
@@ -48,12 +53,11 @@ def create_user(user: schemas.TelegramUserCreate):
     print(response.url)
 
 
-def get_schedule_image_url(stage_id: str) :
+def get_schedule_image_url(stage_id: str):
     return session.get(
         url=f"{settings().FAST_API_HOST}/schedule/image",
         params=dict(stage_id=stage_id)
     )
-
 
 
 def get_stage_by_name(*, branch_name: str, stage_name: str) -> schemas.Stage | None:
