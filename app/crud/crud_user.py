@@ -64,7 +64,7 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate, schemas.User]):
         # else: where.append(User.job_titles.any(models.JobTitle.type == UserType.teacher))
         return Paging[schemas.User](
             count=db.query(User).filter(*where).count(),
-            results=db.exec(select(User).where(*where).offset(skip).limit(limit)).all()
+            results=db.exec(select(User).order_by(User.name).where(*where).offset(skip).limit(limit)).all()
         )
 
     def authenticate(self, db: Session, *, email: EmailStr, password: str) -> User | None:
