@@ -56,7 +56,6 @@ def get_stages_schedules_images() -> list[ImageUrl]:
                  url="https://masreplay.s3.amazonaws.com/fa3a06cf-6e00-41bb-a113-9c3ac47b89a4"),
         ImageUrl(name="امنية ثاني مسائي",
                  url="https://masreplay.s3.amazonaws.com/fa3a06cf-6e00-41bb-a113-9c3ac47b89a4"),
-
     ]
 
 
