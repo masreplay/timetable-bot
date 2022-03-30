@@ -292,7 +292,7 @@ class InitializeDatabaseWithASC:
                 )
             )
             user: schemas.User = crud.user.create(
-                db=self.db, obj_in=schemas.UserCreate(
+                db=self.db, obj_in=schemas.UserCreateDB(
                     email="pts@gmail.com",
                     password="password",
                     color='#000000',
@@ -306,7 +306,7 @@ class InitializeDatabaseWithASC:
 
             teachers: list[MergedTeacher] = get_combine_teachers(self.asc)
             for teacher in teachers:
-                user = crud.user.create(db=self.db, obj_in=schemas.UserCreate(
+                user = crud.user.create(db=self.db, obj_in=schemas.UserCreateDB(
                     name=teacher.name,
                     en_name=teacher.en_name,
                     image=teacher.image,

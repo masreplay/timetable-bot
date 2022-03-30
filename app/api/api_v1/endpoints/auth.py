@@ -41,7 +41,7 @@ def login_access_token(
 
 
 @router.post("/signup", response_model=schemas.Message)
-def sign_up(user: schemas.UserCreate, db: Session = Depends(get_db)) -> Any:
+def sign_up(user: schemas.UserCreateDB, db: Session = Depends(get_db)) -> Any:
     """
     User create new account, get an access token for future requests
     """

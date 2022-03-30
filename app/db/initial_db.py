@@ -27,7 +27,7 @@ def init_super_admin(db):
             )
         )
         crud.user.create(
-            db=db, obj_in=schemas.UserCreate(
+            db=db, obj_in=schemas.UserCreateDB(
                 email=settings().FIRST_SUPERUSER,
                 password=settings().FIRST_SUPERUSER_PASSWORD,
                 color='#000000',

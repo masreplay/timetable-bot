@@ -9,10 +9,10 @@ from app.crud.base import CRUDBase
 from app.models import User
 from app.schemas.enums import UserType
 from app.schemas.paging import Paging
-from app.schemas.user import UserCreate, UserUpdate
+from app.schemas.user import UserCreateDB, UserUpdate
 
 
-class CRUDUser(CRUDBase[User, UserCreate, UserUpdate, schemas.User]):
+class CRUDUser(CRUDBase[User, UserCreateDB, UserUpdate, schemas.User]):
 
     def get(self, db: Session, id: UUID) -> User:
         statement = select(self.model).where(User.id == id)
@@ -36,7 +36,7 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate, schemas.User]):
         db.refresh(user)
         return user
 
-    def create(self, db: Session, *, obj_in: UserCreate) -> User:
+    def create(self, db: Session, *, obj_in: UserCreateDB) -> User:
         db_obj = User(
             **obj_in.dict(),
             hashed_password=get_password_hash(obj_in.password) if obj_in.password else None,
@@ -59,9 +59,7 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate, schemas.User]):
         if user_types:
             where.append(User.job_titles.any(models.JobTitle.type.in_([user_type.name for user_type in user_types])))
         else:
-            print(f"user_types{user_types}")
             where.append(User.job_titles.any(models.JobTitle.type.in_([UserType.teacher])))
-        # else: where.append(User.job_titles.any(models.JobTitle.type == UserType.teacher))
         return Paging[schemas.User](
             count=db.query(User).filter(*where).count(),
             results=db.exec(select(User).order_by(User.name).where(*where).offset(skip).limit(limit)).all()

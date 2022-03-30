@@ -7,8 +7,8 @@ from app.schemas.permissions import Permissions
 
 # Shared properties
 class RoleBase(SQLModel):
-    ar_name: str
-    en_name: str
+    name: str
+    enum: str
     permissions: Permissions
 
 

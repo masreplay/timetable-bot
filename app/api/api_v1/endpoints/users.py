@@ -9,9 +9,7 @@ from app.db.db import get_db
 from app.schemas import enums
 from app.schemas.paging import Paging, paging, PagingParams
 
-router = APIRouter(
-    # dependencies=[Depends(deps.users_permission_handler)]
-)
+router = APIRouter()
 
 
 @router.get("/", response_model=Paging[schemas.User])
@@ -34,7 +32,7 @@ def read_users(
 def create_user(
         *,
         db: Session = Depends(get_db),
-        user_in: schemas.UserCreate,
+        user_in: schemas.UserCreateDB,
 ) -> Any:
     """
     Create new user.
