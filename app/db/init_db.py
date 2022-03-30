@@ -229,7 +229,7 @@ class InitializeDatabaseWithASC:
             ).id
 
     def init_db(self) -> bool:
-        user = crud.user.get_by_email(self.db, email="pts@gmail.com")
+        user = crud.user.get_by_email(self.db, email=settings().SECOND_SUPERUSER)
         if not user:
             self.init_building()
             self.init_classes()
@@ -286,18 +286,18 @@ class InitializeDatabaseWithASC:
 
             default_role = crud.role.create(
                 db=self.db, obj_in=schemas.RoleCreate(
-                    ar_name="مستخدم جديد",
-                    en_name="default",
+                    name="مستخدم جديد",
+                    enum="DEFAULT",
                     permissions=default_permissions,
                 )
             )
             user: schemas.User = crud.user.create(
                 db=self.db, obj_in=schemas.UserCreateDB(
-                    email="pts@gmail.com",
-                    password="password",
+                    email=settings().SECOND_SUPERUSER,
+                    password=settings().SECOND_SUPERUSER,
                     color='#000000',
                     gender=None,
-                    name="بطس",
+                    name="pts",
                     en_name="pts",
                     role_id=default_role.id
                 )

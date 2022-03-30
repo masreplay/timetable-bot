@@ -21,8 +21,8 @@ def init_super_admin(db):
     if not user:
         super_admin_role = crud.role.create(
             db=db, obj_in=schemas.RoleCreate(
-                ar_name="مسؤول",
-                en_name="SUPER ADMIN",
+                name="مسؤول",
+                enum="SUPER_ADMIN",
                 permissions=super_admin_permissions,
             )
         )

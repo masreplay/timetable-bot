@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from sqlmodel import SQLModel
+from sqlmodel import SQLModel, Field
 
 from app.schemas.permissions import Permissions
 

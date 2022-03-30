@@ -12,7 +12,6 @@ from app.schemas.base import CardContent
 from app.schemas.enums import UserGender, UserScrapeFrom
 
 
-
 # Shared properties
 class UserBase(CardContent):
     email: EmailStr | None = Field(default=None, sa_column_kwargs=sa_column_kwargs(unique=True))
