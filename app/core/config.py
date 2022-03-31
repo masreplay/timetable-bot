@@ -102,6 +102,21 @@ class Settings(BaseSettings):
         new['WEBHOOK_URL'] = f'{new.get("HEROKU_APP_HOST")}{new.get("WEBHOOK_PATH")}'
         return new
 
+    # aws
+    AWS_BUCKET_NAME: str
+    AWS_ACCESS_KEY_ID: str
+    AWS_SECRET_ACCESS_KEY: str
+    AWS_REGION: str
+
+    S3_BASE_URL: str
+
+    @root_validator(pre=True)
+    def assemble_s3_base_url(cls, values):
+        new = dict(values)
+        bucket_name = new.get("AWS_BUCKET_NAME")
+        new['S3_BASE_URL'] = f"https://{bucket_name}.s3.amazonaws.com"
+        return new
+
     class Config:
         env_file = "../../.env"
         case_sensitive = True

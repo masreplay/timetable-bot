@@ -7,13 +7,13 @@ from fastapi import HTTPException, status, UploadFile
 
 from app.core.config import settings
 
-s3 = boto3.client(
+_s3 = boto3.client(
     's3',
     aws_access_key_id=settings().AWS_ACCESS_KEY_ID,
-    aws_secret_access_key=settings().AWS_SECRET_KEY
+    aws_secret_access_key=settings().AWS_SECRET_ACCESS_KEY
 )
 
-reusable_failed_upload_file = HTTPException(
+_reusable_failed_upload_file = HTTPException(
     status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
     detail="Failed Uploading File"
 )
@@ -21,32 +21,31 @@ reusable_failed_upload_file = HTTPException(
 
 def upload_to_aws_folder(local_file, folder_name, file_name):
     try:
-        s3.upload_fileobj(local_file, settings().BUCKET_NAME, f"{folder_name}/{file_name}")
+        _s3.upload_fileobj(local_file, settings().AWS_BUCKET_NAME, f"{folder_name}/{file_name}")
         return True
     except NoCredentialsError:
-        raise reusable_failed_upload_file
+        raise _reusable_failed_upload_file
 
 
 def upload_to_aws(image: UploadFile) -> str:
     try:
         file_name: str = str(uuid.uuid4()) + os.path.splitext(image.filename)[1]
-
-        s3.upload_fileobj(
+        _s3.upload_fileobj(
             image.file,
-            settings().BUCKET_NAME, file_name,
+            settings().AWS_BUCKET_NAME, file_name,
             ExtraArgs={"ACL": "public-read", "ContentType": "image"},
         )
-        return f"https://{settings().B}.s3.eu-west-2.amazonaws.com//{file_name}"
+        return f"{settings().S3_BASE_URL}/{file_name}"
     except NoCredentialsError:
-        raise reusable_failed_upload_file
+        raise _reusable_failed_upload_file
 
 
 def delete_from_s3(folder_name, file_name) -> bool:
     try:
-        s3.delete_object(Bucket=settings().BUCKET_NAME, Key=f'{folder_name}/{file_name}')
+        _s3.delete_object(Bucket=settings().AWS_BUCKET_NAME, Key=f'{folder_name}/{file_name}')
         return True
     except NoCredentialsError:
-        raise reusable_failed_upload_file
+        raise _reusable_failed_upload_file
 
 
 async def check_image_type(image):

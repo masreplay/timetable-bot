@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING
+from typing import List, Optional
 from uuid import UUID
 
 from pydantic import EmailStr, constr
@@ -6,6 +6,7 @@ from pydantic.main import BaseModel
 from sqlalchemy import Column, Enum
 from sqlmodel import Field
 
+from app.core.as_form_data import as_form
 from app.core.utils.regex import url_regex
 from app.core.utils.sql_alchemy_utils import sa_column_kwargs
 from app.schemas.base import CardContent
@@ -16,7 +17,7 @@ from app.schemas.enums import UserGender, UserScrapeFrom
 class UserBase(CardContent):
     email: EmailStr | None = Field(default=None, sa_column_kwargs=sa_column_kwargs(unique=True))
     uot_url: constr(regex=url_regex) | None = Field(default=None)
-    image: constr(regex=url_regex) | None = Field(default=None)
+    image_url: constr(regex=url_regex) | None = Field(default=None)
     is_active: bool | None = True
 
     gender: UserGender | None = Field(sa_column=Column(Enum(UserGender)))
@@ -27,7 +28,7 @@ class UserBase(CardContent):
         default=None, sa_column=Column(Enum(UserScrapeFrom)))
 
     # relations
-    role_id: UUID | None = Field(foreign_key="role.id")
+    role_id: UUID = Field(foreign_key="role.id")
 
 
 class UserCreateDB(UserBase):
@@ -35,13 +36,23 @@ class UserCreateDB(UserBase):
 
 
 # Properties to receive via API on creation
+
+
+@as_form
 class UserCreate(CardContent):
-    pass
+    email: EmailStr | None = Field(default=None, sa_column_kwargs=sa_column_kwargs(unique=True))
+    password: str | None = Field(None, min_length=8, max_length=16)
+    uot_url: constr(regex=url_regex) | None = Field(default=None)
+    role_id: UUID
 
 
 # Properties to receive via API on update
-class UserUpdate(UserBase):
+@as_form
+class UserUpdate(CardContent):
+    email: EmailStr | None = Field(default=None, sa_column_kwargs=sa_column_kwargs(unique=True))
     password: str | None = Field(None, min_length=8, max_length=16)
+    uot_url: constr(regex=url_regex) | None = Field(default=None)
+    role_id: UUID
 
 
 class JobTitle(BaseModel):
