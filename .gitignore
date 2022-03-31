@@ -16,3 +16,4 @@ inject_table.py
 openapi_formatter/openapi.json
 
 test.bat
+seed.bat

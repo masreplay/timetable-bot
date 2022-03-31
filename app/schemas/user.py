@@ -7,7 +7,7 @@ from sqlalchemy import Column, Enum
 from sqlmodel import Field
 
 from app.core.as_form_data import as_form
-from app.core.utils.regex import url_regex
+from app.core.utils.regex import URL_REGEX
 from app.core.utils.sql_alchemy_utils import sa_column_kwargs
 from app.schemas.base import CardContent
 from app.schemas.enums import UserGender, UserScrapeFrom
@@ -16,8 +16,8 @@ from app.schemas.enums import UserGender, UserScrapeFrom
 # Shared properties
 class UserBase(CardContent):
     email: EmailStr | None = Field(default=None, sa_column_kwargs=sa_column_kwargs(unique=True))
-    uot_url: constr(regex=url_regex) | None = Field(default=None)
-    image_url: constr(regex=url_regex) | None = Field(default=None)
+    uot_url: constr(regex=URL_REGEX) | None = Field(default=None)
+    image_url: constr(regex=URL_REGEX) | None = Field(default=None)
     is_active: bool | None = True
 
     gender: UserGender | None = Field(sa_column=Column(Enum(UserGender)))
@@ -42,7 +42,7 @@ class UserCreateDB(UserBase):
 class UserCreate(CardContent):
     email: EmailStr | None = Field(default=None, sa_column_kwargs=sa_column_kwargs(unique=True))
     password: str | None = Field(None, min_length=8, max_length=16)
-    uot_url: constr(regex=url_regex) | None = Field(default=None)
+    uot_url: constr(regex=URL_REGEX) | None = Field(default=None)
     role_id: UUID
 
 
@@ -51,7 +51,7 @@ class UserCreate(CardContent):
 class UserUpdate(CardContent):
     email: EmailStr | None = Field(default=None, sa_column_kwargs=sa_column_kwargs(unique=True))
     password: str | None = Field(None, min_length=8, max_length=16)
-    uot_url: constr(regex=url_regex) | None = Field(default=None)
+    uot_url: constr(regex=URL_REGEX) | None = Field(default=None)
     role_id: UUID
 
 

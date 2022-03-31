@@ -1,14 +1,21 @@
 from uuid import UUID
 
+from pydantic import constr
 from sqlmodel import SQLModel, Field
 
+from app.core.utils import regex
+from app.core.utils.sql_alchemy_utils import sa_column_kwargs
 from app.schemas.permissions import Permissions
 
 
 # Shared properties
 class RoleBase(SQLModel):
-    name: str
-    enum: str
+    name: str = Field(..., sa_column_kwargs=sa_column_kwargs(unique=True))
+
+    enum: constr(regex=regex.SCREAMING_SNAKE_CASE) | None = Field(
+        default=None,
+        sa_column_kwargs=sa_column_kwargs(unique=True),
+    )
     permissions: Permissions
 
 
