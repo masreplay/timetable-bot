@@ -49,10 +49,6 @@ class Settings(BaseSettings):
             return v
         raise ValueError(v)
 
-    class Config:
-        env_file = "../../.env"
-        case_sensitive = True
-
     HTML_TO_IMAGE_SERVICE: str
 
     TELEGRAM_BOT_API_TOKEN: str
@@ -105,6 +101,10 @@ class Settings(BaseSettings):
 
         new['WEBHOOK_URL'] = f'{new.get("HEROKU_APP_HOST")}{new.get("WEBHOOK_PATH")}'
         return new
+
+    class Config:
+        env_file = "../../.env"
+        case_sensitive = True
 
 
 @lru_cache()
