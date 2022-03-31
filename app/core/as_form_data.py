@@ -3,6 +3,7 @@ from typing import Type
 
 from fastapi import FastAPI, Form
 from pydantic import BaseModel
+from pydantic.fields import ModelField
 
 app = FastAPI()
 
@@ -12,14 +13,18 @@ def as_form(cls: Type[BaseModel]):
     Adds an as_form class method to decorated models. The as_form class method
     can be used with FastAPI endpoints
     """
-    new_params = [
-        inspect.Parameter(
+    # field.type_ is list[str]:
+    # Unfortunately pydantic doesn't pass array as list but as str!
+    # https://github.com/tiangolo/fastapi/issues/318
+
+    new_params = []
+    for field in cls.__fields__.values():
+        param = inspect.Parameter(
             field.alias,
             inspect.Parameter.POSITIONAL_ONLY,
             default=(Form(field.default) if not field.required else Form(...)),
         )
-        for field in cls.__fields__.values()
-    ]
+        new_params.append(param)
 
     async def _as_form(**data):
         return cls(**data)

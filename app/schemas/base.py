@@ -1,13 +1,10 @@
 from datetime import datetime
 from uuid import UUID, uuid4
 
-from pydantic import constr, validator
+from pydantic import validator
 from pydantic.color import Color
 from sqlalchemy import Column
 from sqlmodel import SQLModel, Field, AutoString
-
-from app.core.utils.regex import color_regex
-from ui.colors.generate_color import random_light, random_dark
 
 
 class BaseSchema(SQLModel):

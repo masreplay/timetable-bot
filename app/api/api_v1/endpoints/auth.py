@@ -51,7 +51,7 @@ def sign_up(user: schemas.UserCreateDB, db: Session = Depends(get_db)) -> Any:
 
     crud.user.create(db, obj_in=user)
 
-    return schemas.Message(message="User have been created")
+    return schemas.Message(detail="User have been created")
 
 
 @router.post("/login/test.json-token", response_model=schemas.User)
@@ -95,4 +95,4 @@ def reset_password(
     user.hashed_password = hashed_password
     db.add(user)
     db.commit()
-    return schemas.Message(message="Password updated successfully")
+    return schemas.Message(detail="Password updated successfully")

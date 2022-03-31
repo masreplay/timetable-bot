@@ -4,6 +4,7 @@ from uuid import UUID
 from pydantic import validator
 from sqlmodel import Relationship, SQLModel, Field, Column, JSON
 
+from app.core.utils.sql_alchemy_utils import sa_relationship_kwargs
 from app.schemas.asc_version import AscVersionBase
 from app.schemas.base import BaseSchema
 from app.schemas.branch import BranchBase
@@ -56,7 +57,10 @@ class User(UserBase, BaseSchema, table=True):
     hashed_password: str | None = Field(default=None)
 
     lesson: "Lesson" = Relationship(back_populates="teacher")
-    job_titles: List["JobTitle"] = Relationship(back_populates="users", link_model=UserJobTitle)
+    job_titles: List["JobTitle"] = Relationship(
+        back_populates="users",
+        link_model=UserJobTitle
+    )
 
     class Config:
         orm_mode = True
