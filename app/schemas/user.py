@@ -1,4 +1,3 @@
-from typing import List, Optional
 from uuid import UUID
 
 from pydantic import EmailStr, constr
@@ -36,13 +35,12 @@ class UserCreateDB(UserBase):
 
 
 # Properties to receive via API on creation
-
-
 @as_form
 class UserCreate(CardContent):
     email: EmailStr | None = Field(default=None, sa_column_kwargs=sa_column_kwargs(unique=True))
     password: str | None = Field(None, min_length=8, max_length=16)
     uot_url: constr(regex=URL_REGEX) | None = Field(default=None)
+    gender: UserGender | None = Field(sa_column=Column(Enum(UserGender)))
     role_id: UUID
 
 
@@ -52,6 +50,7 @@ class UserUpdate(CardContent):
     email: EmailStr | None = Field(default=None, sa_column_kwargs=sa_column_kwargs(unique=True))
     password: str | None = Field(None, min_length=8, max_length=16)
     uot_url: constr(regex=URL_REGEX) | None = Field(default=None)
+    gender: UserGender | None = Field(sa_column=Column(Enum(UserGender)))
     role_id: UUID
 
 

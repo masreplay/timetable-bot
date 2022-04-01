@@ -29,4 +29,4 @@ api_router.include_router(telegram_user.router, prefix="/telegram", tags=[Tags.t
 
 @api_router.get("/openapi-formatted.json")
 def openapi_formatted():
-    return FileResponse("openapi.json")
+    return FileResponse("data/openapi.json")
