@@ -12,7 +12,7 @@ for path_data in openapi_content["paths"].values():
             to_remove = f"{tag}-"
             new_operation_id = operation_id[len(to_remove):]
             operation["operationId"] = new_operation_id
-        except:
-            print("error")
+        except Exception as e:
+            print(f"error {e}")
 
 file_path.write_text(json.dumps(openapi_content))
