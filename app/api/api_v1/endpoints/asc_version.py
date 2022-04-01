@@ -18,9 +18,8 @@ router = APIRouter()
 async def seed_db(
         db: Session = Depends(get_db),
         upload_file: UploadFile = File(...),
-        user_permissions: UserRole = Depends(deps.users_permission_handler),
+        user_role: UserRole = Depends(deps.users_permission_handler),
 ):
-    user, permissions = user_permissions
     json_data = json.load(upload_file.file)
     asc_init = InitializeDatabaseWithASCV2(
         db=db,
@@ -30,7 +29,7 @@ async def seed_db(
     crud.asc_version.create(
         db=db,
         obj_in=schemas.AscVersionCreate(
-            created_by=user.id,
+            created_by=user_role.user.id,
             file_name=upload_file.filename,
         )
     )

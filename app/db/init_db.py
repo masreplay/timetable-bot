@@ -14,6 +14,9 @@ from uot_scraper.match_teachers import get_combine_teachers, MergedTeacher
 
 
 class InitializeDatabaseWithASC:
+    """
+    Seed Database use data form "https://_.edupage.org/timetable/"
+    """
     db: Session
     asc: AscCRUD
 
@@ -292,33 +295,39 @@ class InitializeDatabaseWithASC:
                 )
             )
             user: schemas.User = crud.user.create(
-                db=self.db, obj_in=schemas.UserCreateDB(
+                db=self.db,
+                obj_in=schemas.UserCreateDB(
                     email=settings().SECOND_SUPERUSER,
                     password=settings().SECOND_SUPERUSER,
                     color='#000000',
                     gender=None,
                     name="pts",
-                    en_name="pts",
                     role_id=default_role.id
-                )
+                ),
+                job_titles=[]
             )
             crud.user.update_job_titles(self.db, id=user.id, job_titles=[student_jt, creator_jt])
 
             teachers: list[MergedTeacher] = get_combine_teachers(self.asc)
             for teacher in teachers:
-                user = crud.user.create(db=self.db, obj_in=schemas.UserCreateDB(
-                    name=teacher.name,
-                    en_name=teacher.en_name,
-                    image=teacher.image,
-                    email=teacher.email,
-                    uot_url=teacher.uot_url,
-                    role_id=default_role.id,
-                    color=teacher.color,
-                    asc_job=teacher.asc_job_title,
-                    asc_name=teacher.asc_name,
-                    scrape_from=teacher.scrape_from,
-                    gender=teacher.gender,
-                ))
+                user = crud.user.create(
+                    db=self.db,
+                    obj_in=schemas.UserCreateDB(
+                        name=teacher.name,
+                        # en_name=teacher.en_name,
+                        image=teacher.image,
+                        email=teacher.email,
+                        uot_url=teacher.uot_url,
+                        role_id=default_role.id,
+                        color=teacher.color,
+                        asc_job=teacher.asc_job_title,
+                        asc_name=teacher.asc_name,
+                        scrape_from=teacher.scrape_from,
+                        gender=teacher.gender,
+                    ),
+                    job_titles=[]
+
+                )
                 crud.user.update_job_titles(self.db, id=user.id, job_titles=[teacher_jt])
                 self.teachers_ids[teacher.id] = user.id
 
