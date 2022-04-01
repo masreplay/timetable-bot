@@ -1,5 +1,4 @@
 from enum import Enum
-from typing import Tuple, Optional
 
 from fastapi import Depends, HTTPException, status, Request
 from fastapi.security import OAuth2PasswordBearer
@@ -11,7 +10,7 @@ from app import crud, schemas, models
 from app.core import security
 from app.core.config import settings
 from app.db.db import get_db
-from app.models import Role, User
+from app.schemas.user_premissions import UserRole
 
 reusable_oauth2 = OAuth2PasswordBearer(
     tokenUrl=f"{settings().API_V1_STR}/auth/login/access-token"
@@ -58,9 +57,6 @@ def method_to_permission_name(method: str):
         return "update"
     else:
         return method
-
-
-UserRole: type = tuple[User, Role]
 
 
 class PermissionHandler:
@@ -111,7 +107,7 @@ class PermissionHandler:
                 detail="The user doesn't have enough permissions",
             )
 
-        return current_user, role
+        return UserRole(user=current_user, role=role)
 
 
 users_permission_handler = PermissionHandler(router="users")

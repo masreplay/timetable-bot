@@ -1,6 +1,6 @@
 venv
 .env
-env.bat
+bin/env.bat
 
 #**/[Tt]est*
 **/__pycache__
@@ -15,5 +15,5 @@ inject_table.py
 /generated_data/**
 openapi_formatter/openapi.json
 
-test.bat
-seed.bat
+bin/test.bat
+bin/seed.sh

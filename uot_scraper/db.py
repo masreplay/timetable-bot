@@ -27,9 +27,9 @@ def parse_json_list(file_dir: str, type_: Type[T], data="results") -> list[T]:
 
 @lru_cache()
 def get_teachers() -> list[Teacher]:
-    return parse_json_list(os.path.join(BASE_DIR, 'cs_teachers.json'), Teacher, data="results")
+    return parse_json_list(os.path.join(BASE_DIR, '../data/cs_teachers.json'), Teacher, data="results")
 
 
 @lru_cache()
 def get_roles() -> list[Role]:
-    return parse_json_list(os.path.join(BASE_DIR, 'cs_roles.json'), Role, data="results")
+    return parse_json_list(os.path.join(BASE_DIR, '../data/cs_roles.json'), Role, data="results")

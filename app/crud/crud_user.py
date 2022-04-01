@@ -3,6 +3,7 @@ from uuid import UUID
 
 from pydantic import EmailStr
 from sqlmodel import Session, select, col
+
 from app import schemas, models
 from app.core.security import verify_password, get_password_hash
 from app.crud.base import CRUDBase

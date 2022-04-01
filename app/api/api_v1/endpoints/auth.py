@@ -54,21 +54,13 @@ def sign_up(user: schemas.UserCreateDB, db: Session = Depends(get_db)) -> Any:
     return schemas.Message(detail="User have been created")
 
 
-@router.post("/login/test.json-token", response_model=schemas.User)
-def test_token(current_user: schemas.User = Depends(deps.get_current_user)) -> Any:
-    """
-    Test access token
-    """
-    return current_user
-
-
 @router.get("/permissions/", response_model=schemas.Role)
-def my_permissions(permissions: UserRole = Depends(deps.users_permission_handler)) -> Any:
+def get_my_permissions(permissions: UserRole = Depends(deps.users_permission_handler)) -> Any:
     """
     Return my permissions
     """
 
-    return permissions[-1]
+    return permissions.role
 
 
 @router.post("/reset-password/", response_model=schemas.Message)

@@ -32,10 +32,10 @@ def init_super_admin(db):
                 password=settings().FIRST_SUPERUSER_PASSWORD,
                 color='#000000',
                 gender=None,
-                en_name="SUPER ADMIN",
-                name="مسؤول",
+                name="SUPER ADMIN",
                 role_id=super_admin_role.id,
-            )
+            ),
+            job_titles=[]
         )
 
 

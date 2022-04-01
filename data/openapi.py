@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-file_path = Path("./openapi.json")
+file_path = Path("openapi.json")
 openapi_content = json.loads(file_path.read_text())
 
 for path_data in openapi_content["paths"].values():
@@ -10,7 +10,7 @@ for path_data in openapi_content["paths"].values():
             tag = operation["tags"][0]
             operation_id = operation["operationId"].replace("v1_", "")
             to_remove = f"{tag}-"
-            new_operation_id = operation_id[len(to_remove) :]
+            new_operation_id = operation_id[len(to_remove):]
             operation["operationId"] = new_operation_id
         except:
             print("error")
