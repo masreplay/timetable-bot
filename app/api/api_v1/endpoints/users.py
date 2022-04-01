@@ -37,7 +37,7 @@ def read_users(
 async def create_user(
         *,
         image: UploadFile | None = File(None),
-        user_in: schemas.UserCreate.as_form = Depends(schemas.UserCreate.as_form),
+        user_in: schemas.UserCreate = Depends(schemas.UserCreate.as_form),
         db: Session = Depends(get_db),
         job_titles: list[str] = Form(...)
 ) -> Any:
@@ -72,7 +72,7 @@ def update_user(
         db: Session = Depends(get_db),
         id: UUID,
         image: UploadFile | None = File(None),
-        user_in: schemas.UserUpdate.as_form = Depends(schemas.UserUpdate.as_form),
+        user_in: schemas.UserUpdate = Depends(schemas.UserUpdate.as_form),
         job_titles: list[str] = Form([])
 ) -> Any:
     """

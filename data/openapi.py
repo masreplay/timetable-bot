@@ -1,6 +1,9 @@
 import json
 from pathlib import Path
 
+
+
+
 file_path = Path("openapi.json")
 openapi_content = json.loads(file_path.read_text())
 version = "v1"
