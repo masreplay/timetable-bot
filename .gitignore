@@ -17,3 +17,6 @@ openapi_formatter/openapi.json
 
 bin/test.bat
 bin/seed.sh
+
+data/openapi-formatted.json
+data/openapi.json
