@@ -9,3 +9,7 @@ from .subjects_schedule import *
 from .rooms_schedule import *
 from .start import *
 from .inline import *
+
+
+def setup():
+    pass

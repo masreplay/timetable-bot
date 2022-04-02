@@ -12,6 +12,7 @@ from bot_app.handlers.callbackes import rooms_paging_cb, room_cb
 from bot_app.main import dp, bot
 from bot_app.service import default_per_page
 from bot_app.status import MESSAGE_500_INTERNAL_SERVER_ERROR
+from bot_app.throttling import timetable_throttled
 from bot_app.utils.paging import get_paging_buttons
 
 
@@ -39,6 +40,7 @@ async def paging_rooms_cb_handler(query: types.CallbackQuery, callback_data: dic
 
 
 @dp.callback_query_handler(room_cb.filter(action='select'))
+@dp.throttled(timetable_throttled, rate=4)
 async def select_room_cb_handler(query: types.CallbackQuery, callback_data: dict[str, str]):
     room_id = UUID(callback_data["id"])
 
@@ -63,7 +65,6 @@ async def select_room_cb_handler(query: types.CallbackQuery, callback_data: dict
             reply_markup=markup,
             parse_mode=ParseMode.MARKDOWN,
         )
-        await bot.pin_chat_message(chat_id=query.message.chat.id, message_id=message.message_id)
 
     else:
         await bot.send_message(chat_id=query.message.chat.id, text=MESSAGE_500_INTERNAL_SERVER_ERROR)

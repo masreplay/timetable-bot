@@ -13,6 +13,7 @@ from bot_app.handlers.callbackes import classrooms_cb
 from bot_app.main import dp, bot
 from bot_app.states import ScheduleType, StageScheduleForm
 from bot_app.status import MESSAGE_500_INTERNAL_SERVER_ERROR
+from bot_app.throttling import timetable_throttled
 
 
 @dp.callback_query_handler(lambda c: c.data == ScheduleType.stages)
@@ -47,6 +48,7 @@ async def process_branch(query: types.CallbackQuery, callback_data: dict[str, st
 
 
 @dp.callback_query_handler(classrooms_cb.filter(action='stage'), state=StageScheduleForm.stage)
+@dp.throttled(timetable_throttled, rate=4)
 async def process_stage(query: types.CallbackQuery, callback_data: dict[str, str], state: FSMContext):
     stage_id = UUID(callback_data['id'])
 
@@ -71,7 +73,6 @@ async def process_stage(query: types.CallbackQuery, callback_data: dict[str, str
             reply_markup=markup,
             parse_mode=ParseMode.MARKDOWN,
         )
-        await bot.pin_chat_message(chat_id=query.message.chat.id, message_id=message.message_id)
 
     else:
         await bot.send_message(chat_id=query.message.chat.id, text=MESSAGE_500_INTERNAL_SERVER_ERROR)

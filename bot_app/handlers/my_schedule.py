@@ -66,7 +66,6 @@ async def process_stage(query: types.CallbackQuery, callback_data: dict[str, str
             reply_markup=markup,
             parse_mode=ParseMode.MARKDOWN,
         )
-        await bot.pin_chat_message(chat_id=query.message.chat.id, message_id=message.message_id)
     except:
         await bot.send_message(chat_id=query.message.chat.id, text=MESSAGE_500_INTERNAL_SERVER_ERROR)
     finally:
