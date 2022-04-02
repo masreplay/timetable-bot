@@ -67,7 +67,7 @@ def read_subject(
     return subject
 
 
-@router.delete("/{id}", response_model=schemas.Subject)
+@router.delete("/{id}", response_model=schemas.Message)
 def delete_subject(
         *,
         db: Session = Depends(get_db),
@@ -79,5 +79,5 @@ def delete_subject(
     subject = crud.subject.get(db=db, id=id)
     if not subject:
         raise HTTPException(status_code=404, detail="subject not found")
-    subject = crud.subject.remove(db=db, id=id)
-    return subject
+    crud.subject.remove(db=db, id=id)
+    return schemas.Message(detail="Subject deleted")

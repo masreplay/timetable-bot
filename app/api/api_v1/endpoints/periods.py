@@ -69,7 +69,7 @@ def read_period(
     return period
 
 
-@router.delete("/{id}", response_model=schemas.Period)
+@router.delete("/{id}", response_model=schemas.Message)
 def delete_period(
         *,
         db: Session = Depends(get_db),
@@ -81,5 +81,5 @@ def delete_period(
     period = crud.period.get(db=db, id=id)
     if not period:
         raise HTTPException(status_code=404, detail="Period not found")
-    period = crud.period.remove(db=db, id=id)
-    return period
+    crud.period.remove(db=db, id=id)
+    return schemas.Message(detail="Period deleted")

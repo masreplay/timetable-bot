@@ -69,7 +69,7 @@ def read_telegram_user(
     return telegram_user
 
 
-@router.delete("/{id}", response_model=schemas.TelegramUser)
+@router.delete("/{id}", response_model=schemas.Message)
 def delete_telegram_user(
         *,
         db: Session = Depends(get_db),
@@ -81,5 +81,5 @@ def delete_telegram_user(
     telegram_user = crud.telegram_user.get(db=db, id=id)
     if not telegram_user:
         raise HTTPException(status_code=404, detail="User not found")
-    telegram_user = crud.telegram_user.remove(db=db, id=id)
-    return telegram_user
+    crud.telegram_user.remove(db=db, id=id)
+    return schemas.Message(detail="Telegram user deleted")

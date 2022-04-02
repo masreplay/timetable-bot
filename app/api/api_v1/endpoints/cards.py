@@ -67,7 +67,7 @@ def read_card(
     return card
 
 
-@router.delete("/{id}", response_model=schemas.Card)
+@router.delete("/{id}", response_model=schemas.Message)
 def delete_card(
         *,
         db: Session = Depends(get_db),
@@ -79,5 +79,5 @@ def delete_card(
     card = crud.card.get(db=db, id=id)
     if not card:
         raise HTTPException(status_code=404, detail="card not found")
-    card = crud.card.remove(db=db, id=id)
-    return card
+    crud.card.remove(db=db, id=id)
+    return schemas.Message(detail="Card deleted")

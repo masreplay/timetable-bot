@@ -68,7 +68,7 @@ def read_building(
     return building
 
 
-@router.delete("/{id}", response_model=schemas.Building)
+@router.delete("/{id}", response_model=schemas.Message)
 def delete_building(
         *,
         db: Session = Depends(get_db),
@@ -80,5 +80,5 @@ def delete_building(
     building = crud.building.get(db=db, id=id)
     if not building:
         raise HTTPException(status_code=404, detail="building not found")
-    building = crud.building.remove(db=db, id=id)
-    return building
+    crud.building.remove(db=db, id=id)
+    return schemas.Message(detail="Building deleted")
