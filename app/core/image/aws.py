@@ -27,6 +27,11 @@ def upload_to_aws_folder(local_file, folder_name, file_name):
         raise _reusable_failed_upload_file
 
 
+def upload_image(image: UploadFile | None) -> str | None:
+    if image:
+        return upload_to_aws(image)
+
+
 def upload_to_aws(image: UploadFile) -> str:
     try:
         file_name: str = str(uuid.uuid4()) + os.path.splitext(image.filename)[1]

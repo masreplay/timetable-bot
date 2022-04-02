@@ -7,7 +7,7 @@ from sqlmodel import Session
 
 from app import schemas, crud
 from app.core.image import aws
-from app.core.utils.fix_form_data import FormList
+from app.core.utils.fix_form_data import form_data_to_list
 from app.db.db import get_db
 from app.schemas import enums
 from app.schemas.paging import Paging, paging, PagingParams
@@ -39,31 +39,27 @@ async def create_user(
         image: UploadFile | None = File(None),
         user_in: schemas.UserCreate = Depends(schemas.UserCreate.as_form),
         db: Session = Depends(get_db),
-        job_titles: list[str] = Form(...)
 ) -> Any:
     """
     Create new user.
     """
 
-    job_titles = FormList(job_titles, UUID)
-
     user = crud.user.get_by_name(db=db, name=user_in.name)
     if user:
         raise HTTPException(status_code=400, detail="User already exist")
 
-    if not crud.role.get(db=db, id=user.role_id):
+    if not crud.role.get(db=db, id=user_in.role_id):
         raise HTTPException(status_code=404, detail="Role not found")
 
-    image_url = None
-    if image:
-        image_url = aws.upload_to_aws(image)
-
     try:
-        user = crud.user.create(db=db, obj_in=schemas.UserCreateDB(**user_in.dict(), image_url=image_url),
-                                job_titles=job_titles)
+        user = crud.user.create_relation(
+            db=db,
+            obj_in=user_in,
+            image_url=aws.upload_image(image)
+        )
         return user
     except IntegrityError:
-        raise HTTPException(status_code=400, detail="Job title is duplicated")
+        raise HTTPException(status_code=400, detail="Job titles are duplicated or not exits")
 
 
 @router.put("/{id}", response_model=schemas.User)
@@ -78,25 +74,23 @@ def update_user(
     """
     Update a user.
     """
-    job_titles = FormList(job_titles, UUID)
 
     user = crud.user.get(db=db, id=id)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
-
-    if not crud.role.get(db=db, id=user.role_id):
+    role = crud.role.get(db=db, id=user_in.role_id)
+    if not role:
         raise HTTPException(status_code=404, detail="Role not found")
-
-    image_url = None
-    if image:
-        image_url = aws.upload_to_aws(image)
-
     try:
-        user = crud.user.update(db=db, db_obj=user, obj_in=dict(**user_in.dict(), image_url=image_url),
-                                job_titles=job_titles)
+        user = crud.user.update(
+            db=db,
+            db_obj=user,
+            obj_in=dict(**user_in.dict(), image_url=aws.upload_image(image)),
+            job_titles=job_titles
+        )
         return user
     except IntegrityError:
-        raise HTTPException(status_code=400, detail="Job title is duplicated")
+        raise HTTPException(status_code=400, detail="Job titles are duplicated or not exits")
 
 
 @router.get("/{id}", response_model=schemas.User)

@@ -1,11 +1,12 @@
 from uuid import UUID
 
-from pydantic import EmailStr, constr
+from pydantic import EmailStr, constr, validator
 from pydantic.main import BaseModel
 from sqlalchemy import Column, Enum
 from sqlmodel import Field
 
 from app.core.as_form_data import as_form
+from app.core.utils.fix_form_data import form_data_to_list
 from app.core.utils.regex import URL_REGEX
 from app.core.utils.sql_alchemy_utils import sa_column_kwargs
 from app.schemas.base import CardContent
@@ -42,6 +43,10 @@ class UserCreate(CardContent):
     uot_url: constr(regex=URL_REGEX) | None = Field(default=None)
     gender: UserGender | None = Field(sa_column=Column(Enum(UserGender)))
     role_id: UUID
+    job_titles: list[str] = Field([])
+
+    @validator("job_titles")
+    def fix_job_titles(cls, v): return form_data_to_list(v, UUID)
 
 
 # Properties to receive via API on update

@@ -1,9 +1,15 @@
 from fastapi import HTTPException, Form
 
 
-def FormList(items: list[str], data_type: type):
+def form_data_to_list(items: list[str], data_type: type) -> list:
+    print(f"itemsitemsitemsitemsitems{items}")
     try:
-        new_list = items[0].split(",") if len(items) == 1 else []
+        if len(items) == 1 and items[0] == '':
+            new_list = []
+        elif len(items) == 1:
+            new_list = items[0].split(",")
+        else:
+            new_list = []
         return list[data_type](map(data_type, new_list))
     except Exception as e:
         raise HTTPException(

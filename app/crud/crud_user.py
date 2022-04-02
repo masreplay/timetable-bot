@@ -10,7 +10,7 @@ from app.crud.base import CRUDBase
 from app.models import User, UserJobTitle
 from app.schemas.enums import UserType
 from app.schemas.paging import Paging
-from app.schemas.user import UserCreateDB, UserUpdate
+from app.schemas.user import UserCreateDB, UserUpdate, UserCreate
 
 
 class CRUDUser(CRUDBase[User, UserCreateDB, UserUpdate, schemas.User]):
@@ -37,13 +37,14 @@ class CRUDUser(CRUDBase[User, UserCreateDB, UserUpdate, schemas.User]):
         db.refresh(user)
         return user
 
-    def create(self, db: Session, obj_in: UserCreateDB, job_titles: list[UUID]) -> User:
+    def create_relation(self, *, db: Session, obj_in: UserCreate, image_url: str) -> User:
         db_obj = User(
-            **obj_in.dict(),
+            **UserCreateDB(**obj_in.dict(), image_url=image_url).dict(),
             hashed_password=get_password_hash(obj_in.password) if obj_in.password else None,
         )
         db.add(db_obj)
-        for job_title in job_titles:
+
+        for job_title in obj_in.job_titles:
             db.add(UserJobTitle(job_title_id=job_title, user_id=db_obj.id))
         db.commit()
         db.refresh(db_obj)
@@ -86,10 +87,11 @@ class CRUDUser(CRUDBase[User, UserCreateDB, UserUpdate, schemas.User]):
             job_titles: list[UUID] = []
     ) -> schemas.User:
         user_db = super().update(db=db, db_obj=db_obj, obj_in=obj_in)
-        user_db.job_titles = []
-        db.commit()
+
+        self.remove_job_titles(db=db, user=user_db)
         for job_title in job_titles:
             db.add(UserJobTitle(job_title_id=job_title, user_id=db_obj.id))
+
         db.commit()
         db.refresh(user_db)
         return user_db
@@ -101,6 +103,10 @@ class CRUDUser(CRUDBase[User, UserCreateDB, UserUpdate, schemas.User]):
         if not verify_password(password, user.hashed_password):
             return None
         return user
+
+    def remove_job_titles(self, db: Session, user: User) -> Any:
+        user.job_titles = []
+        db.commit()
 
     def is_active(self, user: User) -> bool:
         return user.is_active

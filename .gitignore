@@ -19,4 +19,4 @@ bin/test.bat
 bin/seed.sh
 
 data/openapi-formatted.json
-data/openapi.json
+data/openapi-formatted.json
