@@ -12,7 +12,8 @@ from app.schemas.named_object import NamedObject
 # Shared properties
 class StageBase(SQLModel):
     # __table_args__ = (UniqueConstraint('shift', 'level', 'branch_id', name='branch_stage'),)
-    name: str
+
+    name: str = Field(..., max_length=50)
     shift: CollageShifts | None = Field(index=True, sa_column=Column(Enum(CollageShifts)))
     level: int | None = Field(index=True, ge=1, le=10)
     branch_id: UUID | None = Field(default=None, foreign_key="branch.id")
@@ -23,20 +24,6 @@ class Branch(NamedObject):
 
     class Config:
         orm_mode = True
-
-
-stage_level_t = {
-    1: "أول",
-    2: "ثاني",
-    3: "ثالث",
-    4: "رابع",
-    5: "خامس",
-}
-
-stage_shift_t = {
-    enums.CollageShifts.morning: "صباحي",
-    enums.CollageShifts.evening: "مسائي",
-}
 
 
 class StageScheduleDetails(StageBase):

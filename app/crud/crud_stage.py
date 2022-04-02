@@ -13,7 +13,8 @@ class CRUDStage(CRUDBase[Stage, StageCreate, StageUpdate, schemas.Stage]):
 
     def get_by_object(self, db: Session, stage: StageCreate | StageUpdate) -> Stage:
         statement = select(Stage) \
-            .where(and_(Stage.branch_id == stage.branch_id, Stage.shift == stage.shift, Stage.level == stage.level))
+            .where(and_(Stage.branch_id == stage.branch_id, Stage.shift == stage.shift, Stage.level == stage.level,
+                        Stage.name == stage.name))
         return db.exec(statement).first()
 
     def get(self, db: Session, id: UUID) -> schemas.Stage:
