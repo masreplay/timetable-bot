@@ -314,7 +314,6 @@ class InitializeDatabaseWithASC:
                     db=self.db,
                     obj_in=schemas.UserCreateDB(
                         name=teacher.name,
-                        # en_name=teacher.en_name,
                         image=teacher.image,
                         email=teacher.email,
                         uot_url=teacher.uot_url,
@@ -324,9 +323,8 @@ class InitializeDatabaseWithASC:
                         asc_name=teacher.asc_name,
                         scrape_from=teacher.scrape_from,
                         gender=teacher.gender,
+                        job_titles=[]
                     ),
-                    job_titles=[]
-
                 )
                 crud.user.update_job_titles(self.db, id=user.id, job_titles=[teacher_jt])
                 self.teachers_ids[teacher.id] = user.id

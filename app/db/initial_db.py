@@ -26,8 +26,9 @@ def init_super_admin(db):
                 permissions=super_admin_permissions,
             )
         )
-        crud.user.create(
-            db=db, obj_in=schemas.UserCreateDB(
+        crud.user.create_relation(
+            db=db,
+            obj_in=schemas.UserCreate(
                 email=settings().FIRST_SUPERUSER,
                 password=settings().FIRST_SUPERUSER_PASSWORD,
                 color='#000000',
@@ -35,7 +36,7 @@ def init_super_admin(db):
                 name="SUPER ADMIN",
                 role_id=super_admin_role.id,
             ),
-            job_titles=[]
+            image_url=None,
         )
 
 

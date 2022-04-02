@@ -1,7 +1,7 @@
 from datetime import timedelta
 from typing import Any
 
-from fastapi import APIRouter, Body, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
@@ -9,9 +9,7 @@ from app import crud, schemas
 from app.api import deps
 from app.api.deps import UserRole
 from app.core import security
-from app.core.security import get_password_hash
 from app.db.db import get_db, settings
-from app.utils import (verify_password_reset_token)
 
 router = APIRouter()
 
@@ -40,18 +38,18 @@ def login_access_token(
     )
 
 
-@router.post("/signup", response_model=schemas.Message)
-def sign_up(user: schemas.UserCreateDB, db: Session = Depends(get_db)) -> Any:
-    """
-    User create new account, get an access token for future requests
-    """
-    old_user = crud.user.get_by_email(db, email=user.email)
-    if old_user:
-        raise HTTPException(status_code=401, detail="User already exist")
-
-    crud.user.create(db, obj_in=user)
-
-    return schemas.Message(detail="User have been created")
+# @router.post("/signup", response_model=schemas.Message)
+# def sign_up(user: schemas.UserCreateDB, db: Session = Depends(get_db)) -> Any:
+#     """
+#     User create new account, get an access token for future requests
+#     """
+#     old_user = crud.user.get_by_email(db, email=user.email)
+#     if old_user:
+#         raise HTTPException(status_code=401, detail="User already exist")
+#
+#     crud.user.create(db, obj_in=user)
+#
+#     return schemas.Message(detail="User have been created")
 
 
 @router.get("/permissions/", response_model=schemas.Role)
@@ -63,28 +61,28 @@ def get_my_permissions(permissions: UserRole = Depends(deps.users_permission_han
     return permissions.role
 
 
-@router.post("/reset-password/", response_model=schemas.Message)
-def reset_password(
-        token: str = Body(...),
-        new_password: str = Body(...),
-        db: Session = Depends(get_db),
-) -> Any:
-    """
-    Reset password
-    """
-    email = verify_password_reset_token(token)
-    if not email:
-        raise HTTPException(status_code=400, detail="Invalid token")
-    user = crud.user.get_by_email(db, email=email)
-    if not user:
-        raise HTTPException(
-            status_code=404,
-            detail="The user with this username does not exist in the system.",
-        )
-    elif not crud.user.is_active(user):
-        raise HTTPException(status_code=400, detail="Inactive user")
-    hashed_password = get_password_hash(new_password)
-    user.hashed_password = hashed_password
-    db.add(user)
-    db.commit()
-    return schemas.Message(detail="Password updated successfully")
+# @router.post("/reset-password/", response_model=schemas.Message)
+# def reset_password(
+#         token: str = Body(...),
+#         new_password: str = Body(...),
+#         db: Session = Depends(get_db),
+# ) -> Any:
+#     """
+#     Reset password
+#     """
+#     email = verify_password_reset_token(token)
+#     if not email:
+#         raise HTTPException(status_code=400, detail="Invalid token")
+#     user = crud.user.get_by_email(db, email=email)
+#     if not user:
+#         raise HTTPException(
+#             status_code=404,
+#             detail="The user with this username does not exist in the system.",
+#         )
+#     elif not crud.user.is_active(user):
+#         raise HTTPException(status_code=400, detail="Inactive user")
+#     hashed_password = get_password_hash(new_password)
+#     user.hashed_password = hashed_password
+#     db.add(user)
+#     db.commit()
+#     return schemas.Message(detail="Password updated successfully")

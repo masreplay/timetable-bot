@@ -10,7 +10,7 @@ from data.openapi import format_openapi_file
 api_router = APIPermissionsRouter()
 
 api_router.include_router(schedule.router, prefix="/schedule", tags=[Tags.schedules])
-api_router.include_router(stages.router, prefix="/stages", tags=[Tags.stages])
+api_router.include_permissions_router(stages.router, prefix="/stages", tags=[Tags.stages])
 api_router.include_router(asc_version.router, prefix="/asc", tags=[Tags.asc])
 api_router.include_router(auth.router, prefix="/auth", tags=[Tags.auth])
 api_router.include_router(periods.router, prefix="/periods", tags=[Tags.periods])
