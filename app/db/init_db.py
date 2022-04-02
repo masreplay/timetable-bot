@@ -294,17 +294,18 @@ class InitializeDatabaseWithASC:
                     permissions=default_permissions,
                 )
             )
-            user: schemas.User = crud.user.create(
+            user: schemas.User = crud.user.create_relation(
                 db=self.db,
-                obj_in=schemas.UserCreateDB(
+                obj_in=schemas.UserCreate(
                     email=settings().SECOND_SUPERUSER,
                     password=settings().SECOND_SUPERUSER,
                     color='#000000',
                     gender=None,
                     name="pts",
-                    role_id=default_role.id
+                    role_id=default_role.id,
+                    job_titles=[]
                 ),
-                job_titles=[]
+                image_url=None
             )
             crud.user.update_job_titles(self.db, id=user.id, job_titles=[student_jt, creator_jt])
 

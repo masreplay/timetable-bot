@@ -3,7 +3,6 @@ from aiogram import types
 from aiogram.types import ParseMode
 
 from bot_app.main import dp, bot
-from i18n import translate
 
 
 @dp.message_handler(commands='about')
@@ -16,7 +15,7 @@ async def cmd_about(message: types.Message):
 
     await bot.send_message(
         chat_id=message.chat.id,
-        text=md.text(translate("ar", "about")),
+        text=md.text("about"),
         reply_markup=buttons,
         parse_mode=ParseMode.MARKDOWN,
     )
