@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from sqlmodel import Session, select
+from sqlmodel import Session, select, and_
 
 from app import schemas
 from app.crud.base import CRUDBase
@@ -13,7 +13,7 @@ class CRUDStage(CRUDBase[Stage, StageCreate, StageUpdate, schemas.Stage]):
 
     def get_by_object(self, db: Session, stage: StageCreate | StageUpdate) -> Stage:
         statement = select(Stage) \
-            .where(*[Stage.branch_id == stage.branch_id, Stage.shift == stage.shift, Stage.level == stage.level])
+            .where(and_(Stage.branch_id == stage.branch_id, Stage.shift == stage.shift, Stage.level == stage.level))
         return db.exec(statement).first()
 
     def get(self, db: Session, id: UUID) -> schemas.Stage:
