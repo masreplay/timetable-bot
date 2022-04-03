@@ -110,6 +110,8 @@ class Settings(BaseSettings):
 
     S3_BASE_URL: str
 
+    PORT: str
+
     @root_validator(pre=True)
     def assemble_s3_base_url(cls, values):
         new = dict(values)
