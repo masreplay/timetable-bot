@@ -7,7 +7,6 @@ from sqlmodel import Session
 
 from app import schemas, crud
 from app.core.image import aws
-from app.core.utils.fix_form_data import form_data_to_list
 from app.db.db import get_db
 from app.schemas import enums
 from app.schemas.paging import Paging, paging, PagingParams
@@ -31,6 +30,21 @@ def read_users(
     users = crud.user.get_filter(db, skip=p.skip, limit=p.limit, query=search_query, role_id=role_id,
                                  user_types=user_types, job_titles=job_titles)
     return users
+
+
+@router.get("/{id}", response_model=schemas.User)
+def read_user(
+        *,
+        db: Session = Depends(get_db),
+        id: UUID,
+) -> Any:
+    """
+    Get user by ID.
+    """
+    user = crud.user.get(db=db, id=id)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    return user
 
 
 @router.post("/", response_model=schemas.User)
@@ -91,21 +105,6 @@ def update_user(
         return user
     except IntegrityError:
         raise HTTPException(status_code=400, detail="Job titles are duplicated or not exits")
-
-
-@router.get("/{id}", response_model=schemas.User)
-def read_user(
-        *,
-        db: Session = Depends(get_db),
-        id: UUID,
-) -> Any:
-    """
-    Get user by ID.
-    """
-    user = crud.user.get(db=db, id=id)
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
-    return user
 
 
 @router.delete("/{id}", response_model=schemas.Message)
