@@ -71,8 +71,7 @@ class CRUDUser(CRUDBase[User, UserCreateDB, UserUpdate, schemas.User]):
 
         if user_types:
             where.append(User.job_titles.any(models.JobTitle.type.in_([user_type.name for user_type in user_types])))
-        else:
-            where.append(User.job_titles.any(models.JobTitle.type.in_([UserType.teacher])))
+
         return Paging[schemas.User](
             count=db.query(User).filter(*where).count(),
             results=db.exec(select(User).order_by(User.name).where(*where).offset(skip).limit(limit)).all()

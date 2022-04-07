@@ -18,7 +18,7 @@ router = APIRouter()
 def read_users(
         search_query: str | None = None,
         role_id: UUID | None = None,
-        user_types: list[enums.StaffType] | None = Query(None),
+        user_types: list[enums.StaffType] | None = None,
         job_titles: list[str] | None = Query(None),
         db: Session = Depends(get_db),
         p: PagingParams = Depends(paging),
