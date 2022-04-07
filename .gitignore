@@ -6,9 +6,9 @@ bin/env.bat
 **/__pycache__
 *.pyc
 
-asc_scrapper/generated_data
+scrapers/asc_scrapper/generated_data
 /bot_app/generated_data/
-asc_scrapper/asc_data
+scrapers/asc_scrapper/asc_data
 asc_schedule*.json
 
 inject_table.py

@@ -3,14 +3,14 @@ from uuid import UUID, uuid4
 
 from sqlmodel import Session
 
-import asc_scrapper.schemas as asc_schemas
+import scrapers.asc_scrapper.schemas as asc_schemas
 from app import crud, schemas, models
 from app.core.config import settings
 from app.schemas import enums
 from app.schemas.enums import UserType, CollageShifts
 from app.schemas.permissions import default_permissions
-from asc_scrapper.crud import AscCRUD
-from uot_scraper.match_teachers import get_combine_teachers, MergedTeacher
+from scrapers.asc_scrapper.crud import AscCRUD
+from scrapers.uot_scraper.match_teachers import get_combine_teachers, MergedTeacher
 
 
 class InitializeDatabaseWithASC:

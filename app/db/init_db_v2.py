@@ -1,7 +1,7 @@
 import re
 from uuid import uuid4
 
-import asc_scrapper.schemas as asc_schemas
+import scrapers.asc_scrapper.schemas as asc_schemas
 from app import crud, schemas
 from app.db.init_db import InitializeDatabaseWithASC
 from app.schemas.enums import CollageShifts

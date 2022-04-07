@@ -5,8 +5,8 @@ from typing import Type
 
 from pydantic import parse_obj_as
 
-from asc_scrapper import schemas
-from asc_scrapper.schemas import *
+from scrapers.asc_scrapper import schemas
+from scrapers.asc_scrapper.schemas import *
 
 T = TypeVar("T")
 

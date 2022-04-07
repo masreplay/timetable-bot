@@ -9,7 +9,7 @@ from app.api.deps import UserRole
 from app.db.db import get_db
 from app.db.init_db_v2 import InitializeDatabaseWithASCV2
 from app.schemas import Message
-from asc_scrapper.crud import AscCRUD
+from scrapers.asc_scrapper.crud import AscCRUD
 
 router = APIRouter()
 

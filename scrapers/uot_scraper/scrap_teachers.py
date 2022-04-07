@@ -6,8 +6,8 @@ import urllib3
 from bs4 import BeautifulSoup as BSHTML
 
 from app.core.config import settings
-from uot_scraper.email_extract import get_emails
-from uot_scraper.schemas import Teacher, Role
+from scrapers.uot_scraper.email_extract import get_emails
+from scrapers.uot_scraper.schemas import Teacher, Role
 
 
 def main():

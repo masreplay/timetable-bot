@@ -2,17 +2,16 @@ import json
 import pathlib
 
 import requests
-from pydantic import BaseModel
 
 from app.core.config import settings
-from asc_scrapper.crud import AscCRUD
-from asc_scrapper.schedule_html import schedule_html
+from scrapers.asc_scrapper.crud import AscCRUD
+from scrapers.asc_scrapper.schedule_html import schedule_html
 
 IMAGE_URL = f"{settings().HTML_TO_IMAGE_SERVICE}/image"
 
 
 def get_schedule_image(name: str, test: bool = True) -> str | None:
-    json_file = open("../asc_scrapper/asc_schedule.json", encoding="utf8")
+    json_file = open("/asc_schedule.json", encoding="utf8")
     data = json.load(json_file)
     asc_crud: AscCRUD = AscCRUD(data=data)
 
