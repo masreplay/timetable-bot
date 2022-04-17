@@ -32,7 +32,7 @@ def read_users(
     return users
 
 
-@router.get("/{id}", response_model=schemas.User)
+@router.get("/{id}", response_model=schemas.UserDetails)
 def read_user(
         *,
         db: Session = Depends(get_db),
@@ -41,10 +41,13 @@ def read_user(
     """
     Get user by ID.
     """
-    user = crud.user.get(db=db, id=id)
+    user: schemas.User = crud.user.get(db=db, id=id)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
-    return user
+
+    schedule = crud.schedule.get_teacher_schedule(db=db, teacher=user)
+    user_details = schemas.UserDetails(**user.dict(), job_titles=user.job_titles, schedule=schedule)
+    return user_details
 
 
 @router.post("/", response_model=schemas.User)

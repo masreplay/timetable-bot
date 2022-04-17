@@ -15,7 +15,7 @@ from app.schemas.user import UserCreateDB, UserUpdate, UserCreate
 
 class CRUDUser(CRUDBase[User, UserCreateDB, UserUpdate, schemas.User]):
 
-    def get(self, db: Session, id: UUID) -> User:
+    def get(self, db: Session, id: UUID) -> User | None:
         statement = select(self.model).where(User.id == id)
         return db.exec(statement).first()
 

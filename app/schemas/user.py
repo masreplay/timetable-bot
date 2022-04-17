@@ -9,11 +9,14 @@ from app.core.as_form_data import as_form
 from app.core.utils.fix_form_data import form_data_to_list
 from app.core.utils.regex import URL_REGEX
 from app.core.utils.sql_alchemy_utils import sa_column_kwargs
+from app.schemas import ScheduleDetails
 from app.schemas.base import CardContent
 from app.schemas.enums import UserGender, UserScrapeFrom
 
 
 # Shared properties
+
+
 class UserBase(CardContent):
     email: EmailStr | None = Field(default=None, sa_column_kwargs=sa_column_kwargs(unique=True))
     uot_url: constr(regex=URL_REGEX) | None = Field(default=None)
@@ -67,3 +70,9 @@ class JobTitle(BaseModel):
 class User(UserBase):
     id: UUID
     job_titles: list[JobTitle]
+
+
+class UserDetails(UserBase):
+    id: UUID
+    job_titles: list[JobTitle]
+    schedule: ScheduleDetails | None
