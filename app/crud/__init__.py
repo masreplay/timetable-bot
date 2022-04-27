@@ -3,12 +3,14 @@ from .crud_asc_version import CRUDAscVersion
 from .crud_branch import branch
 from .crud_schedule import CRUDSchedule
 from .crud_stage import stage
+from .crud_subject import CRUDSubject
+from .crud_telegram_user import CRUDTelegramUser
 from .crud_user import user
 from .. import schemas, models
 from ..schemas import (RoleCreate, PeriodCreate, JobTitleCreate, DepartmentCreate, BuildingCreate,
                        RoomCreate, RoleUpdate, PeriodUpdate, JobTitleUpdate, DepartmentUpdate, BuildingUpdate,
-                       RoomUpdate, FloorCreate, FloorUpdate, CardCreate, CardUpdate, SubjectCreate,
-                       LessonCreate, LessonUpdate, SubjectUpdate, DayCreate, DayUpdate, )
+                       RoomUpdate, FloorCreate, FloorUpdate, CardCreate, CardUpdate, LessonCreate, LessonUpdate,
+                       DayCreate, DayUpdate, )
 
 # crud types
 RoleCRUD: type = CRUDBase[models.Role, RoleCreate, RoleUpdate, schemas.Role]
@@ -19,7 +21,6 @@ BuildingCRUD: type = CRUDBase[models.Building, BuildingCreate, BuildingUpdate, s
 RoomCRUD: type = CRUDBase[models.Room, RoomCreate, RoomUpdate, schemas.Room]
 FloorCRUD: type = CRUDBase[models.Floor, FloorCreate, FloorUpdate, schemas.Floor]
 CardCRUD: type = CRUDBase[models.Card, CardCreate, CardUpdate, schemas.Card]
-SubjectCRUD: type = CRUDBase[models.Subject, SubjectCreate, SubjectUpdate, schemas.Subject]
 LessonCRUD: type = CRUDBase[models.Lesson, LessonCreate, LessonUpdate, schemas.Lesson]
 DayCRUD: type = CRUDBase[models.Day, DayCreate, DayUpdate, schemas.Day]
 
@@ -31,8 +32,9 @@ building: BuildingCRUD = BuildingCRUD(models.Building, schemas.Building)
 room: RoomCRUD = RoomCRUD(models.Room, schemas.Room)
 floor: FloorCRUD = FloorCRUD(models.Floor, schemas.Floor)
 card: CardCRUD = CardCRUD(models.Card, schemas.Card)
-subject: SubjectCRUD = SubjectCRUD(models.Subject, schemas.Subject)
+subject: CRUDSubject = CRUDSubject(models.Subject, schemas.Subject)
 lesson: LessonCRUD = LessonCRUD(models.Lesson, schemas.Lesson)
 day: DayCRUD = DayCRUD(models.Day, schemas.Day)
 schedule: CRUDSchedule = CRUDSchedule()
 asc_version: CRUDAscVersion = CRUDAscVersion()
+telegram_user: CRUDTelegramUser = CRUDTelegramUser(models.TelegramUser, schemas.TelegramUser)

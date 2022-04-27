@@ -13,12 +13,12 @@ router = APIRouter()
 @router.get("/", response_model=Paging[schemas.Lesson])
 def read_lessons(
         db: Session = Depends(get_db),
-        paging: LimitSkipParams = Depends(),
+        p: PagingParams = Depends(paging),
 ) -> Any:
     """
     Retrieve lessons.
     """
-    lessons = crud.lesson.get_multi(db, skip=paging.skip, limit=paging.limit)
+    lessons = crud.lesson.get_multi(db, skip=p.skip, limit=p.limit)
     return lessons
 
 
@@ -67,7 +67,7 @@ def read_lesson(
     return lesson
 
 
-@router.delete("/{id}", response_model=schemas.Lesson)
+@router.delete("/{id}", response_model=schemas.Message)
 def delete_lesson(
         *,
         db: Session = Depends(get_db),
@@ -79,5 +79,5 @@ def delete_lesson(
     lesson = crud.lesson.get(db=db, id=id)
     if not lesson:
         raise HTTPException(status_code=404, detail="lesson not found")
-    lesson = crud.lesson.remove(db=db, id=id)
-    return lesson
+    crud.lesson.remove(db=db, id=id)
+    return schemas.Message(detail="Lesson deleted")

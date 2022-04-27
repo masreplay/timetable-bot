@@ -1,10 +1,8 @@
-from datetime import date
-from typing import Any, Optional
-from typing import TypeVar, Generic
+from typing import Any
+from typing import TypeVar
 from uuid import UUID
 
 from pydantic import validator, BaseModel
-from pydantic.generics import GenericModel
 from sqlmodel import SQLModel
 
 from app.schemas.base import CardContent
@@ -14,11 +12,10 @@ from app.schemas.floor import FloorBase
 from app.schemas.lesson import LessonBase
 from app.schemas.named_object import IdObject
 from app.schemas.period import PeriodBase
-from app.schemas.rights import Rights
 from app.schemas.room import RoomBase
-from app.schemas.schedule_information import ScheduleInformation
 from app.schemas.stage import Stage
 from app.schemas.subject import SubjectBase
+from bot_app.states import ScheduleType
 
 ModelType = TypeVar('ModelType')
 
@@ -93,10 +90,14 @@ class CardScheduleDetails(CardBase):
         orm_mode = True
 
 
+class ScheduleDetailsItem(BaseModel):
+    id: UUID
+    name: str | None = None
+    type: ScheduleType
+
+
 class ScheduleDetails(BaseModel):
-    stage: Stage | None
-    information: ScheduleInformation
-    rights: Optional[Rights]
+    item: ScheduleDetailsItem
     cards: list[CardScheduleDetails]
     days: list[DaySchedule]
     periods: list[PeriodSchedule]

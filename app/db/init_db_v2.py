@@ -1,7 +1,7 @@
 import re
 from uuid import uuid4
 
-import asc_scrapper.schemas as asc_schemas
+import scrapers.asc_scrapper.schemas as asc_schemas
 from app import crud, schemas
 from app.db.init_db import InitializeDatabaseWithASC
 from app.schemas.enums import CollageShifts
@@ -132,6 +132,7 @@ class InitializeDatabaseWithASCV2(InitializeDatabaseWithASC):
 
                     self.stages_ids[class_.id] = crud.stage.create(
                         db=self.db, obj_in=schemas.StageCreate(
+                            name=name,
                             shift=shift,
                             level=level,
                             branch_id=branch.id,

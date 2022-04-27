@@ -13,12 +13,12 @@ router = APIRouter()
 @router.get("/", response_model=Paging[schemas.Floor])
 def read_floors(
         db: Session = Depends(get_db),
-        paging: LimitSkipParams = Depends(),
+        p: PagingParams = Depends(paging),
 ) -> Any:
     """
     Retrieve floors.
     """
-    floors = crud.floor.get_multi(db, skip=paging.skip, limit=paging.limit)
+    floors = crud.floor.get_multi(db, skip=p.skip, limit=p.limit)
     return floors
 
 
@@ -67,7 +67,7 @@ def read_floor(
     return floor
 
 
-@router.delete("/{id}", response_model=schemas.Floor)
+@router.delete("/{id}", response_model=schemas.Message)
 def delete_floor(
         *,
         db: Session = Depends(get_db),
@@ -79,5 +79,5 @@ def delete_floor(
     floor = crud.floor.get(db=db, id=id)
     if not floor:
         raise HTTPException(status_code=404, detail="floor not found")
-    floor = crud.floor.remove(db=db, id=id)
-    return floor
+    crud.floor.remove(db=db, id=id)
+    return schemas.Message(detail="Floor deleted")

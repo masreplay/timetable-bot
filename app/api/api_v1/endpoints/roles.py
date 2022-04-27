@@ -14,12 +14,12 @@ router = APIRouter()
 @router.get("/", response_model=Paging[schemas.Role])
 def read_roles(
         db: Session = Depends(get_db),
-        paging: LimitSkipParams = Depends(),
+        p: PagingParams = Depends(paging),
 ) -> Any:
     """
     Retrieve roles.
     """
-    roles = crud.role.get_multi(db, skip=paging.skip, limit=paging.limit)
+    roles = crud.role.get_multi(db, skip=p.skip, limit=p.limit)
     return roles
 
 
@@ -69,7 +69,7 @@ def read_role(
     return role
 
 
-@router.delete("/{id}", response_model=schemas.Role)
+@router.delete("/{id}", response_model=schemas.Message)
 def delete_role(
         *,
         db: Session = Depends(get_db),
@@ -81,5 +81,5 @@ def delete_role(
     role = crud.role.get(db=db, id=id)
     if not role:
         raise HTTPException(status_code=404, detail="Role not found")
-    role = crud.role.remove(db=db, id=id)
-    return role
+    crud.role.remove(db=db, id=id)
+    return schemas.Message(detail="Role deleted")

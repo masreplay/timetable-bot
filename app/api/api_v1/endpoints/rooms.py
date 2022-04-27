@@ -13,12 +13,12 @@ router = APIRouter()
 @router.get("/", response_model=Paging[schemas.Room])
 def read_rooms(
         db: Session = Depends(get_db),
-        paging: LimitSkipParams = Depends(),
+        p: PagingParams = Depends(paging),
 ) -> Any:
     """
     Retrieve rooms.
     """
-    rooms = crud.room.get_multi(db, skip=paging.skip, limit=paging.limit)
+    rooms = crud.room.get_multi(db, skip=p.skip, limit=p.limit)
     return rooms
 
 
@@ -82,7 +82,7 @@ def read_room(
     return room
 
 
-@router.delete("/{id}", response_model=schemas.Room)
+@router.delete("/{id}", response_model=schemas.Message)
 def delete_room(
         *,
         db: Session = Depends(get_db),
@@ -94,5 +94,5 @@ def delete_room(
     room = crud.room.get(db=db, id=id)
     if not room:
         raise HTTPException(status_code=404, detail="room not found")
-    room = crud.room.remove(db=db, id=id)
-    return room
+    crud.room.remove(db=db, id=id)
+    return schemas.Message(detail="Room deleted")

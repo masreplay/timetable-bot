@@ -2,10 +2,10 @@ from pydantic import BaseModel
 from pydantic.color import Color
 
 from app.schemas.user import UserGender, UserScrapeFrom
-from asc_scrapper import schemas as asc_schemas
-from asc_scrapper.crud import AscCRUD
+from scrapers.asc_scrapper import schemas as asc_schemas
+from scrapers.asc_scrapper.crud import AscCRUD
 from ui.colors.color_utils import random_primary, colored_text
-from uot_scraper.db import get_teachers
+from scrapers.uot_scraper.db import get_teachers
 
 
 class MergedTeacher(BaseModel):

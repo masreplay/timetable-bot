@@ -13,12 +13,12 @@ router = APIRouter()
 @router.get("/", response_model=Paging[schemas.Subject])
 def read_subjects(
         db: Session = Depends(get_db),
-        paging: LimitSkipParams = Depends(),
+        p: PagingParams = Depends(paging),
 ) -> Any:
     """
     Retrieve subjects.
     """
-    subjects = crud.subject.get_multi(db, skip=paging.skip, limit=paging.limit)
+    subjects = crud.subject.get_multi(db, skip=p.skip, limit=p.limit)
     return subjects
 
 
@@ -67,7 +67,7 @@ def read_subject(
     return subject
 
 
-@router.delete("/{id}", response_model=schemas.Subject)
+@router.delete("/{id}", response_model=schemas.Message)
 def delete_subject(
         *,
         db: Session = Depends(get_db),
@@ -79,5 +79,5 @@ def delete_subject(
     subject = crud.subject.get(db=db, id=id)
     if not subject:
         raise HTTPException(status_code=404, detail="subject not found")
-    subject = crud.subject.remove(db=db, id=id)
-    return subject
+    crud.subject.remove(db=db, id=id)
+    return schemas.Message(detail="Subject deleted")

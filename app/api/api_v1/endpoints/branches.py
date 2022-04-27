@@ -16,12 +16,12 @@ permissions = Depends(PermissionHandler("branches"))
 @router.get("/", response_model=Paging[schemas.Branch])
 def read_branches(
         db: Session = Depends(get_db),
-        paging: LimitSkipParams = Depends(),
+        p: PagingParams = Depends(paging),
 ) -> Any:
     """
     Retrieve branches.
     """
-    branches = crud.branch.get_multi(db, skip=paging.skip, limit=paging.limit)
+    branches = crud.branch.get_multi(db, skip=p.skip, limit=p.limit)
     return branches
 
 
@@ -70,7 +70,7 @@ def read_branch(
     return branch
 
 
-@router.delete("/{id}", response_model=schemas.Branch, dependencies=[permissions])
+@router.delete("/{id}", response_model=schemas.Message, dependencies=[permissions])
 def delete_branch(
         *,
         db: Session = Depends(get_db),
@@ -82,5 +82,5 @@ def delete_branch(
     branch = crud.branch.get(db=db, id=id)
     if not branch:
         raise HTTPException(status_code=404, detail="Branch not found")
-    branch = crud.branch.remove(db=db, id=id)
-    return branch
+    crud.branch.remove(db=db, id=id)
+    return schemas.Message(detail="Branch deleted")

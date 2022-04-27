@@ -20,6 +20,7 @@ from app.schemas.role import RoleBase
 from app.schemas.room import RoomBase
 from app.schemas.stage import StageBase
 from app.schemas.subject import SubjectBase
+from app.schemas.telegram_user import TelegramUserBase
 from app.schemas.user import UserBase
 
 
@@ -55,7 +56,10 @@ class User(UserBase, BaseSchema, table=True):
     hashed_password: str | None = Field(default=None)
 
     lesson: "Lesson" = Relationship(back_populates="teacher")
-    job_titles: List["JobTitle"] = Relationship(back_populates="users", link_model=UserJobTitle)
+    job_titles: List["JobTitle"] = Relationship(
+        back_populates="users",
+        link_model=UserJobTitle
+    )
 
     class Config:
         orm_mode = True
@@ -141,4 +145,8 @@ class Day(BaseSchema, DayBase, table=True):
 
 
 class AscVersion(BaseSchema, AscVersionBase, table=True):
+    pass
+
+
+class TelegramUser(BaseSchema, TelegramUserBase, table=True):
     pass

@@ -22,3 +22,4 @@ def verify_password_reset_token(token: str) -> str | None:
         return decoded_token["email"]
     except jwt.JWTError:
         return None
+

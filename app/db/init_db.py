@@ -3,17 +3,20 @@ from uuid import UUID, uuid4
 
 from sqlmodel import Session
 
-import asc_scrapper.schemas as asc_schemas
+import scrapers.asc_scrapper.schemas as asc_schemas
 from app import crud, schemas, models
 from app.core.config import settings
 from app.schemas import enums
 from app.schemas.enums import UserType, CollageShifts
 from app.schemas.permissions import default_permissions
-from asc_scrapper.crud import AscCRUD
-from uot_scraper.match_teachers import get_combine_teachers, MergedTeacher
+from scrapers.asc_scrapper.crud import AscCRUD
+from scrapers.uot_scraper.match_teachers import get_combine_teachers, MergedTeacher
 
 
 class InitializeDatabaseWithASC:
+    """
+    Seed Database use data form "https://_.edupage.org/timetable/"
+    """
     db: Session
     asc: AscCRUD
 
@@ -229,7 +232,7 @@ class InitializeDatabaseWithASC:
             ).id
 
     def init_db(self) -> bool:
-        user = crud.user.get_by_email(self.db, email="pts@gmail.com")
+        user = crud.user.get_by_email(self.db, email=settings().SECOND_SUPERUSER)
         if not user:
             self.init_building()
             self.init_classes()
@@ -286,39 +289,44 @@ class InitializeDatabaseWithASC:
 
             default_role = crud.role.create(
                 db=self.db, obj_in=schemas.RoleCreate(
-                    ar_name="مستخدم جديد",
-                    en_name="default",
+                    name="مستخدم جديد",
+                    enum="DEFAULT",
                     permissions=default_permissions,
                 )
             )
-            user: schemas.User = crud.user.create(
-                db=self.db, obj_in=schemas.UserCreate(
-                    email="pts@gmail.com",
-                    password="password",
+            user: schemas.User = crud.user.create_relation(
+                db=self.db,
+                obj_in=schemas.UserCreate(
+                    email=settings().SECOND_SUPERUSER,
+                    password=settings().SECOND_SUPERUSER,
                     color='#000000',
                     gender=None,
-                    name="بطس",
-                    en_name="pts",
-                    role_id=default_role.id
-                )
+                    name="pts",
+                    role_id=default_role.id,
+                    job_titles=[]
+                ),
+                image_url=None
             )
             crud.user.update_job_titles(self.db, id=user.id, job_titles=[student_jt, creator_jt])
 
             teachers: list[MergedTeacher] = get_combine_teachers(self.asc)
             for teacher in teachers:
-                user = crud.user.create(db=self.db, obj_in=schemas.UserCreate(
-                    name=teacher.name,
-                    en_name=teacher.en_name,
-                    image=teacher.image,
-                    email=teacher.email,
-                    uot_url=teacher.uot_url,
-                    role_id=default_role.id,
-                    color=teacher.color,
-                    asc_job=teacher.asc_job_title,
-                    asc_name=teacher.asc_name,
-                    scrape_from=teacher.scrape_from,
-                    gender=teacher.gender,
-                ))
+                user = crud.user.create(
+                    db=self.db,
+                    obj_in=schemas.UserCreateDB(
+                        name=teacher.name,
+                        image=teacher.image,
+                        email=teacher.email,
+                        uot_url=teacher.uot_url,
+                        role_id=default_role.id,
+                        color=teacher.color,
+                        asc_job=teacher.asc_job_title,
+                        asc_name=teacher.asc_name,
+                        scrape_from=teacher.scrape_from,
+                        gender=teacher.gender,
+                        job_titles=[]
+                    ),
+                )
                 crud.user.update_job_titles(self.db, id=user.id, job_titles=[teacher_jt])
                 self.teachers_ids[teacher.id] = user.id
 

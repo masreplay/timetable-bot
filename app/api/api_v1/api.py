@@ -1,7 +1,11 @@
+from fastapi.responses import FileResponse
+
 from app.api.api_v1.endpoints import (users, roles, periods, auth, job_titles, stages, departments, branches, buildings,
-                                      rooms, floors, subjects, lessons, cards, days, schedule, asc_version, models)
+                                      rooms, floors, subjects, lessons, cards, days, schedule, asc_version,
+                                      telegram_user)
 from app.api.api_v1.tags import Tags
 from app.core.utils.utils import APIPermissionsRouter
+from data.openapi import format_openapi_file
 
 api_router = APIPermissionsRouter()
 
@@ -20,9 +24,12 @@ api_router.include_router(subjects.router, prefix="/subjects", tags=[Tags.subjec
 api_router.include_router(lessons.router, prefix="/lessons", tags=[Tags.lessons])
 api_router.include_router(cards.router, prefix="/cards", tags=[Tags.cards])
 api_router.include_permissions_router(days.router, prefix="/days", tags=[Tags.days])
-
-api_router.include_permissions_router(models.router, prefix="/models")
-
-api_router.include_router(users.router, prefix="/users",
-                          tags=[Tags.users, Tags.teachers, Tags.employees, Tags.students, Tags.others])
+api_router.include_router(users.router, prefix="/users", tags=[Tags.users])
 api_router.include_permissions_router(roles.router, prefix="/roles", tags=[Tags.roles])
+api_router.include_router(telegram_user.router, prefix="/telegram", tags=[Tags.telegram])
+
+
+@api_router.get("/openapi-formatted.json")
+def openapi_formatted():
+    format_openapi_file()
+    return FileResponse("data/openapi-formatted.json")

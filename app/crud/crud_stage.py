@@ -1,10 +1,10 @@
 from uuid import UUID
 
-from sqlmodel import Session, select
+from sqlmodel import Session, select, and_
 
-from app import schemas, models
+from app import schemas
 from app.crud.base import CRUDBase
-from app.models import Stage, Branch
+from app.models import Stage, Branch, Department
 from app.schemas import Paging
 from app.schemas.stage import StageCreate, StageUpdate
 
@@ -13,8 +13,12 @@ class CRUDStage(CRUDBase[Stage, StageCreate, StageUpdate, schemas.Stage]):
 
     def get_by_object(self, db: Session, stage: StageCreate | StageUpdate) -> Stage:
         statement = select(Stage) \
-            .where(*[Stage.branch_id == stage.branch_id, Stage.shift == stage.shift, Stage.level == stage.level])
+            .where(and_(Stage.branch_id == stage.branch_id, Stage.shift == stage.shift, Stage.level == stage.level,
+                        Stage.name == stage.name))
         return db.exec(statement).first()
+
+    def get(self, db: Session, id: UUID) -> schemas.Stage:
+        return db.query(Stage).join(Branch).join(Department).where(Stage.id == id).first()
 
     def get_filter(
             self, db: Session, *, skip: int = 0, limit: int = 100, branch_id: UUID | None, branch_name: str | None

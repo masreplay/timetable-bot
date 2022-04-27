@@ -4,12 +4,6 @@ from fastapi import Query
 from pydantic import BaseModel
 from pydantic.generics import GenericModel
 
-
-class LimitSkipParams(BaseModel):
-    skip: int = Query(0, ge=0, description="Page skip")
-    limit: int = Query(50, ge=1, le=100, description="Page size limit")
-
-
 ModelType = TypeVar('ModelType')
 
 
@@ -19,3 +13,12 @@ class Paging(GenericModel, Generic[ModelType]):
 
     class Config:
         orm_mode = True
+
+
+class PagingParams(BaseModel):
+    skip: int
+    limit: int
+
+
+def paging(page: int = Query(1, ge=1), per_page: int = Query(15)):
+    return PagingParams(skip=page * per_page - per_page, limit=per_page)

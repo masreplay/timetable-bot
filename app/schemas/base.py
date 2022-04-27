@@ -1,11 +1,12 @@
 from datetime import datetime
 from uuid import UUID, uuid4
 
-from pydantic import constr
-from sqlmodel import SQLModel, Field
+from pydantic import validator
+from pydantic.color import Color
+from sqlalchemy import Column
+from sqlmodel import SQLModel, Field, AutoString
 
-from app.core.utils.regex import color_regex
-from ui.colors.generate_color import random_light, random_dark
+from app.core.as_form_data import as_form
 
 
 class BaseSchema(SQLModel):
@@ -13,9 +14,11 @@ class BaseSchema(SQLModel):
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
 
+@as_form
 class CardContent(SQLModel):
-    name: str | None = Field(index=True)
+    name: str
+    color: Color = Field(sa_column=Column(AutoString()))
 
-    color: constr(regex=color_regex) | None
-    color_light: constr(regex=color_regex) = Field(default_factory=random_light)
-    color_dark: constr(regex=color_regex) = Field(default_factory=random_dark)
+    @validator("color")
+    def color_as_hex(cls, v):
+        return v.as_hex()

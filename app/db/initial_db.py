@@ -21,21 +21,22 @@ def init_super_admin(db):
     if not user:
         super_admin_role = crud.role.create(
             db=db, obj_in=schemas.RoleCreate(
-                ar_name="مسؤول",
-                en_name="SUPER ADMIN",
+                name="مسؤول",
+                enum="SUPER_ADMIN",
                 permissions=super_admin_permissions,
             )
         )
-        crud.user.create(
-            db=db, obj_in=schemas.UserCreate(
+        crud.user.create_relation(
+            db=db,
+            obj_in=schemas.UserCreate(
                 email=settings().FIRST_SUPERUSER,
                 password=settings().FIRST_SUPERUSER_PASSWORD,
                 color='#000000',
                 gender=None,
-                en_name="SUPER ADMIN",
-                name="مسؤول",
+                name="SUPER ADMIN",
                 role_id=super_admin_role.id,
-            )
+            ),
+            image_url=None,
         )
 
 

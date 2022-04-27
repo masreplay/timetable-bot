@@ -1,7 +1,7 @@
 from pydantic.color import Color
 
-from asc_scrapper.crud import *
-from asc_scrapper.schemas import *
+from scrapers.asc_scrapper.crud import *
+from scrapers.asc_scrapper.schemas import *
 from ui.colors.color_utils import decide_text_color, reduce_color_lightness, cprint
 
 
@@ -103,7 +103,7 @@ def schedule_html(*, periods: list[Period], days: list[Day], cards: list[Card], 
 def generate_table(days: list[Day], periods: list[Period], cards: list[Card], is_dark: bool = True):
     card_tags = ""
     on_background_color = "#ffffff" if is_dark else "#000000"
-    crud = AscCRUD.from_file(file_name="../asc_scrapper/asc_schedule.json")
+    crud = AscCRUD.from_file(file_name="/asc_schedule.json")
     for day in days:
         if day.short in ["X", "E"]:
             continue

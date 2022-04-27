@@ -2,7 +2,7 @@ from datetime import date
 
 from pydantic import BaseModel
 
-from app.core.config import settings
+# from app.core.config import settings
 
 
 class ScheduleInformation(BaseModel):
@@ -36,9 +36,9 @@ def get_schedule_information(
         validate_to=validate_to,
         collage_name=collage_name,
         branch_name=branch_name,
-        creators_name=settings().CREATORS_NAME,
-        creators_telegram_id=settings().CREATORS_TELEGRAM_ID,
-        creators_telegram_url=settings().BOT_TELEGRAM_URL,
-        bot_telegram_id=settings().BOT_TELEGRAM_ID,
-        bot_telegram_url=settings().BOT_TELEGRAM_URL,
+        creators_name="settings().CREATORS_NAME",
+        creators_telegram_id="settings().CREATORS_TELEGRAM_ID",
+        creators_telegram_url="settings().BOT_TELEGRAM_URL",
+        bot_telegram_id="settings().BOT_TELEGRAM_ID",
+        bot_telegram_url="settings().BOT_TELEGRAM_URL",
     )

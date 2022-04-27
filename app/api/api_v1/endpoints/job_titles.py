@@ -13,12 +13,12 @@ router = APIRouter()
 @router.get("/", response_model=Paging[schemas.JobTitle])
 def read_job_titles(
         db: Session = Depends(get_db),
-        paging: LimitSkipParams = Depends(),
+        p: PagingParams = Depends(paging),
 ) -> Any:
     """
     Retrieve job_titles.
     """
-    job_titles = crud.job_title.get_multi(db, skip=paging.skip, limit=paging.limit)
+    job_titles = crud.job_title.get_multi(db, skip=p.skip, limit=p.limit)
     return job_titles
 
 
@@ -67,7 +67,7 @@ def read_job_title(
     return job_title
 
 
-@router.delete("/{id}", response_model=schemas.JobTitle)
+@router.delete("/{id}", response_model=schemas.Message)
 def delete_job_title(
         *,
         db: Session = Depends(get_db),
@@ -79,5 +79,5 @@ def delete_job_title(
     job_title = crud.job_title.get(db=db, id=id)
     if not job_title:
         raise HTTPException(status_code=404, detail="Job title not found")
-    job_title = crud.job_title.remove(db=db, id=id)
-    return job_title
+    crud.job_title.remove(db=db, id=id)
+    return schemas.Message(detail="Job title deleted")

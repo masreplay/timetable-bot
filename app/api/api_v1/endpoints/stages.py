@@ -14,14 +14,14 @@ router = APIRouter()
 @router.get("/", response_model=Paging[schemas.Stage])
 def read_stages(
         db: Session = Depends(get_db),
-        paging: LimitSkipParams = Depends(),
+        p: PagingParams = Depends(paging),
         branch_id: UUID = Query(None),
         branch_name: str = Query(None)
 ) -> Any:
     """
     Retrieve stages.
     """
-    stages = crud.stage.get_filter(db, skip=paging.skip, limit=paging.limit, branch_id=branch_id,
+    stages = crud.stage.get_filter(db, skip=p.skip, limit=p.limit, branch_id=branch_id,
                                    branch_name=branch_name)
     return stages
 
@@ -62,13 +62,12 @@ def update_stage(
     if not branch:
         raise HTTPException(status_code=404, detail="Branch not found")
 
-    stage = crud.stage.get_by_object(db, stage=stage_in)
-    if stage:
-        raise HTTPException(status_code=400, detail="Stage already exist")
-
     stage = crud.stage.get(db=db, id=id)
     if not stage:
         raise HTTPException(status_code=404, detail="Stage not found")
+
+    if crud.stage.get_by_object(db, stage=stage_in):
+        raise HTTPException(status_code=400, detail="Stage already exist or stage's data are the same")
 
     stage = crud.stage.update(db=db, db_obj=stage, obj_in=stage_in)
     return stage
@@ -89,7 +88,7 @@ def read_stage(
     return stage
 
 
-@router.delete("/{id}", response_model=schemas.Stage)
+@router.delete("/{id}", response_model=schemas.Message)
 def delete_stage(
         *,
         db: Session = Depends(get_db),
@@ -101,5 +100,5 @@ def delete_stage(
     stage = crud.stage.get(db=db, id=id)
     if not stage:
         raise HTTPException(status_code=404, detail="Stage not found")
-    stage = crud.stage.remove(db=db, id=id)
-    return stage
+    crud.stage.remove(db=db, id=id)
+    return schemas.Message(detail="Stage deleted")

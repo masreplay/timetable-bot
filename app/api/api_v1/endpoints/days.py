@@ -13,12 +13,12 @@ router = APIRouter()
 @router.get("/", response_model=Paging[schemas.Day])
 def read_days(
         db: Session = Depends(get_db),
-        paging: LimitSkipParams = Depends(),
+        p: PagingParams = Depends(paging),
 ) -> Any:
     """
     Retrieve days.
     """
-    days = crud.day.get_multi(db, skip=paging.skip, limit=paging.limit)
+    days = crud.day.get_multi(db, skip=p.skip, limit=p.limit)
     return days
 
 

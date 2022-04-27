@@ -15,12 +15,12 @@ router = APIRouter(dependencies=[Depends(deps.PermissionHandler("periods"))])
 @router.get("/", response_model=Paging[schemas.Period])
 def read_periods(
         db: Session = Depends(get_db),
-        paging: LimitSkipParams = Depends(),
+        p: PagingParams = Depends(paging),
 ) -> Any:
     """
     Retrieve periods.
     """
-    periods = crud.period.get_multi(db, skip=paging.skip, limit=paging.limit)
+    periods = crud.period.get_multi(db, skip=p.skip, limit=p.limit)
     return periods
 
 
@@ -69,7 +69,7 @@ def read_period(
     return period
 
 
-@router.delete("/{id}", response_model=schemas.Period)
+@router.delete("/{id}", response_model=schemas.Message)
 def delete_period(
         *,
         db: Session = Depends(get_db),
@@ -81,5 +81,5 @@ def delete_period(
     period = crud.period.get(db=db, id=id)
     if not period:
         raise HTTPException(status_code=404, detail="Period not found")
-    period = crud.period.remove(db=db, id=id)
-    return period
+    crud.period.remove(db=db, id=id)
+    return schemas.Message(detail="Period deleted")

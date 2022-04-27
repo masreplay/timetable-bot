@@ -6,8 +6,8 @@ import urllib3
 from bs4 import BeautifulSoup as BSHTML
 
 from app.core.config import settings
-from uot_scraper.email_extract import get_emails
-from uot_scraper.schemas import Teacher, Role
+from scrapers.uot_scraper.email_extract import get_emails
+from scrapers.uot_scraper.schemas import Teacher, Role
 
 
 def main():
@@ -43,7 +43,7 @@ def extract_department_teachers(department_abbr: str):
     for link in soup.findAll('a'):
         href = link['href']
         if "/index.php/s/cv/" in href and "#itemCommentsAnchor" not in href:
-            teacher_url = _base_department_url + link.get("href")
+            teacher_url = _base_department_url + link.get_stage_schedule("href")
 
             # Prevent any duplication
             if teacher_url not in teachers_urls:

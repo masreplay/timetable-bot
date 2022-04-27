@@ -1,11 +1,12 @@
 import pathlib
 
+import requests
 from pydantic.color import Color
 
 from app import schemas
 from app.core.config import settings
 from app.schemas.enums import Environment
-from app.schemas.schemas import ImageUrl
+from app.schemas.image_url import ImageUrl
 from ui.color import Theme
 from ui.colors.color_utils import decide_text_color, cprint
 
@@ -105,7 +106,7 @@ def schedule_html_template(
 
 <body>
     <div style="background-color: {theme.colors.background}; padding: 1%;">
-        <h1 style="color: {theme.colors.on_background}; text-align: center;">{schedule.stage.name}</h1>
+        <h1 style="color: {theme.colors.on_background}; text-align: center;">{schedule.item.name}</h1>
         <table>
             <thead>
                 <colgroup>
@@ -118,15 +119,17 @@ def schedule_html_template(
             </thead>
             <tbody>{generate_table(schedule=schedule, theme=theme)}</tbody>
         </table>
-        <div style="display: flex; justify-content: space-between; flex-direction: row-reverse">
-            <h3 style="color: {theme.colors.on_background}">{schedule.information.get_validate_date}</h3>
-            <h3 style="color: {theme.colors.on_background}">Telegram: {schedule.information.bot_telegram_id}</h3>
-        </div>
     </div>
 </body>
 
 </html>"""
 
+
+# </table>
+#         <!-- <div style="display: flex; justify-content: space-between; flex-direction: row-reverse">
+#             <h3 style="color: {theme.colors.on_background}">{schedule.information.get_validate_date}</h3>
+#             <h3 style="color: {theme.colors.on_background}">Telegram: {schedule.information.bot_telegram_id}</h3>
+#         </div> -->
 
 def generate_table(*, schedule: schemas.ScheduleDetails, theme: Theme):
     """
@@ -148,9 +151,8 @@ def generate_table(*, schedule: schemas.ScheduleDetails, theme: Theme):
             if card:
                 teacher: schemas.TeacherSchedule | None = card.lesson.teacher
 
-                color: Color = (
-                    Color(teacher.color_dark) if teacher else Color("#ffffff")
-                )
+                color: Color = Color(teacher.color) if teacher else Color("#ffffff")
+
                 font_color = decide_text_color(color)
                 row.append(
                     f"<td "
@@ -186,7 +188,7 @@ def card_table(*, card: schemas.CardScheduleDetails, color: Color):
     return "".join(tags)
 
 
-def get_stage_schedule_image(
+def get_schedule_image(
         *, schedule: schemas.ScheduleDetails, theme: Theme
 ) -> str | None:
     """
@@ -199,26 +201,24 @@ def get_stage_schedule_image(
         schedule=schedule, theme=theme
     )
 
-    # response = requests.post(
-    #     f"{settings().HTML_TO_IMAGE_SERVICE}/image",
-    #     data={"html": html},
-    #     stream=True,
-    # )
-    #
-    # image_url = ImageUrl.parse_obj(response.json())
-    # img_data = requests.get(image_url.url).content
-    #
-    # if settings().ENVIRONMENT == Environment.development:
-    #     print(image_url.url)
-    #     pathlib.Path("generated_data").mkdir(parents=True, exist_ok=True)
-    #     with open(f"generated_data/{schedule.stage.name}table.png", "wb") as handler:
-    #         handler.write(img_data)
-    #         with open("generated_data/table.g.html", "w", encoding="utf-8") as file:
-    #             file.write(html)
-    #
-    # return image_url.url
+    response = requests.post(
+        f"{settings().HTML_TO_IMAGE_SERVICE}/image",
+        data={"html": html},
+        stream=True,
+    )
 
-    return None
+    image_url = ImageUrl.parse_obj(response.json())
+    img_data = requests.get(image_url.url).content
+
+    if settings().ENVIRONMENT == Environment.development:
+        print(image_url.url)
+        pathlib.Path("generated_data").mkdir(parents=True, exist_ok=True)
+        with open(f"generated_data/{schedule.item.name}table.png", "wb") as handler:
+            handler.write(img_data)
+            with open("generated_data/table.g.html", "w", encoding="utf-8") as file:
+                file.write(html)
+
+    return image_url.url
 
 
 if __name__ == "__main__":

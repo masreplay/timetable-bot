@@ -14,12 +14,12 @@ router = APIRouter()
 @router.get("/", response_model=Paging[schemas.Department])
 def read_departments(
         db: Session = Depends(get_db),
-        paging: LimitSkipParams = Depends(),
+        p: PagingParams = Depends(paging),
 ) -> Any:
     """
     Retrieve departments.
     """
-    departments = crud.department.get_multi(db, skip=paging.skip, limit=paging.limit)
+    departments = crud.department.get_multi(db, skip=p.skip, limit=p.limit)
     return departments
 
 
@@ -68,7 +68,7 @@ def read_department(
     return department
 
 
-@router.delete("/{id}", response_model=schemas.Department)
+@router.delete("/{id}", response_model=schemas.Message)
 def delete_department(
         *,
         db: Session = Depends(get_db),
@@ -80,5 +80,5 @@ def delete_department(
     department = crud.department.get(db=db, id=id)
     if not department:
         raise HTTPException(status_code=404, detail="Department not found")
-    department = crud.department.remove(db=db, id=id)
-    return department
+    crud.department.remove(db=db, id=id)
+    return schemas.Message(detail="Department deleted")
